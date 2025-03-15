@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BiMenu } from "react-icons/bi";
+import { BiMenu, BiLogoGithub } from "react-icons/bi";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { UserButton } from "./user-button";
@@ -15,77 +15,94 @@ export default async function Header() {
   };
 
   return (
-    <header className="h-[70px] sticky top-0 border-b border-gray-100 flex items-center px-4 sm:px-6 md:px-10 bg-white/95 backdrop-blur-sm z-10 shadow-sm">
-      <div className="h-full flex items-center">
-        <Link href="/">
-          <div className="relative h-[40px] w-[140px] hover:opacity-90 transition-opacity">
-            <Image
-              src="/codefolio-logo.svg"
-              alt="logo"
-              fill
-              className="object-contain"
-              priority
-            />
-          </div>
-        </Link>
-      </div>
-
-      <nav className="ml-auto flex items-center gap-1 sm:gap-2">
-        <Link
-          href="/"
-          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
-            isActive("/")
-              ? "text-blue-600 bg-blue-50"
-              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
-          }`}
-        >
-          ホーム
-        </Link>
-
-        <Link
-          href="/blog"
-          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
-            isActive("/blog")
-              ? "text-blue-600 bg-blue-50"
-              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
-          }`}
-        >
-          学習ドキュメント
-        </Link>
-
-        <Link
-          href="/test"
-          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
-            isActive("/test")
-              ? "text-blue-600 bg-blue-50"
-              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
-          }`}
-        >
-          理解度テスト
-        </Link>
-
-        <Link
-          href="/practice"
-          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
-            isActive("/practice")
-              ? "text-blue-600 bg-blue-50"
-              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
-          }`}
-        >
-          演習問題
-        </Link>
-
-        <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-100">
-          <UserButton session={session} />
-
-          <button
-            className="block sm:hidden w-[36px] h-[36px] rounded-md bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-gray-600 transition-colors"
-            aria-label="メインメニュー"
-          >
-            <BiMenu className="text-xl" />
-          </button>
+    <header className="h-[70px] border-b border-gray-100 flex items-center px-4 sm:px-6 md:px-10 bg-white z-10 shadow-sm">
+      <div className="max-w-6xl w-full mx-auto flex items-center justify-between">
+        <div className="h-full flex items-center">
+          <Link href="/">
+            <div className="flex items-center">
+              <div className="relative h-[40px] w-[40px] mr-2">
+                <Image
+                  src="/codefolio-logo-only.svg"
+                  alt="logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              <span className="text-2xl font-bold text-gray-900 hidden md:block">
+                codefolio
+              </span>
+            </div>
+          </Link>
         </div>
-      </nav>
+
+        <nav className="flex items-center gap-1 sm:gap-2">
+          <Link
+            href="/"
+            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+              isActive("/")
+                ? "text-blue-600 bg-blue-50"
+                : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+            }`}
+          >
+            ホーム
+          </Link>
+
+          <Link
+            href="/blog"
+            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+              isActive("/blog")
+                ? "text-blue-600 bg-blue-50"
+                : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+            }`}
+          >
+            学習ドキュメント
+          </Link>
+
+          <Link
+            href="/test"
+            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+              isActive("/test")
+                ? "text-blue-600 bg-blue-50"
+                : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+            }`}
+          >
+            理解度テスト
+          </Link>
+
+          <Link
+            href="/practice"
+            className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+              isActive("/practice")
+                ? "text-blue-600 bg-blue-50"
+                : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+            }`}
+          >
+            演習問題
+          </Link>
+
+          <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-100">
+            {session ? (
+              <UserButton session={session} />
+            ) : (
+              <Link
+                href="/api/auth/signin"
+                className="flex items-center gap-1 px-3 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                <BiLogoGithub className="text-lg" />
+                <span>GitHub ログイン</span>
+              </Link>
+            )}
+
+            <button
+              className="block sm:hidden w-[36px] h-[36px] rounded-md bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-gray-600 transition-colors"
+              aria-label="メインメニュー"
+            >
+              <BiMenu className="text-xl" />
+            </button>
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }
