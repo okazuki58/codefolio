@@ -1,4 +1,5 @@
 import { BiMenu as BiMenuIcon } from "react-icons/bi";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -7,15 +8,21 @@ export default function Header() {
         CodePortfolio
       </div>
       <div className="ml-auto flex items-center gap-4 sm:gap-8">
-        <a href="#" className="text-gray-700 hidden sm:block">
+        <Link href="#" className="text-gray-700 hidden sm:block">
           ホーム
-        </a>
-        <a href="#" className="text-gray-700 hidden sm:block">
-          課題一覧
-        </a>
-        <a href="#" className="text-blue-600 font-semibold hidden sm:block">
-          基礎概念
-        </a>
+        </Link>
+        <Link
+          href="/blog"
+          className="text-blue-600 font-semibold hidden sm:block"
+        >
+          学習ドキュメント
+        </Link>
+        <Link href="/test" className="text-gray-700 hidden sm:block">
+          理解度テスト
+        </Link>
+        <Link href="#" className="text-gray-700 hidden sm:block">
+          演習問題
+        </Link>
         <div className="w-[30px] h-[30px] rounded-full bg-gray-100 flex items-center justify-center text-gray-700">
           P
         </div>
@@ -25,25 +32,5 @@ export default function Header() {
         />
       </div>
     </header>
-  );
-}
-
-// Mobile menu icon component
-function BiMenu({
-  className,
-  "aria-label": ariaLabel,
-}: {
-  className?: string;
-  "aria-label"?: string;
-}) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      viewBox="0 0 24 24"
-      aria-label={ariaLabel}
-    >
-      <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
-    </svg>
   );
 }

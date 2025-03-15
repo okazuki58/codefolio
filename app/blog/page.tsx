@@ -29,7 +29,7 @@ export default async function BlogListPage({
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">ブログ記事一覧</h1>
+        <h1 className="text-3xl font-bold mb-8">学習ドキュメント</h1>
 
         {blogs.length === 0 ? (
           <div className="text-center py-12">
@@ -59,28 +59,42 @@ export default async function BlogListPage({
                   )}
                 </div>
                 <div className="p-4">
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
-                    <BiCalendar className="mr-1" />
-                    <time dateTime={blog.publishedAt}>
-                      {new Date(blog.publishedAt).toLocaleDateString("ja-JP")}
-                    </time>
+                  {/* 日付とカテゴリー */}
+                  <div className="flex items-center flex-wrap text-sm text-gray-500 mb-2">
+                    <div className="flex items-center mr-2">
+                      <BiCalendar className="mr-1" />
+                      <time dateTime={blog.publishedAt}>
+                        {new Date(blog.publishedAt).toLocaleDateString("ja-JP")}
+                      </time>
+                    </div>
                     {blog.category && (
-                      <span className="ml-2 bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs">
+                      <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs">
                         {blog.category.name}
                       </span>
                     )}
-                    {blog.tags && (
-                      <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs">
-                        {blog.tags.map((tag) => (
-                          <span key={tag}>{tag}</span>
-                        ))}
-                      </span>
-                    )}
                   </div>
+
+                  {/* タグ */}
+                  {blog.tags && (
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {blog.tags.split(",").map((tag) => (
+                        <span
+                          key={tag.trim()}
+                          className="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs"
+                        >
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* タイトル */}
                   <h2 className="text-lg font-bold mb-2 line-clamp-2">
                     {blog.title}
                   </h2>
-                  <div className="flex items-center text-blue-600 text-sm">
+
+                  {/* 続きを読む */}
+                  <div className="flex items-center text-blue-600 text-sm mt-1">
                     <span>続きを読む</span>
                     <BiRightArrowAlt className="ml-1" />
                   </div>
