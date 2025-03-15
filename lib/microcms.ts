@@ -80,24 +80,6 @@ export async function getTestsByCategory(categoryId: string, queries?: any) {
   }
 }
 
-// 追加: 特定のテスト問題を取得する関数
-export async function getTestById(testId: string, draftKey?: string) {
-  try {
-    const queries = draftKey ? { draftKey } : {};
-
-    const test = await client.get({
-      endpoint: "tests",
-      contentId: testId,
-      queries,
-    });
-
-    return test;
-  } catch (error) {
-    console.error("Failed to fetch test:", error);
-    return null;
-  }
-}
-
 // 追加: 特定カテゴリを取得する関数
 export async function getCategoryById(categoryId: string) {
   try {
