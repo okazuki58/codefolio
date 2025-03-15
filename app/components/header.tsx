@@ -1,13 +1,24 @@
-import { BiMenu as BiMenuIcon } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
+import { BiMenu } from "react-icons/bi";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
+import { UserButton } from "./user-button";
 
-export default function Header() {
+export default async function Header() {
+  const session = await auth();
+  const headersList = headers();
+  const pathname = (await headersList).get("x-pathname") || "/";
+
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
+
   return (
-    <header className="h-[70px] border-b border-gray-200 flex items-center px-4 sm:px-6 md:px-10 bg-white z-10">
-      <div className="font-bold text-xl sm:text-2xl text-gray-800 h-full flex items-center">
+    <header className="h-[70px] sticky top-0 border-b border-gray-100 flex items-center px-4 sm:px-6 md:px-10 bg-white/95 backdrop-blur-sm z-10 shadow-sm">
+      <div className="h-full flex items-center">
         <Link href="/">
-          <div className="relative h-[50px] w-[140px]">
+          <div className="relative h-[40px] w-[140px] hover:opacity-90 transition-opacity">
             <Image
               src="/codefolio-logo.svg"
               alt="logo"
@@ -18,30 +29,63 @@ export default function Header() {
           </div>
         </Link>
       </div>
-      <div className="ml-auto flex items-center gap-4 sm:gap-8">
-        <Link href="#" className="text-gray-700 hidden sm:block">
+
+      <nav className="ml-auto flex items-center gap-1 sm:gap-2">
+        <Link
+          href="/"
+          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+            isActive("/")
+              ? "text-blue-600 bg-blue-50"
+              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+          }`}
+        >
           ホーム
         </Link>
+
         <Link
           href="/blog"
-          className="text-blue-600 font-semibold hidden sm:block"
+          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+            isActive("/blog")
+              ? "text-blue-600 bg-blue-50"
+              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+          }`}
         >
           学習ドキュメント
         </Link>
-        <Link href="/test" className="text-gray-700 hidden sm:block">
+
+        <Link
+          href="/test"
+          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+            isActive("/test")
+              ? "text-blue-600 bg-blue-50"
+              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+          }`}
+        >
           理解度テスト
         </Link>
-        <Link href="#" className="text-gray-700 hidden sm:block">
+
+        <Link
+          href="/practice"
+          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+            isActive("/practice")
+              ? "text-blue-600 bg-blue-50"
+              : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+          }`}
+        >
           演習問題
         </Link>
-        <div className="w-[30px] h-[30px] rounded-full bg-gray-100 flex items-center justify-center text-gray-700">
-          P
+
+        <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-100">
+          <UserButton session={session} />
+
+          <button
+            className="block sm:hidden w-[36px] h-[36px] rounded-md bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-gray-600 transition-colors"
+            aria-label="メインメニュー"
+          >
+            <BiMenu className="text-xl" />
+          </button>
         </div>
-        <BiMenuIcon
-          className="block sm:hidden text-2xl text-gray-700"
-          aria-label="メニュー"
-        />
-      </div>
+      </nav>
     </header>
   );
 }
