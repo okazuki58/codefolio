@@ -19,3 +19,51 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Typography カスタマイズ */
+@layer components {
+  .prose h2 {
+    font-weight: 700;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-size: 22px;
+  }
+
+  .prose h3 {
+    font-weight: 600;
+    font-size: 18px;
+  }
+
+  .prose p,
+  .prose ul,
+  .prose ol {
+    font-size: 16px;
+  }
+
+  /* レスポンシブ調整 */
+  @media (min-width: 640px) {
+    .prose h2 {
+      font-size: 26px;
+    }
+
+    .prose h3 {
+      font-size: 20px;
+    }
+
+    .prose p,
+    .prose ul,
+    .prose ol {
+      font-size: 17px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .prose h2 {
+      font-size: 28px;
+    }
+
+    .prose h3 {
+      font-size: 22px;
+    }
+  }
+}
