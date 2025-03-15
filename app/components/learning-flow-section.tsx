@@ -107,7 +107,7 @@ export function LearningFlowSection() {
               効率的な学習プロセスであなたのエンジニアスキルを加速させませんか？
             </p>
             <Link
-              href="/register"
+              href="/auth/register"
               className="inline-flex items-center px-6 py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
               無料で始める

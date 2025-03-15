@@ -37,7 +37,7 @@ export function CTASection({ session }: CTASectionProps) {
             ) : (
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  href="/api/auth/signin"
+                  href="/auth/register"
                   className="inline-flex items-center px-8 py-4 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium text-lg transition-colors"
                 >
                   無料ではじめる

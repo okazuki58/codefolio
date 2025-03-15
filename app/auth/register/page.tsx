@@ -7,11 +7,12 @@ import {
   BiCodeAlt,
   BiBookAlt,
   BiLaptop,
+  BiUserPlus,
 } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function SignIn() {
+export default function Register() {
   return (
     <div className="min-h-[calc(100vh-70px)] flex flex-col md:flex-row bg-white">
       {/* 左側のブランドエリア - モバイルでは非表示 */}
@@ -80,14 +81,14 @@ export default function SignIn() {
         </div>
       </div>
 
-      {/* 右側のログインエリア */}
-      <div className="w-full md:w-1/2 flex items-center justify-center min-h-[calc(100vh-70px)] p-0 md:p-8 bg-gray-50 bg-white">
+      {/* 右側の登録エリア */}
+      <div className="w-full md:w-1/2 flex items-center justify-center min-h-[calc(100vh-70px)] p-0 md:p-8 bg-gray-50 md:bg-white">
         <div className="w-full max-w-md space-y-6 bg-white p-6 md:p-8 rounded-lg md:border md:border-gray-100">
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-900">
-              アカウントにログイン
+              新規アカウント登録
             </h2>
-            <p className="mt-2 text-gray-600">学習を再開しましょう</p>
+            <p className="mt-2 text-gray-600">学習を始めましょう</p>
           </div>
 
           <button
@@ -95,7 +96,7 @@ export default function SignIn() {
             className="flex w-full justify-center items-center gap-2 rounded-md bg-gray-800 py-3 px-4 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-150"
           >
             <BiLogoGithub className="h-5 w-5" />
-            <span>GitHubでログイン</span>
+            <span>GitHubで登録</span>
           </button>
 
           <div className="bg-blue-50 rounded p-4 border-l-3 border-blue-500">
@@ -108,11 +109,11 @@ export default function SignIn() {
               </div>
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-blue-700">
-                  GitHubアカウントをお持ちでない方へ
+                  GitHubアカウントについて
                 </h3>
                 <div className="mt-2 text-sm text-blue-600">
                   <p>
-                    当サービスはGitHubアカウントを使用してログインします。GitHubアカウントをお持ちでない場合は、以下のリンクから無料で作成できます。
+                    当サービスはGitHubアカウントを使用して登録・ログインします。GitHubアカウントをお持ちでない場合は、以下のリンクから無料で作成できます。
                   </p>
                   <div className="mt-3">
                     <Link
@@ -129,9 +130,30 @@ export default function SignIn() {
             </div>
           </div>
 
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-4 text-gray-500">
+                既にアカウントをお持ちの方
+              </span>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <Link
+              href="/auth/signin"
+              className="flex w-full justify-center items-center gap-2 rounded-md border border-gray-300 bg-white py-3 px-4 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
+            >
+              <BiUserPlus className="h-5 w-5" />
+              <span>ログインページへ</span>
+            </Link>
+          </div>
+
           <div className="text-center text-xs text-gray-500">
             <p>
-              ログインすることで、
+              登録することで、
               <Link
                 href="/terms"
                 className="font-medium text-blue-500 hover:text-blue-600"

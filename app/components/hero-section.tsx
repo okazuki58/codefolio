@@ -73,7 +73,7 @@ export function HeroSection({ session }: HeroSectionProps) {
               ) : (
                 <>
                   <Link
-                    href="/api/auth/signin"
+                    href="/auth/register"
                     className="px-6 py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
                   >
                     無料で登録する
