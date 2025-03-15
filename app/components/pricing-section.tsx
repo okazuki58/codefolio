@@ -130,7 +130,7 @@ export function PricingSection() {
     {
       title: "プロフェッショナル",
       description: "より高度な学習と実践のためのプラン",
-      price: "¥2,980",
+      price: "¥1,280",
       period: "/月",
       features: [
         { text: "全ての基礎学習コンテンツ", included: true },
