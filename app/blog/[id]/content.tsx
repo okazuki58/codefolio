@@ -6,9 +6,10 @@ import QuizButton from "@/app/components/quiz-button";
 
 interface BlogContentProps {
   content: string;
+  categoryId?: string;
 }
 
-export default function BlogContent({ content }: BlogContentProps) {
+export default function BlogContent({ content, categoryId }: BlogContentProps) {
   // Add syntax highlighting if needed
   useEffect(() => {
     // Load any client-side scripts for content if needed
@@ -20,7 +21,7 @@ export default function BlogContent({ content }: BlogContentProps) {
         className="prose prose-lg max-w-none leading-relaxed mb-10"
         dangerouslySetInnerHTML={{ __html: content }}
       />
-      <QuizButton />
+      <QuizButton categoryId={categoryId} />
       <Feedback />
     </div>
   );

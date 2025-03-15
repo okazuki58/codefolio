@@ -61,7 +61,10 @@ export default async function BlogPage({
             </div>
           )}
 
-          <BlogContent content={modifiedHtml || blog.content} />
+          <BlogContent
+            content={modifiedHtml || blog.content}
+            categoryId={blog.category.id}
+          />
         </main>
       </div>
     </div>

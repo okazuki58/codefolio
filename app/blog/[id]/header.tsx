@@ -27,7 +27,7 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
           </div>
         </div>
         <div className="md:w-64">
-          <QuizButton />
+          <QuizButton categoryId={blog.category?.id} />
         </div>
       </div>
     </div>

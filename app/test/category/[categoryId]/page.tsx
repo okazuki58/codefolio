@@ -39,6 +39,8 @@ export default async function CategoryTestsPage({
 }: CategoryTestsPageProps) {
   const { categoryId } = await params;
 
+  console.log("Category page - received categoryId:", categoryId);
+
   try {
     const testsResponse = await getTestsByCategory(categoryId);
     const category = await getCategoryById(categoryId);
@@ -46,6 +48,7 @@ export default async function CategoryTestsPage({
     const tests = testsResponse.contents || [];
 
     if (!category) {
+      console.log("Category not found, redirecting to 404");
       return notFound();
     }
 
@@ -82,7 +85,7 @@ export default async function CategoryTestsPage({
       </div>
     );
   } catch (error) {
-    console.error("Error fetching category tests:", error);
+    console.error("Error in category page:", error);
     return (
       <div className="min-h-[calc(100vh-70px)] bg-gray-50 py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
