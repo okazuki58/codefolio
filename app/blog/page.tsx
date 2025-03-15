@@ -69,6 +69,13 @@ export default async function BlogListPage({
                         {blog.category.name}
                       </span>
                     )}
+                    {blog.tags && (
+                      <span className="ml-2 bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs">
+                        {blog.tags.map((tag) => (
+                          <span key={tag}>{tag}</span>
+                        ))}
+                      </span>
+                    )}
                   </div>
                   <h2 className="text-lg font-bold mb-2 line-clamp-2">
                     {blog.title}

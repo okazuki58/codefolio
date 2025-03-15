@@ -19,4 +19,5 @@ export type Blog = {
     revisedAt: string;
     name: string;
   };
+  tags?: string[];
 };
