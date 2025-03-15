@@ -8,20 +8,21 @@ import { BiCalendar } from "react-icons/bi";
 import { extractHeadings } from "../utils";
 
 interface BlogPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     draftKey?: string;
-  };
+  }>;
 }
 
 export default async function BlogPage({
   params,
   searchParams,
 }: BlogPageProps) {
-  const { id } = params;
-  const { draftKey } = searchParams;
+  // 動的APIを非同期で取得
+  const { id } = await params;
+  const { draftKey } = await searchParams;
 
   const blog = await getBlogWithDraftKey(id, draftKey);
 

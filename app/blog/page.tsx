@@ -5,15 +5,17 @@ import Link from "next/link";
 import { BiCalendar, BiRightArrowAlt } from "react-icons/bi";
 
 interface BlogListPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export default async function BlogListPage({
   searchParams,
 }: BlogListPageProps) {
-  const page = parseInt(searchParams.page || "1", 10);
+  // 非同期で searchParams を取得
+  const { page: pageParam } = await searchParams;
+  const page = parseInt(pageParam || "1", 10);
   const limit = 9;
   const offset = (page - 1) * limit;
 
