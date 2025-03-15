@@ -1,11 +1,11 @@
 import { getBlogWithDraftKey } from "@/lib/microcms";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlogContent from "./content";
 import BlogTableOfContents from "./table-of-contents";
-import { BiCalendar } from "react-icons/bi";
 import { extractHeadings } from "../utils";
+import { BlogHeader } from "./header";
+import { Breadcrumb } from "./breadcrumb";
 
 interface BlogPageProps {
   params: Promise<{
@@ -36,30 +36,10 @@ export default async function BlogPage({
   return (
     <div className="w-full max-w-7xl mx-auto">
       {/* Breadcrumb */}
-      <div className="px-4 sm:px-6 md:px-10 mt-4 md:mt-7 text-sm text-gray-500">
-        <Link href="/blog" className="hover:underline">
-          ブログ
-        </Link>{" "}
-        &gt; {blog.title}
-      </div>
+      <Breadcrumb title={blog.title} />
 
       {/* Blog Header */}
-      <div className="px-4 sm:px-6 md:px-10 mt-4 md:mt-5">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-          {blog.title}
-        </h1>
-        <div className="flex flex-wrap items-center mt-2 gap-3">
-          {blog.category && (
-            <span className="bg-blue-600 text-white text-xs px-5 py-1 rounded">
-              {blog.category.name}
-            </span>
-          )}
-          <span className="text-sm text-gray-500 flex items-center">
-            <BiCalendar className="mr-1" />
-            {new Date(blog.publishedAt).toLocaleDateString("ja-JP")}
-          </span>
-        </div>
-      </div>
+      <BlogHeader blog={blog} />
 
       {/* Main Content Area */}
       <div className="flex flex-col lg:flex-row px-4 sm:px-6 md:px-10 mt-5 pb-20 gap-6">
