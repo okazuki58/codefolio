@@ -18,14 +18,14 @@ function FlowStep({ number, title, description, icon }: FlowStepProps) {
   return (
     <div className="flex flex-col md:flex-row gap-6">
       <div className="md:w-20 flex justify-center">
-        <div className="w-10 h-10 rounded-full bg-[#2563EB] text-white font-bold flex items-center justify-center">
+        <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center">
           {number}
         </div>
       </div>
 
       <div className="flex-1 p-6 rounded-lg border border-gray-100 bg-white">
         <div className="flex items-start gap-5">
-          <div className="p-2 rounded-lg bg-blue-50 text-[#2563EB] hidden sm:flex">
+          <div className="p-2 rounded-lg bg-blue-50 text-blue-600 hidden sm:flex">
             {icon}
           </div>
           <div>
@@ -76,12 +76,12 @@ export function LearningFlowSection() {
     <section className="py-24 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-[#2563EB] text-sm font-medium mb-4">
+          <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-4">
             学習プロセス
           </div>
 
           <h2 className="text-3xl font-bold mb-6">
-            学習の<span className="text-[#2563EB]">流れ</span>
+            学習の<span className="text-blue-600">流れ</span>
           </h2>
 
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -108,7 +108,7 @@ export function LearningFlowSection() {
             </p>
             <Link
               href="/auth/register"
-              className="inline-flex items-center px-6 py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
               無料で始める
               <BiRightArrowAlt className="ml-2" />

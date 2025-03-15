@@ -39,25 +39,25 @@ export function Footer() {
             <div className="flex space-x-4">
               <a
                 href="https://github.com/codefolio"
-                className="text-gray-400 hover:text-[#2563EB] transition-colors"
+                className="text-gray-400 hover:text-blue-600 transition-colors"
               >
                 <BiLogoGithub className="text-xl" />
               </a>
               <a
                 href="https://twitter.com/codefolio"
-                className="text-gray-400 hover:text-[#2563EB] transition-colors"
+                className="text-gray-400 hover:text-blue-600 transition-colors"
               >
                 <BiLogoTwitter className="text-xl" />
               </a>
               <a
                 href="https://linkedin.com/company/codefolio"
-                className="text-gray-400 hover:text-[#2563EB] transition-colors"
+                className="text-gray-400 hover:text-blue-600 transition-colors"
               >
                 <BiLogoLinkedin className="text-xl" />
               </a>
               <a
                 href="https://youtube.com/codefolio"
-                className="text-gray-400 hover:text-[#2563EB] transition-colors"
+                className="text-gray-400 hover:text-blue-600 transition-colors"
               >
                 <BiLogoYoutube className="text-xl" />
               </a>
@@ -71,7 +71,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   学習ドキュメント
                 </Link>
@@ -79,7 +79,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/test"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   理解度テスト
                 </Link>
@@ -87,7 +87,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/practice"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   演習問題
                 </Link>
@@ -95,7 +95,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/mentor"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   メンタリング
                 </Link>
@@ -103,7 +103,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/pricing"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   料金プラン
                 </Link>
@@ -118,7 +118,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   会社概要
                 </Link>
@@ -126,7 +126,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/team"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   チーム
                 </Link>
@@ -134,7 +134,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/careers"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   採用情報
                 </Link>
@@ -142,7 +142,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/press"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   プレスリリース
                 </Link>
@@ -150,7 +150,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   お問い合わせ
                 </Link>
@@ -165,7 +165,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/help"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   ヘルプセンター
                 </Link>
@@ -173,7 +173,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   プライバシーポリシー
                 </Link>
@@ -181,7 +181,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   利用規約
                 </Link>
@@ -189,16 +189,16 @@ export function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   よくある質問
                 </Link>
               </li>
               <li className="flex items-center">
-                <BiEnvelope className="mr-2 text-[#2563EB]" />
+                <BiEnvelope className="mr-2 text-blue-600" />
                 <a
                   href="mailto:support@codefolio.jp"
-                  className="text-gray-600 hover:text-[#2563EB] transition-colors"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   support@codefolio.jp
                 </a>
@@ -225,7 +225,7 @@ export function Footer() {
                   placeholder="メールアドレス"
                   className="w-full px-4 py-2.5 rounded-lg bg-transparent text-gray-800 outline-none flex-grow"
                 />
-                <button className="ml-2 px-5 py-2.5 bg-[#2563EB] text-white rounded-lg flex items-center hover:bg-blue-700 transition-colors whitespace-nowrap">
+                <button className="ml-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg flex items-center hover:bg-blue-700 transition-colors whitespace-nowrap">
                   登録する
                   <BiRightArrowAlt className="ml-1" />
                 </button>
@@ -237,7 +237,7 @@ export function Footer() {
         {/* コピーライト */}
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center">
-            <BiCheckShield className="text-[#2563EB] mr-2" />
+            <BiCheckShield className="text-blue-600 mr-2" />
             <span className="text-gray-600">セキュアな決済処理</span>
           </div>
           <div className="text-gray-600 text-sm mt-4 md:mt-0">

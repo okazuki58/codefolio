@@ -32,7 +32,7 @@ function PricingPlan({
     <div className={`relative`}>
       {popular && (
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <span className="inline-block px-3 py-1 bg-[#2563EB] text-white text-xs font-medium rounded-full">
+          <span className="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-full">
             人気プラン
           </span>
         </div>
@@ -42,7 +42,7 @@ function PricingPlan({
         className={`
         h-full p-6 rounded-lg 
         flex flex-col
-        ${popular ? "border-2 border-[#2563EB]" : "border border-gray-200"}
+        ${popular ? "border-2 border-blue-600" : "border border-gray-200"}
       `}
       >
         <div className="mb-5">
@@ -62,7 +62,7 @@ function PricingPlan({
             <div key={index} className="flex">
               <div className="w-6 shrink-0">
                 {feature.included ? (
-                  <span className="text-[#2563EB]">✓</span>
+                  <span className="text-blue-600">✓</span>
                 ) : (
                   <span className="text-gray-300">✕</span>
                 )}
@@ -94,7 +94,7 @@ function PricingPlan({
               transition-colors
               ${
                 popular
-                  ? "bg-[#2563EB] hover:bg-blue-700 text-white"
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
                   : "bg-gray-100 hover:bg-gray-200 text-gray-800"
               }
             `}
@@ -172,11 +172,11 @@ export function PricingSection() {
     <section className="py-20 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-[#2563EB] text-sm font-medium mb-4">
+          <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-4">
             料金プラン
           </div>
           <h2 className="text-3xl font-bold mb-6">
-            あなたに<span className="text-[#2563EB]">最適な</span>プランを選択
+            あなたに<span className="text-blue-600">最適な</span>プランを選択
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             どのスキルレベルにも対応した柔軟な料金プランをご用意しています
@@ -194,7 +194,7 @@ export function PricingSection() {
             すべてのプランは14日間の返金保証付きです。ご不明な点は
             <Link
               href="/contact"
-              className="text-[#2563EB] hover:underline mx-1"
+              className="text-blue-600 hover:underline mx-1"
             >
               お問い合わせ
             </Link>

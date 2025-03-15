@@ -12,13 +12,13 @@ export function CTASection({ session }: CTASectionProps) {
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-lg border border-gray-100 overflow-hidden">
           <div className="p-10 md:p-12 text-center">
-            <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-[#2563EB] text-sm font-medium mb-6">
+            <div className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-6">
               スキルアップの第一歩
             </div>
 
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               実務で通用する
-              <span className="text-[#2563EB] mx-2">エンジニアスキル</span>
+              <span className="text-blue-600 mx-2">エンジニアスキル</span>
               を身につけよう
             </h2>
 
@@ -29,7 +29,7 @@ export function CTASection({ session }: CTASectionProps) {
             {session ? (
               <Link
                 href="/blog"
-                className="inline-flex items-center px-8 py-4 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium text-lg transition-colors"
+                className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-lg transition-colors"
               >
                 今すぐ学習を始める
                 <BiRightArrowAlt className="ml-2 text-xl" />
@@ -38,7 +38,7 @@ export function CTASection({ session }: CTASectionProps) {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/auth/register"
-                  className="inline-flex items-center px-8 py-4 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium text-lg transition-colors"
+                  className="inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-lg transition-colors"
                 >
                   無料ではじめる
                   <BiRightArrowAlt className="ml-2 text-xl" />
