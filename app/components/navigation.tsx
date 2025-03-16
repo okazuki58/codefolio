@@ -14,7 +14,10 @@ export function Navigation({ session }: NavigationProps) {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
-    return pathname === path;
+    if (path === "/") {
+      return pathname === "/";
+    }
+    return pathname === path || pathname.startsWith(`${path}/`);
   };
 
   return (
