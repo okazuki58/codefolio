@@ -11,7 +11,6 @@ import {
   BiCheckCircle,
 } from "react-icons/bi";
 import { TestResults } from "./components/TestResults";
-import { Suspense } from "react";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -39,6 +38,7 @@ export default async function ProfilePage() {
                     alt={session.user.name || "プロフィール画像"}
                     fill
                     className="object-cover"
+                    priority
                   />
                 ) : (
                   <div className="w-full h-full bg-blue-50 flex items-center justify-center">
@@ -81,13 +81,7 @@ export default async function ProfilePage() {
                   </h3>
                 </div>
                 <div className="p-6">
-                  <Suspense
-                    fallback={
-                      <div className="p-6 text-center">読み込み中...</div>
-                    }
-                  >
-                    <TestResults />
-                  </Suspense>
+                  <TestResults />
                 </div>
               </div>
             </div>

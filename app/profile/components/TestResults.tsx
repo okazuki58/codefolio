@@ -1,41 +1,65 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { BiTimeFive } from "react-icons/bi";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
-interface TestResult {
-  id: string;
-  userId: string;
-  categoryId: string;
-  score: number;
-  total: number;
-  percentage: number;
-  createdAt: string;
-}
-
-interface EnrichedTestResult extends TestResult {
-  categoryName: string;
-}
-
-// APIからカテゴリ情報を取得する関数
-async function fetchCategoryInfo(categoryId: string) {
-  try {
-    const response = await fetch(`/api/categories/${categoryId}`);
-    if (!response.ok) {
-      throw new Error(`カテゴリ情報の取得に失敗しました: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error(`カテゴリID ${categoryId} の取得に失敗:`, error);
-    return null;
+async function getTestResults() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return [];
   }
+
+  // Prismaからテスト結果を取得
+  const testResults = await prisma.testResult.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  // 一意のカテゴリIDリストを作成
+  const uniqueCategoryIds = [
+    ...new Set(testResults.map((result) => result.categoryId)),
+  ];
+
+  // カテゴリごとの情報を取得
+  const categoryMap: Record<string, string> = {};
+
+  await Promise.all(
+    uniqueCategoryIds.map(async (categoryId) => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXTAUTH_URL}/api/categories/${categoryId}`,
+          {
+            next: { revalidate: 3600 }, // 1時間キャッシュ
+          }
+        );
+
+        if (response.ok) {
+          const category = await response.json();
+          categoryMap[categoryId] = category.name;
+        } else {
+          categoryMap[categoryId] = "カテゴリ不明";
+        }
+      } catch (error) {
+        console.error(`カテゴリ情報の取得に失敗 (ID: ${categoryId}):`, error);
+        categoryMap[categoryId] = "カテゴリ不明";
+      }
+    })
+  );
+
+  // テスト結果とカテゴリ名を結合
+  return testResults.map((result) => ({
+    ...result,
+    createdAt: result.createdAt.toISOString(), // Dateオブジェクトを文字列に変換
+    categoryName: categoryMap[result.categoryId] || "カテゴリ不明",
+  }));
 }
 
-export function TestResults() {
-  const [testResults, setTestResults] = useState<EnrichedTestResult[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export async function TestResults() {
+  const testResults = await getTestResults();
 
   // テスト結果の統計
   const totalTests = testResults.length;
@@ -50,65 +74,6 @@ export function TestResults() {
             totalTests
         )
       : 0;
-
-  useEffect(() => {
-    async function fetchTestResults() {
-      try {
-        // 1. API からテスト結果を取得
-        const response = await fetch("/api/test-results");
-        if (!response.ok) {
-          throw new Error("テスト結果の取得に失敗しました");
-        }
-
-        const data: TestResult[] = await response.json();
-
-        // 2. 一意のカテゴリIDリストを作成して重複リクエストを防ぐ
-        const uniqueCategoryIds = [
-          ...new Set(data.map((result) => result.categoryId)),
-        ];
-
-        // 3. カテゴリIDごとに一度だけAPIからカテゴリ情報を取得
-        const categoryMap: Record<string, string> = {};
-
-        for (const categoryId of uniqueCategoryIds) {
-          try {
-            const category = await fetchCategoryInfo(categoryId);
-            categoryMap[categoryId] = category?.name || "カテゴリ不明";
-          } catch (err) {
-            console.error(`カテゴリ情報の取得に失敗 (ID: ${categoryId}):`, err);
-            categoryMap[categoryId] = "カテゴリ不明";
-          }
-        }
-
-        // 4. テスト結果とカテゴリ名を結合
-        const enrichedResults = data.map((result) => ({
-          ...result,
-          categoryName: categoryMap[result.categoryId] || "カテゴリ不明",
-        }));
-
-        setTestResults(enrichedResults);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "エラーが発生しました");
-        console.error("テスト結果の取得中にエラーが発生しました:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchTestResults();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="p-6 text-center">
-        <div className="animate-pulse">データを読み込み中...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div className="p-6 text-center text-red-500">エラー: {error}</div>;
-  }
 
   return (
     <>

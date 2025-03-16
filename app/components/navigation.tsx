@@ -63,7 +63,7 @@ export function Navigation({ session }: NavigationProps) {
         演習問題
       </Link>
 
-      <div className="flex items-center gap-2 ml-2 pl-2 border-l border-gray-100">
+      <div className="flex items-center gap-2 ml-4">
         {session ? (
           <UserButton session={session} />
         ) : (
