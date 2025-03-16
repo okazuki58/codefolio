@@ -18,16 +18,22 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, account }) {
-      // ユーザー情報をトークンに追加する場合はここで処理
+      // ユーザーオブジェクトが存在するとき（通常はログイン時のみ）
       if (user) {
-        token.userId = user.id;
+        token.id = user.id; // userのIDをトークンに保存
       }
       return token;
     },
-    async session({ session, token }) {
-      // セッションにトークンの情報を追加
-      if (token && session.user) {
-        session.user.id = token.userId as string;
+    async session({ session, token, user }) {
+      // より堅牢なチェック
+      if (session?.user && token?.id) {
+        session.user.id = token.id as string;
+      } else {
+        // DBアダプターを使用している場合はuserからIDを取得できる可能性がある
+        if (user?.id) {
+          if (!session.user) session.user = { id: user.id };
+          else session.user.id = user.id;
+        }
       }
       return session;
     },

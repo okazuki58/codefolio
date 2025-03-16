@@ -10,6 +10,8 @@ import {
   BiCode,
   BiCheckCircle,
 } from "react-icons/bi";
+import { TestResults } from "./components/TestResults";
+import { Suspense } from "react";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -79,52 +81,13 @@ export default async function ProfilePage() {
                   </h3>
                 </div>
                 <div className="p-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="bg-gray-50 rounded-xl p-4 text-center">
-                      <div className="text-3xl font-bold text-blue-600">0</div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        完了した学習
-                      </div>
-                    </div>
-                    <div className="bg-gray-50 rounded-xl p-4 text-center">
-                      <div className="text-3xl font-bold text-blue-600">0</div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        解いた問題
-                      </div>
-                    </div>
-                    <div className="bg-gray-50 rounded-xl p-4 text-center">
-                      <div className="text-3xl font-bold text-blue-600">0%</div>
-                      <div className="text-sm text-gray-600 mt-1">
-                        平均正答率
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 pt-6 border-t border-gray-50">
-                    <div className="text-sm text-gray-500 mb-3">
-                      最近の学習活動がありません
-                    </div>
-                    <Link
-                      href="/blog"
-                      className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700"
-                    >
-                      学習を始める
-                      <svg
-                        className="w-4 h-4 ml-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M14 5l7 7m0 0l-7 7m7-7H3"
-                        ></path>
-                      </svg>
-                    </Link>
-                  </div>
+                  <Suspense
+                    fallback={
+                      <div className="p-6 text-center">読み込み中...</div>
+                    }
+                  >
+                    <TestResults />
+                  </Suspense>
                 </div>
               </div>
             </div>

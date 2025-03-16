@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import {
   BiArrowBack,
   BiCheckCircle,
   BiXCircle,
   BiRightArrowAlt,
   BiPlayCircle,
+  BiLogIn,
 } from "react-icons/bi";
 import { Test, Category } from "@/types";
 
@@ -17,6 +19,8 @@ interface TestSessionProps {
 }
 
 export function TestSession({ tests, category }: TestSessionProps) {
+  const { data: session } = useSession();
+  console.log(session);
   const [isStarted, setIsStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(
@@ -25,6 +29,11 @@ export function TestSession({ tests, category }: TestSessionProps) {
   const [showResults, setShowResults] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState<string[][]>([]);
   const [correctIndices, setCorrectIndices] = useState<number[]>([]);
+  const [results, setResults] = useState<{
+    correct: number;
+    total: number;
+    percentage: number;
+  } | null>(null);
 
   // テストの初期化
   useEffect(() => {
@@ -47,6 +56,21 @@ export function TestSession({ tests, category }: TestSessionProps) {
     setCorrectIndices(initialCorrectIndices);
   }, [tests]);
 
+  // 結果が表示される時に一度だけ実行
+  useEffect(() => {
+    if (showResults && !results) {
+      const calculatedResults = calculateResults();
+      setResults(calculatedResults);
+    }
+  }, [showResults]);
+
+  // 結果を保存する（ログイン時のみ）
+  useEffect(() => {
+    if (showResults && results && session?.user) {
+      saveTestResult(results);
+    }
+  }, [showResults, results, session]);
+
   // 回答を記録
   const handleAnswer = (answerIndex: number) => {
     const newAnswers = [...answers];
@@ -54,7 +78,47 @@ export function TestSession({ tests, category }: TestSessionProps) {
     setAnswers(newAnswers);
   };
 
-  // 次の問題へ
+  // テスト結果保存用関数
+  const saveTestResult = async (results: {
+    correct: number;
+    total: number;
+    percentage: number;
+  }) => {
+    if (!session?.user) {
+      console.log(
+        "ユーザーがログインしていないため、テスト結果は保存されません"
+      );
+      return null;
+    }
+
+    try {
+      const response = await fetch("/api/test-results", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          userId: session.user.id,
+          categoryId: category.id,
+          score: results.correct,
+          total: results.total,
+          percentage: results.percentage,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("テスト結果の保存に失敗しました");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("テスト結果の保存中にエラーが発生しました:", error);
+      return null;
+    }
+  };
+
+  // handleNext関数を修正
   const handleNext = () => {
     if (currentQuestion < tests.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -102,22 +166,22 @@ export function TestSession({ tests, category }: TestSessionProps) {
 
         <div className="mb-8 text-center">
           <div className="text-5xl font-bold mb-2">
-            {results.correct} / {results.total}
+            {results?.correct} / {results?.total}
           </div>
           <div className="text-xl text-gray-600">
-            正答率: {results.percentage}%
+            正答率: {results?.percentage}%
           </div>
 
           <div className="w-full bg-gray-100 rounded-full h-4 mt-6">
             <div
               className={`h-4 rounded-full ${
-                results.percentage >= 80
+                results?.percentage >= 80
                   ? "bg-green-500"
-                  : results.percentage >= 60
+                  : results?.percentage >= 60
                   ? "bg-yellow-500"
                   : "bg-red-500"
               }`}
-              style={{ width: `${results.percentage}%` }}
+              style={{ width: `${results?.percentage}%` }}
             ></div>
           </div>
         </div>
@@ -171,7 +235,28 @@ export function TestSession({ tests, category }: TestSessionProps) {
           ))}
         </div>
 
-        <div className="flex justify-between">
+        {/* ログインしていない場合はログインを促すメッセージを表示 */}
+        {!session?.user && (
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+            <div className="flex items-start">
+              <BiLogIn className="text-blue-600 text-xl mt-0.5 mr-3 flex-shrink-0" />
+              <div>
+                <p className="text-blue-700">
+                  テスト結果を保存してあなたの学習進捗を記録するには、ログインしてください。
+                </p>
+                <Link
+                  href={`/auth/signin?callbackUrl=/test/category/${category.id}`}
+                  className="mt-2 inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700"
+                >
+                  ログインする
+                  <BiRightArrowAlt className="ml-1" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex justify-between mt-8">
           <Link
             href="/test"
             className="inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"

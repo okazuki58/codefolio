@@ -48,6 +48,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  testResults   TestResult[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -58,4 +59,21 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model TestResult {
+  id         String   @id @default(cuid())
+  userId     String
+  categoryId String
+  score      Int      // 正解数
+  total      Int      // 問題総数
+  percentage Int      // 正答率
+  createdAt  DateTime @default(now())
+  
+  // リレーション
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // インデックス（検索を高速化）
+  @@index([userId])
+  @@index([categoryId])
 }
