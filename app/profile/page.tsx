@@ -1,16 +1,9 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  BiCog,
-  BiGitBranch,
-  BiUser,
-  BiBookOpen,
-  BiCode,
-  BiCheckCircle,
-} from "react-icons/bi";
-import { TestResults } from "./components/TestResults";
+import { ProfileCard } from "./components/ProfileCard";
+import { LearningStatusSection } from "./components/LearningStatusSection";
+import { SkillsCard } from "./components/SkillsCard";
+import { AccountInfoCard } from "./components/AccountInfoCard";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -28,124 +21,14 @@ export default async function ProfilePage() {
             マイプロフィール
           </h1>
 
-          {/* プロフィールカード */}
-          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden mb-6">
-            <div className="p-6 flex flex-col sm:flex-row items-center gap-6">
-              <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-blue-50">
-                {session.user?.image ? (
-                  <Image
-                    src={session.user.image}
-                    alt={session.user.name || "プロフィール画像"}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                ) : (
-                  <div className="w-full h-full bg-blue-50 flex items-center justify-center">
-                    <BiUser className="text-3xl text-blue-400" />
-                  </div>
-                )}
-              </div>
+          <ProfileCard session={session} />
 
-              <div className="text-center sm:text-left flex-1">
-                <h2 className="text-xl font-bold text-gray-800">
-                  {session.user?.name || "ユーザー"}
-                </h2>
-                <p className="text-gray-500">{session.user?.email || ""}</p>
-                <div className="mt-2 flex items-center justify-center sm:justify-start gap-2">
-                  <span className="text-xs bg-blue-50 text-blue-600 px-3 py-1 rounded-full flex items-center">
-                    <BiGitBranch className="mr-1" />
-                    GitHub連携済み
-                  </span>
-                </div>
-              </div>
-
-              <Link
-                href="/settings"
-                className="flex items-center gap-1.5 text-gray-500 hover:text-gray-700 transition-colors px-3 py-1.5 rounded-lg border border-gray-100 hover:border-gray-200 text-sm"
-              >
-                <BiCog />
-                <span>設定</span>
-              </Link>
-            </div>
-          </div>
-
-          {/* 学習状況 */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-            <div className="col-span-1 lg:col-span-2">
-              <div className="bg-white rounded-xl border border-gray-100 h-full">
-                <div className="p-5 border-b border-gray-50">
-                  <h3 className="font-medium text-gray-800 flex items-center">
-                    <BiBookOpen className="mr-2 text-blue-500" />
-                    学習状況
-                  </h3>
-                </div>
-                <div className="p-6">
-                  <TestResults />
-                </div>
-              </div>
-            </div>
-
-            <div className="col-span-1">
-              <div className="bg-white rounded-xl border border-gray-100 h-full">
-                <div className="p-5 border-b border-gray-50">
-                  <h3 className="font-medium text-gray-800 flex items-center">
-                    <BiCode className="mr-2 text-blue-500" />
-                    スキル
-                  </h3>
-                </div>
-                <div className="p-6">
-                  <div className="space-y-4">
-                    <div className="text-sm text-gray-500">
-                      まだスキルが登録されていません
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      学習を完了するとスキルが追加されます
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <LearningStatusSection />
+            <SkillsCard />
           </div>
 
-          {/* アカウント情報 */}
-          <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-            <div className="p-5 border-b border-gray-50">
-              <h3 className="font-medium text-gray-800 flex items-center">
-                <BiUser className="mr-2 text-blue-500" />
-                アカウント情報
-              </h3>
-            </div>
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">名前</div>
-                  <div className="font-medium">{session.user?.name || "-"}</div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">
-                    メールアドレス
-                  </div>
-                  <div className="font-medium">
-                    {session.user?.email || "-"}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">
-                    アカウント連携
-                  </div>
-                  <div className="flex items-center">
-                    <BiCheckCircle className="text-green-500 mr-1.5" />
-                    <span>GitHub</span>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">登録日</div>
-                  <div className="font-medium">-</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <AccountInfoCard session={session} />
         </div>
       </div>
     </div>
