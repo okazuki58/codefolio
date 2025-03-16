@@ -1,4 +1,4 @@
-export type Blog = {
+export interface Blog {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -18,6 +18,7 @@ export type Blog = {
     publishedAt: string;
     revisedAt: string;
     name: string;
+    level?: string[];
   };
   tags?: string;
-};
+}

@@ -47,6 +47,71 @@ export default async function TestCategoriesPage() {
     });
   }
 
+  // levelフィールドに基づいてカテゴリをグループ分け
+  const basicCategories = categories.filter((category: Category) =>
+    category.level?.includes("基礎")
+  );
+
+  const advancedCategories = categories.filter((category: Category) =>
+    category.level?.includes("発展")
+  );
+
+  // 「基礎」も「発展」も含まないカテゴリー
+  const otherCategories = categories.filter(
+    (category: Category) =>
+      !category.level ||
+      (!category.level.includes("基礎") && !category.level.includes("発展"))
+  );
+
+  // カテゴリーカードをレンダリングする共通関数
+  const renderCategoryCard = (category: Category) => {
+    const testResult = completedTests[category.id];
+    const isCompleted = !!testResult;
+
+    return (
+      <Link
+        key={category.id}
+        href={`/test/category/${category.id}`}
+        className={`bg-white rounded-xl border ${
+          isCompleted
+            ? "border-green-200 hover:border-green-300 hover:bg-green-50/30"
+            : "border-gray-100 hover:border-blue-200 hover:bg-blue-50/30"
+        } p-6 transition-all duration-300 flex items-center group`}
+      >
+        <div
+          className={`p-3 rounded-full mr-4 ${
+            isCompleted
+              ? "bg-green-50 group-hover:bg-green-100"
+              : "bg-blue-50 group-hover:bg-blue-100"
+          } transition-colors`}
+        >
+          {isCompleted ? (
+            <BiTrophy className="text-green-600 text-xl" />
+          ) : (
+            <BiCheckCircle className="text-blue-600 text-xl" />
+          )}
+        </div>
+        <div className="flex-1">
+          <div className="flex justify-between items-start">
+            <h2 className="text-xl font-semibold text-gray-800">
+              {category.name}
+            </h2>
+            {isCompleted && (
+              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">
+                完了済み ({testResult.percentage}%)
+              </span>
+            )}
+          </div>
+          <p className="text-gray-600 mt-1">
+            {isCompleted
+              ? `スコア: ${testResult.score} • 再挑戦する`
+              : `${category.name}のテストを受ける`}
+          </p>
+        </div>
+      </Link>
+    );
+  };
+
   return (
     <div className="min-h-[calc(100vh-70px)] bg-gray-50 py-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -76,55 +141,39 @@ export default async function TestCategoriesPage() {
             </p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 gap-5">
-            {categories.map((category: Category) => {
-              // このカテゴリのテスト結果があるか確認
-              const testResult = completedTests[category.id];
-              const isCompleted = !!testResult;
+          <div className="space-y-10">
+            {basicCategories.length > 0 && (
+              <div>
+                <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-blue-500 pl-3">
+                  基礎
+                </h2>
+                <div className="grid md:grid-cols-2 gap-5">
+                  {basicCategories.map(renderCategoryCard)}
+                </div>
+              </div>
+            )}
 
-              return (
-                <Link
-                  key={category.id}
-                  href={`/test/category/${category.id}`}
-                  className={`bg-white rounded-xl border ${
-                    isCompleted
-                      ? "border-green-200 hover:border-green-300 hover:bg-green-50/30"
-                      : "border-gray-100 hover:border-blue-200 hover:bg-blue-50/30"
-                  } p-6 transition-all duration-300 flex items-center group`}
-                >
-                  <div
-                    className={`p-3 rounded-full mr-4 ${
-                      isCompleted
-                        ? "bg-green-50 group-hover:bg-green-100"
-                        : "bg-blue-50 group-hover:bg-blue-100"
-                    } transition-colors`}
-                  >
-                    {isCompleted ? (
-                      <BiTrophy className="text-green-600 text-xl" />
-                    ) : (
-                      <BiCheckCircle className="text-blue-600 text-xl" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <h2 className="text-xl font-semibold text-gray-800">
-                        {category.name}
-                      </h2>
-                      {isCompleted && (
-                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">
-                          完了済み ({testResult.percentage}%)
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-gray-600 mt-1">
-                      {isCompleted
-                        ? `スコア: ${testResult.score} • 再挑戦する`
-                        : `${category.name}のテストを受ける`}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
+            {advancedCategories.length > 0 && (
+              <div>
+                <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-purple-500 pl-3">
+                  発展
+                </h2>
+                <div className="grid md:grid-cols-2 gap-5">
+                  {advancedCategories.map(renderCategoryCard)}
+                </div>
+              </div>
+            )}
+
+            {otherCategories.length > 0 && (
+              <div>
+                <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-gray-400 pl-3">
+                  その他
+                </h2>
+                <div className="grid md:grid-cols-2 gap-5">
+                  {otherCategories.map(renderCategoryCard)}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
