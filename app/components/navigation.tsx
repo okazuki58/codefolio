@@ -56,7 +56,7 @@ export function Navigation({ session }: NavigationProps) {
       </Link>
 
       <Link
-        href="/practice"
+        href="/exams"
         className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
           isActive("/exams")
             ? "text-blue-600 bg-blue-50"

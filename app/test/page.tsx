@@ -113,25 +113,9 @@ export default async function TestCategoriesPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-70px)] bg-gray-50 py-12">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-            理解度チェックテスト
-          </h1>
-          <div className="max-w-2xl mx-auto bg-blue-50 p-6 rounded-lg border border-blue-100">
-            <p className="text-gray-700 leading-relaxed mb-3">
-              知識の定着には、学んだことを確認するプロセスが不可欠です。これらのテストは
-              <span className="text-blue-600 font-medium">
-                あなたの理解度を確認する機会
-              </span>
-              であり、点数自体が目的ではありません。
-            </p>
-            <p className="text-gray-700 leading-relaxed">
-              気軽にチャレンジして、自分の強みと改善点を発見しましょう。何度でも挑戦できます！
-            </p>
-          </div>
-        </div>
+    <div className="min-h-[calc(100vh-70px)] container mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">理解度チェックテスト</h1>
 
         {categories.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center max-w-md mx-auto border border-gray-100">

@@ -86,7 +86,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/practice"
+                  href="/exams"
                   className="text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   演習問題
