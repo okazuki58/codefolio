@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Session } from "next-auth";
-import { BiRightArrowAlt, BiCheckCircle } from "react-icons/bi";
+import { BiRightArrowAlt } from "react-icons/bi";
 
 interface CTASectionProps {
   session: Session | null;

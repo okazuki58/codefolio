@@ -148,6 +148,7 @@ export default async function ExamPage({ params }: ExamPageProps) {
       </div>
     );
   } catch (error) {
+    console.error("Failed to fetch exam:", error);
     notFound();
   }
 }

@@ -16,7 +16,7 @@ export default async function TestCategoriesPage() {
   const session = await auth();
 
   // ユーザーが完了したテストカテゴリのマップを作成
-  let completedTests: Record<
+  const completedTests: Record<
     string,
     { score: number; percentage: number; createdAt: Date }
   > = {};

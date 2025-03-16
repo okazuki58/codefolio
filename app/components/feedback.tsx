@@ -7,6 +7,7 @@ export default function Feedback() {
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const handleFeedback = (type: "positive" | "negative" | "message") => {
+    console.log(`Feedback received: ${type}`);
     // 実際の実装では、フィードバックをバックエンドに送信します
     setFeedbackSubmitted(true);
   };

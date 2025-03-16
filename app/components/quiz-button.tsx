@@ -1,4 +1,4 @@
-import { ReactNode, ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes } from "react";
 import Link from "next/link";
 
 interface QuizButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

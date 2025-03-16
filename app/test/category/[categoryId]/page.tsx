@@ -27,6 +27,7 @@ export async function generateMetadata({
       description: `${category.name}に関する理解度チェックテスト`,
     };
   } catch (error) {
+    console.error("Failed to generate metadata:", error);
     return {
       title: "テスト",
       description: "理解度チェックテスト",

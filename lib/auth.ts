@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
     error: "/auth/error",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       // ユーザーオブジェクトが存在するとき（通常はログイン時のみ）
       if (user) {
         token.id = user.id; // userのIDをトークンに保存

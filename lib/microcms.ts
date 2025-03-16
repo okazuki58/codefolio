@@ -1,4 +1,4 @@
-import { createClient } from "microcms-js-sdk";
+import { createClient, MicroCMSQueries } from "microcms-js-sdk";
 import { Blog, BlogsResponse } from "@/types/blogs";
 import { Category, Test } from "@/types/index";
 import { Exam, ExamResponse } from "@/types/exams";
@@ -30,7 +30,9 @@ export async function getBlogWithDraftKey(
   }
 }
 
-export async function getBlogs(queries?: any): Promise<BlogsResponse> {
+export async function getBlogs(
+  queries?: MicroCMSQueries
+): Promise<BlogsResponse> {
   try {
     const response = await client.get<BlogsResponse>({
       endpoint: "blogs",
@@ -44,7 +46,7 @@ export async function getBlogs(queries?: any): Promise<BlogsResponse> {
 }
 
 // Category related functions
-export async function getCategories(queries?: any) {
+export async function getCategories(queries?: MicroCMSQueries) {
   try {
     const response = await client.get<{ contents: Category[] }>({
       endpoint: "categories",
@@ -76,7 +78,10 @@ export async function getCategoryById(categoryId: string) {
 }
 
 // Test related functions
-export async function getTestsByCategory(categoryId: string, queries?: any) {
+export async function getTestsByCategory(
+  categoryId: string,
+  queries?: MicroCMSQueries
+) {
   try {
     const response = await client.get<{ contents: Test[] }>({
       endpoint: "tests",
@@ -95,7 +100,9 @@ export async function getTestsByCategory(categoryId: string, queries?: any) {
 }
 
 // Exam related functions
-export async function getExams(queries?: any): Promise<ExamResponse> {
+export async function getExams(
+  queries?: MicroCMSQueries
+): Promise<ExamResponse> {
   try {
     const response = await client.get<ExamResponse>({
       endpoint: "exams",
