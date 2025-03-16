@@ -1,0 +1,168 @@
+import Image from "next/image";
+import Link from "next/link";
+import { getExamBySlug } from "@/lib/microcms";
+import {
+  BiTime,
+  BiTag,
+  BiGitRepoForked,
+  BiLinkExternal,
+  BiChevronLeft,
+} from "react-icons/bi";
+import { notFound } from "next/navigation";
+
+interface ExamPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function ExamPage({ params }: ExamPageProps) {
+  const { slug } = params;
+
+  try {
+    const exam = await getExamBySlug(slug);
+
+    return (
+      <div className="container mx-auto px-0 md:px-4 py-6 md:py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-4 md:mb-8 px-4 md:px-0">
+            <Link
+              href="/exams"
+              className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+            >
+              <BiChevronLeft className="mr-1" /> 演習一覧に戻る
+            </Link>
+          </div>
+
+          {exam.imageUrl && (
+            <div className="relative h-48 md:h-72 w-full mb-4 md:mb-8 md:rounded-lg overflow-hidden shadow-sm">
+              <Image
+                src={exam.imageUrl}
+                alt={exam.title}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
+          )}
+
+          <div className="bg-white md:border md:border-gray-200 md:rounded-lg p-4 md:p-8 md:shadow-sm">
+            <div className="flex flex-wrap items-center gap-3 mb-4 md:mb-6">
+              <span
+                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  exam.difficulty[0] === "beginner"
+                    ? "bg-green-100 text-green-700"
+                    : exam.difficulty[0] === "intermediate"
+                    ? "bg-amber-100 text-amber-700"
+                    : "bg-rose-100 text-rose-700"
+                }`}
+              >
+                {exam.difficulty[0] === "beginner"
+                  ? "初級"
+                  : exam.difficulty[0] === "intermediate"
+                  ? "中級"
+                  : "上級"}
+              </span>
+              <div className="flex items-center text-gray-600">
+                <BiTime className="mr-1" />
+                <span>
+                  所要時間: 約{exam.estimatedTime || exam.estimatedTime}分
+                </span>
+              </div>
+            </div>
+
+            <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-gray-800">
+              {exam.title}
+            </h1>
+
+            <div className="prose max-w-none mb-6 md:mb-8">
+              <div
+                className="text-gray-700"
+                dangerouslySetInnerHTML={{ __html: exam.description }}
+              />
+            </div>
+
+            <div className="mb-6 md:mb-8">
+              <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
+                タグ
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {exam.tags.split(",").map((tag) => (
+                  <span
+                    key={tag}
+                    className="bg-gray-100 text-gray-700 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm md:border md:border-gray-200"
+                  >
+                    <BiTag className="inline mr-1" />
+                    {tag.trim()}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="mb-6 md:mb-8">
+              <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
+                リポジトリ情報
+              </h2>
+              <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
+                <p className="flex items-center mb-2 md:mb-3">
+                  <BiGitRepoForked className="mr-2 text-gray-600" />
+                  <span className="font-medium text-gray-800">
+                    {exam.repositoryName}
+                  </span>
+                </p>
+                <a
+                  href={exam.repositoryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700 flex items-center font-medium"
+                >
+                  リポジトリを開く
+                  <BiLinkExternal className="ml-1" />
+                </a>
+              </div>
+            </div>
+
+            <div className="mb-8 md:mb-10">
+              <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
+                課題
+              </h2>
+              <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
+                <ul className="space-y-2 md:space-y-3">
+                  {exam.issueNumbers.split(",").map((issueNumber) => (
+                    <li key={issueNumber} className="flex items-start">
+                      <span className="text-gray-400 mr-2">•</span>
+                      <a
+                        href={`${
+                          exam.repositoryUrl
+                        }/issues/${issueNumber.trim()}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-700"
+                      >
+                        Issue #{issueNumber.trim()} を確認する
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <Link
+                href={exam.repositoryUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-3.5 rounded font-medium text-base md:text-lg hover:bg-blue-700 transition-colors inline-flex items-center w-full md:w-auto justify-center"
+              >
+                演習に挑戦する <BiLinkExternal className="ml-1" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  } catch (error) {
+    notFound();
+  }
+}

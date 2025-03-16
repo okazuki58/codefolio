@@ -58,7 +58,7 @@ export function Navigation({ session }: NavigationProps) {
       <Link
         href="/practice"
         className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
-          isActive("/practice")
+          isActive("/exams")
             ? "text-blue-600 bg-blue-50"
             : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
         }`}
