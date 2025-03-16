@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import {
@@ -56,66 +56,80 @@ export function TestSession({ tests, category }: TestSessionProps) {
     setCorrectIndices(initialCorrectIndices);
   }, [tests]);
 
+  // 結果を計算（useCallbackでメモ化）
+  const calculateResults = useCallback(() => {
+    let correct = 0;
+    answers.forEach((answer, index) => {
+      if (answer === correctIndices[index]) {
+        correct++;
+      }
+    });
+    return {
+      correct,
+      total: tests.length,
+      percentage: Math.round((correct / tests.length) * 100),
+    };
+  }, [answers, correctIndices, tests.length]);
+
+  // テスト結果保存用関数（useCallbackでメモ化）
+  const saveTestResult = useCallback(
+    async (results: { correct: number; total: number; percentage: number }) => {
+      if (!session?.user) {
+        console.log(
+          "ユーザーがログインしていないため、テスト結果は保存されません"
+        );
+        return null;
+      }
+
+      try {
+        const response = await fetch("/api/test-results", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            userId: session.user.id,
+            categoryId: category.id,
+            score: results.correct,
+            total: results.total,
+            percentage: results.percentage,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("テスト結果の保存に失敗しました");
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error("テスト結果の保存中にエラーが発生しました:", error);
+        return null;
+      }
+    },
+    [session, category.id]
+  );
+
   // 結果が表示される時に一度だけ実行
   useEffect(() => {
     if (showResults && !results) {
       const calculatedResults = calculateResults();
       setResults(calculatedResults);
     }
-  }, [showResults]);
+  }, [showResults, results, calculateResults]);
 
   // 結果を保存する（ログイン時のみ）
   useEffect(() => {
     if (showResults && results && session?.user) {
       saveTestResult(results);
     }
-  }, [showResults, results, session]);
+  }, [showResults, results, session, saveTestResult]);
 
   // 回答を記録
   const handleAnswer = (answerIndex: number) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answerIndex;
     setAnswers(newAnswers);
-  };
-
-  // テスト結果保存用関数
-  const saveTestResult = async (results: {
-    correct: number;
-    total: number;
-    percentage: number;
-  }) => {
-    if (!session?.user) {
-      console.log(
-        "ユーザーがログインしていないため、テスト結果は保存されません"
-      );
-      return null;
-    }
-
-    try {
-      const response = await fetch("/api/test-results", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          userId: session.user.id,
-          categoryId: category.id,
-          score: results.correct,
-          total: results.total,
-          percentage: results.percentage,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("テスト結果の保存に失敗しました");
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("テスト結果の保存中にエラーが発生しました:", error);
-      return null;
-    }
   };
 
   // handleNext関数を修正
@@ -137,21 +151,6 @@ export function TestSession({ tests, category }: TestSessionProps) {
   // テスト開始
   const startTest = () => {
     setIsStarted(true);
-  };
-
-  // 結果を計算
-  const calculateResults = () => {
-    let correct = 0;
-    answers.forEach((answer, index) => {
-      if (answer === correctIndices[index]) {
-        correct++;
-      }
-    });
-    return {
-      correct,
-      total: tests.length,
-      percentage: Math.round((correct / tests.length) * 100),
-    };
   };
 
   // テスト結果表示
