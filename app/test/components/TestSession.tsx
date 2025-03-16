@@ -41,7 +41,7 @@ export function TestSession({ tests, category }: TestSessionProps) {
     const initialCorrectIndices: number[] = [];
 
     tests.forEach((test) => {
-      const options = test.answer_options.split(",");
+      const options = test.answerOptions.split(",");
       const correctOption = options[0]; // 最初が正解
 
       // 選択肢をシャッフル

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getExams } from "@/lib/microcms";
-import { BiTime, BiTag, BiChevronRight } from "react-icons/bi";
+import { BiTime, BiChevronRight } from "react-icons/bi";
 
 // メインページコンポーネント（デフォルトでサーバーコンポーネント）
 export default async function ExamsPage({
@@ -53,21 +53,6 @@ export default async function ExamsPage({
 
               <div className="p-5 flex-grow">
                 <div className="flex items-center gap-2 mb-3">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      exam.difficulty[0] === "beginner"
-                        ? "bg-green-100 text-green-700"
-                        : exam.difficulty[0] === "intermediate"
-                        ? "bg-amber-100 text-amber-700"
-                        : "bg-rose-100 text-rose-700"
-                    }`}
-                  >
-                    {exam.difficulty[0] === "beginner"
-                      ? "初級"
-                      : exam.difficulty[0] === "intermediate"
-                      ? "中級"
-                      : "上級"}
-                  </span>
                   <div className="flex items-center text-gray-600 text-xs">
                     <BiTime className="mr-1" />
                     <span>{exam.estimatedTime || exam.estimatedTime}分</span>

@@ -1,5 +1,5 @@
 import { getBlogs } from "@/lib/microcms";
-import { Blog } from "@/types/blogs";
+import { Blog } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { BiCalendar, BiRightArrowAlt } from "react-icons/bi";

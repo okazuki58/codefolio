@@ -81,7 +81,7 @@ export async function getTestsByCategory(categoryId: string, queries?: any) {
     const response = await client.get<{ contents: Test[] }>({
       endpoint: "tests",
       queries: {
-        filters: `blog_relation[equals]${categoryId}`,
+        filters: `category[equals]${categoryId}`,
         limit: 100,
         ...queries,
       },
