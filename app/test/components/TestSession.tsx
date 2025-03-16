@@ -63,6 +63,13 @@ export function TestSession({ tests, category }: TestSessionProps) {
     }
   };
 
+  // 前の問題へ
+  const handlePrevious = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  };
+
   // テスト開始
   const startTest = () => {
     setIsStarted(true);
@@ -287,16 +294,11 @@ export function TestSession({ tests, category }: TestSessionProps) {
         {shuffledOptions[currentQuestion].map((option, index) => (
           <button
             key={index}
-            onClick={() =>
-              answers[currentQuestion] === null && handleAnswer(index)
-            }
-            disabled={answers[currentQuestion] !== null}
+            onClick={() => handleAnswer(index)}
             className={`w-full text-left p-4 rounded-lg border transition-all ${
-              answers[currentQuestion] === null
-                ? "hover:border-blue-500 hover:bg-blue-50 cursor-pointer border-gray-200"
-                : answers[currentQuestion] === index
+              answers[currentQuestion] === index
                 ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 opacity-60"
+                : "hover:border-blue-500 hover:bg-blue-50 cursor-pointer border-gray-200"
             }`}
           >
             <div className="flex items-center">
@@ -309,19 +311,32 @@ export function TestSession({ tests, category }: TestSessionProps) {
         ))}
       </div>
 
-      <div className="flex justify-end">
-        <button
-          onClick={handleNext}
-          disabled={answers[currentQuestion] === null}
-          className={`inline-flex items-center justify-center px-6 py-3 rounded-full text-base font-medium text-white transition-colors ${
-            answers[currentQuestion] === null
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
-        >
-          {currentQuestion < tests.length - 1 ? "次へ" : "結果を見る"}
-          <BiRightArrowAlt className="ml-1" />
-        </button>
+      <div className="flex justify-between items-center">
+        <div>
+          {currentQuestion > 0 && (
+            <button
+              onClick={handlePrevious}
+              className="inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+            >
+              <BiArrowBack className="mr-1" />
+              前の問題
+            </button>
+          )}
+        </div>
+        <div>
+          <button
+            onClick={handleNext}
+            disabled={answers[currentQuestion] === null}
+            className={`inline-flex items-center justify-center px-6 py-3 rounded-full text-base font-medium text-white transition-colors ${
+              answers[currentQuestion] === null
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {currentQuestion < tests.length - 1 ? "次へ" : "結果を見る"}
+            <BiRightArrowAlt className="ml-1" />
+          </button>
+        </div>
       </div>
     </div>
   );
