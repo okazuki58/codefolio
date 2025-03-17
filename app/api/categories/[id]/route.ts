@@ -3,10 +3,11 @@ import { getCategoryById } from "@/lib/microcms";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const category = await getCategoryById(params.id);
+    const { id } = context.params;
+    const category = await getCategoryById(id);
 
     if (!category) {
       return NextResponse.json(
