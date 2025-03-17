@@ -11,12 +11,13 @@ import {
 import { notFound } from "next/navigation";
 
 interface ExamPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export default async function ExamPage({ params }: ExamPageProps) {
+export default async function ExamPage(props: ExamPageProps) {
+  const params = await props.params;
   const { slug } = params;
 
   try {
@@ -73,7 +74,7 @@ export default async function ExamPage({ params }: ExamPageProps) {
                 タグ
               </h2>
               <div className="flex flex-wrap gap-2">
-                {exam.tags.split(",").map((tag) => (
+                {exam.tags.split(",").map((tag: string) => (
                   <span
                     key={tag}
                     className="bg-gray-100 text-gray-700 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm md:border md:border-gray-200"
@@ -114,7 +115,7 @@ export default async function ExamPage({ params }: ExamPageProps) {
               </h2>
               <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
                 <ul className="space-y-2 md:space-y-3">
-                  {exam.issueNumbers.split(",").map((issueNumber) => (
+                  {exam.issueNumbers.split(",").map((issueNumber: string) => (
                     <li key={issueNumber} className="flex items-start">
                       <span className="text-gray-400 mr-2">•</span>
                       <a

@@ -1,5 +1,5 @@
 import { BiCalendar } from "react-icons/bi";
-import { Blog } from "@/types/blogs";
+import { Blog } from "@/types";
 import QuizButton from "@/app/components/quiz-button";
 
 interface BlogHeaderProps {

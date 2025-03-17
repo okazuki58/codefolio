@@ -4,9 +4,9 @@ import { notFound } from "next/navigation";
 import { TestSession } from "@/app/test/components/TestSession";
 
 interface CategoryTestsPageProps {
-  params: {
+  params: Promise<{
     categoryId: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({

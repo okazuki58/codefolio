@@ -1,7 +1,7 @@
 import { createClient, MicroCMSQueries } from "microcms-js-sdk";
-import { Blog, BlogsResponse } from "@/types/blogs";
+import { Blog, BlogResponse } from "@/types";
 import { Category, Test } from "@/types/index";
-import { Exam, ExamResponse } from "@/types/exams";
+import { Exam, ExamResponse } from "@/types";
 
 // Client setup
 export const client = createClient({
@@ -32,9 +32,9 @@ export async function getBlogWithDraftKey(
 
 export async function getBlogs(
   queries?: MicroCMSQueries
-): Promise<BlogsResponse> {
+): Promise<BlogResponse> {
   try {
-    const response = await client.get<BlogsResponse>({
+    const response = await client.get<BlogResponse>({
       endpoint: "blogs",
       queries,
     });

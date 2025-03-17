@@ -2,13 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { getExams } from "@/lib/microcms";
 import { BiTime, BiChevronRight } from "react-icons/bi";
+import { Exam } from "@/types";
 
 // メインページコンポーネント（デフォルトでサーバーコンポーネント）
-export default async function ExamsPage({
-  searchParams,
-}: {
-  searchParams: { page?: string };
-}) {
+export default async function ExamsPage(
+  props: {
+    searchParams: Promise<{ page?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const page = Number(searchParams.page) || 1;
   const limit = 9; // 1ページあたりの表示数
   const offset = (page - 1) * limit;
@@ -28,7 +30,7 @@ export default async function ExamsPage({
         <h1 className="text-3xl font-bold mb-8">演習課題一覧</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {exams.map((exam) => (
+          {exams.map((exam: Exam) => (
             <div
               key={exam.id}
               className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col transition-all duration-200 hover:shadow-lg shadow-sm"
