@@ -18,6 +18,7 @@ interface CategoryData {
 
 export default async function TestCategoriesPage() {
   const session = await auth();
+  console.log("session", session);
 
   // CMSからカテゴリデータのみ取得
   const { contents: categories } = await getCategories();
@@ -41,8 +42,7 @@ export default async function TestCategoriesPage() {
 
     // 結果をカテゴリIDごとに整理
     testResults.forEach((result) => {
-      // TODO: categoryIdフィールドがない場合は、データ構造に応じて適切なキーを使用
-      const categoryKey = result.id;
+      const categoryKey = result.categoryId;
 
       if (
         !completedTests[categoryKey] ||
@@ -85,33 +85,36 @@ export default async function TestCategoriesPage() {
           isCompleted
             ? "border-green-200 hover:border-green-300 hover:bg-green-50/30"
             : "border-gray-100 hover:border-blue-200 hover:bg-blue-50/30"
-        } p-6 transition-all duration-300 flex items-center group`}
+        } p-4 transition-all duration-300 flex items-center group w-full overflow-hidden`}
       >
         <div
-          className={`p-3 rounded-full mr-4 ${
+          className={`p-2.5 rounded-full mr-3 flex-shrink-0 ${
             isCompleted
               ? "bg-green-50 group-hover:bg-green-100"
               : "bg-blue-50 group-hover:bg-blue-100"
           } transition-colors`}
         >
           {isCompleted ? (
-            <BiTrophy className="text-green-600 text-xl" />
+            <BiTrophy className="text-green-600 text-lg" />
           ) : (
-            <BiCheckCircle className="text-blue-600 text-xl" />
+            <BiCheckCircle className="text-blue-600 text-lg" />
           )}
         </div>
-        <div className="flex-1">
-          <div className="flex justify-between items-start">
-            <h2 className="text-xl font-semibold text-gray-800">
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <div className="flex justify-between items-start gap-2">
+            <h2 className="text-lg font-semibold text-gray-800 truncate">
               {category.name}
             </h2>
             {isCompleted && (
-              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">
-                完了済み ({testResult.percentage}%)
+              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap flex-shrink-0">
+                <span className="md:hidden">完了</span>
+                <span className="hidden md:inline">
+                  完了済み ({testResult.percentage}%)
+                </span>
               </span>
             )}
           </div>
-          <p className="text-gray-600 mt-1">
+          <p className="text-sm text-gray-600 mt-1 truncate">
             {isCompleted
               ? `スコア: ${testResult.score} • 再挑戦する`
               : `${category.name}のテストを受ける`}
@@ -140,7 +143,7 @@ export default async function TestCategoriesPage() {
                 <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-blue-500 pl-3">
                   基礎
                 </h2>
-                <div className="grid md:grid-cols-2 gap-5">
+                <div className="grid md:grid-cols-2 gap-4">
                   {basicCategories.map((category) =>
                     renderCategoryCard(category as any)
                   )}
@@ -153,7 +156,7 @@ export default async function TestCategoriesPage() {
                 <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-purple-500 pl-3">
                   発展
                 </h2>
-                <div className="grid md:grid-cols-2 gap-5">
+                <div className="grid md:grid-cols-2 gap-4">
                   {advancedCategories.map((category) =>
                     renderCategoryCard(category as any)
                   )}
@@ -166,7 +169,7 @@ export default async function TestCategoriesPage() {
                 <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-gray-400 pl-3">
                   その他
                 </h2>
-                <div className="grid md:grid-cols-2 gap-5">
+                <div className="grid md:grid-cols-2 gap-4">
                   {otherCategories.map((category) =>
                     renderCategoryCard(category as any)
                   )}
