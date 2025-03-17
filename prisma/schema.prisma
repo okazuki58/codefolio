@@ -56,46 +56,29 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Category {
-  id          String     @id @default(cuid())
-  identifier  String     @unique // e.g. "niaiqqngw"
-  name        String
-  description String?
-  questions   Question[]
-  testResults TestResult[] // Link to existing TestResult model
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  
-  @@index([identifier])
-}
-
-model Question {
+model Test {
   id            String   @id @default(cuid())
   question      String
-  answerOptions Json     // Stored as a JSON array of strings
+  answerOptions String[]
   correctAnswer Int
-  categoryId    String
-  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category      String   // カテゴリのIDとして使用 (e.g. "niaiqqngw")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   
-  @@index([categoryId])
+  @@index([category])
 }
 
 model TestResult {
   id         String   @id @default(cuid())
   userId     String
-  categoryId String
-  score      Int      // 正解数
-  total      Int      // 問題総数
-  percentage Int      // 正答率
+  categoryId String   // カテゴリIDを追加
+  score      Int
+  total      Int
+  percentage Int
   createdAt  DateTime @default(now())
   
-  // リレーション
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  category   Category @relation(fields: [categoryId], references: [id])
   
-  // インデックス（検索を高速化）
   @@index([userId])
   @@index([categoryId])
 }

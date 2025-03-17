@@ -1,4 +1,5 @@
-import { getCategoryById, getTestsByCategory } from "@/lib/microcms";
+import { getCategoryById } from "@/lib/microcms";
+import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TestSession } from "@/app/test/components/TestSession";
@@ -43,16 +44,23 @@ export default async function CategoryTestsPage({
   console.log("Category page - received categoryId:", categoryId);
 
   try {
-    const testsResponse = await getTestsByCategory(categoryId);
+    // CMSからカテゴリ情報を取得
     const category = await getCategoryById(categoryId);
-
-    const tests = testsResponse.contents || [];
-    console.log("tests", tests);
 
     if (!category) {
       console.log("Category not found, redirecting to 404");
       return notFound();
     }
+
+    // DBからテストデータを取得
+    const tests = await prisma.test.findMany({
+      where: {
+        category: categoryId,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
 
     if (tests.length === 0) {
       return (

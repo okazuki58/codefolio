@@ -2,25 +2,20 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import { Test, Category } from "@/types";
+import { Category } from "@/types";
 import { TestIntro } from "./test/TestIntro";
 import { TestQuestions } from "./test/TestQuestions";
 import { TestResults } from "./test/TestResults";
 import { TestLoadingState } from "./test/TestLoadingState";
+import { TestData, TestResult } from "@/app/test/types";
 
-interface TestSessionProps {
-  tests: Test[];
+export function TestSession({
+  tests,
+  category,
+}: {
+  tests: TestData[];
   category: Category;
-}
-
-// 結果の型を定義
-interface TestResult {
-  correct: number;
-  total: number;
-  percentage: number;
-}
-
-export function TestSession({ tests, category }: TestSessionProps) {
+}) {
   const { data: session } = useSession();
   const [isStarted, setIsStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -32,13 +27,11 @@ export function TestSession({ tests, category }: TestSessionProps) {
   const [correctIndices, setCorrectIndices] = useState<number[]>([]);
   const [results, setResults] = useState<TestResult | null>(null);
 
-  // Fisher-Yatesシャッフルアルゴリズムを実装
+  // Fisher-Yatesシャッフルアルゴリズム
   const fisherYatesShuffle = useCallback(<T,>(array: T[]): T[] => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
-      // 0からiまでのランダムなインデックスを生成
       const j = Math.floor(Math.random() * (i + 1));
-      // 要素を交換
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
@@ -50,14 +43,16 @@ export function TestSession({ tests, category }: TestSessionProps) {
     const initialCorrectIndices: number[] = [];
 
     tests.forEach((test) => {
-      const options = test.answerOptions.split(",");
-      const correctOption = options[0]; // 最初が正解
+      // 配列の場合は各要素を取り出して文字列に変換
+      const options = Array.isArray(test.answerOptions)
+        ? test.answerOptions.map((opt) => String(opt))
+        : [];
 
-      // Fisher-Yatesアルゴリズムでシャッフル
-      const shuffled = fisherYatesShuffle(options);
+      const correctOption = options[test.correctAnswer];
+
+      // シャッフルして表示用の配列を生成
+      const shuffled = fisherYatesShuffle([...options]);
       initialShuffledOptions.push(shuffled);
-
-      // シャッフル後の正解のインデックス
       initialCorrectIndices.push(shuffled.indexOf(correctOption));
     });
 
@@ -65,7 +60,7 @@ export function TestSession({ tests, category }: TestSessionProps) {
     setCorrectIndices(initialCorrectIndices);
   }, [tests, fisherYatesShuffle]);
 
-  // 結果を計算（useCallbackでメモ化）
+  // 結果の計算
   const calculateResults = useCallback(() => {
     let correct = 0;
     answers.forEach((answer, index) => {
@@ -80,22 +75,18 @@ export function TestSession({ tests, category }: TestSessionProps) {
     };
   }, [answers, correctIndices, tests.length]);
 
-  // テスト結果保存用関数（useCallbackでメモ化）
+  // テスト結果保存
   const saveTestResult = useCallback(
-    async (results: { correct: number; total: number; percentage: number }) => {
+    async (results: TestResult) => {
       if (!session?.user) {
-        console.log(
-          "ユーザーがログインしていないため、テスト結果は保存されません"
-        );
+        console.log("ユーザーがログインしていないため、結果は保存されません");
         return null;
       }
 
       try {
         const response = await fetch("/api/test-results", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify({
             userId: session.user.id,
@@ -106,10 +97,7 @@ export function TestSession({ tests, category }: TestSessionProps) {
           }),
         });
 
-        if (!response.ok) {
-          throw new Error("テスト結果の保存に失敗しました");
-        }
-
+        if (!response.ok) throw new Error("テスト結果の保存に失敗しました");
         return await response.json();
       } catch (error) {
         console.error("テスト結果の保存中にエラーが発生しました:", error);
@@ -119,29 +107,28 @@ export function TestSession({ tests, category }: TestSessionProps) {
     [session, category.id]
   );
 
-  // 結果が表示される時に一度だけ実行
+  // 結果表示時の処理
   useEffect(() => {
     if (showResults && !results) {
-      const calculatedResults = calculateResults();
-      setResults(calculatedResults);
+      setResults(calculateResults());
     }
   }, [showResults, results, calculateResults]);
 
-  // 結果を保存する（ログイン時のみ）
+  // 結果保存
   useEffect(() => {
     if (showResults && results && session?.user) {
       saveTestResult(results);
     }
   }, [showResults, results, session, saveTestResult]);
 
-  // 回答を記録
+  // 回答の記録
   const handleAnswer = (answerIndex: number) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answerIndex;
     setAnswers(newAnswers);
   };
 
-  // handleNext関数を修正
+  // 次の問題へ
   const handleNext = () => {
     if (currentQuestion < tests.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
@@ -162,21 +149,18 @@ export function TestSession({ tests, category }: TestSessionProps) {
     setCurrentQuestion(0);
     setAnswers(Array(tests.length).fill(null));
     setShowResults(false);
+    setResults(null);
   };
 
   // テスト開始
-  const startTest = () => {
-    setIsStarted(true);
-  };
+  const startTest = () => setIsStarted(true);
 
-  // 問題が読み込まれていなければローディング表示
+  // 各状態に応じたコンポーネントの表示
   if (shuffledOptions.length === 0) {
     return <TestLoadingState />;
   }
 
-  // テスト結果表示
   if (showResults) {
-    const calculatedResults = calculateResults();
     return (
       <TestResults
         tests={tests}
@@ -184,14 +168,13 @@ export function TestSession({ tests, category }: TestSessionProps) {
         answers={answers}
         correctIndices={correctIndices}
         shuffledOptions={shuffledOptions}
-        results={calculatedResults}
+        results={calculateResults()}
         session={session}
         onRestart={restartTest}
       />
     );
   }
 
-  // テスト開始前の画面
   if (!isStarted) {
     return (
       <TestIntro
@@ -202,7 +185,6 @@ export function TestSession({ tests, category }: TestSessionProps) {
     );
   }
 
-  // テスト問題表示
   return (
     <TestQuestions
       currentQuestion={currentQuestion}

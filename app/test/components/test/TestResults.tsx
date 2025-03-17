@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Session } from "next-auth";
 import {
   BiArrowBack,
   BiCheckCircle,
@@ -7,22 +6,7 @@ import {
   BiRightArrowAlt,
   BiLogIn,
 } from "react-icons/bi";
-import { Test, Category } from "@/types";
-
-interface TestResultsProps {
-  tests: Test[];
-  category: Category;
-  answers: (number | null)[];
-  correctIndices: number[];
-  shuffledOptions: string[][];
-  results: {
-    correct: number;
-    total: number;
-    percentage: number;
-  };
-  session: Session | null;
-  onRestart: () => void;
-}
+import { TestResultsProps } from "@/app/test/types";
 
 export function TestResults({
   tests,
@@ -107,7 +91,7 @@ export function TestResults({
         ))}
       </div>
 
-      {!session?.user && (
+      {!session || !("user" in session) ? (
         <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
           <div className="flex items-start">
             <BiLogIn className="text-blue-600 text-xl mt-0.5 mr-3 flex-shrink-0" />
@@ -125,7 +109,7 @@ export function TestResults({
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
       <div className="flex justify-between mt-8">
         <Link

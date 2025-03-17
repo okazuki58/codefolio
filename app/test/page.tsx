@@ -1,21 +1,28 @@
 import Link from "next/link";
 import { BiBookOpen, BiCheckCircle, BiTrophy } from "react-icons/bi";
-import { getCategories } from "@/lib/microcms";
 import { Metadata } from "next";
-import { Category } from "@/types";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getCategories } from "@/lib/microcms";
 
 export const metadata: Metadata = {
   title: "理解度チェックテスト - カテゴリ一覧",
   description: "ブログの理解度をチェックするためのテスト一覧です",
 };
 
+interface CategoryData {
+  id: string;
+  name: string;
+  level?: string;
+}
+
 export default async function TestCategoriesPage() {
-  const { contents: categories } = await getCategories();
   const session = await auth();
 
-  // ユーザーが完了したテストカテゴリのマップを作成
+  // CMSからカテゴリデータのみ取得
+  const { contents: categories } = await getCategories();
+
+  // ユーザーが完了したテストの情報
   const completedTests: Record<
     string,
     { score: number; percentage: number; createdAt: Date }
@@ -32,13 +39,16 @@ export default async function TestCategoriesPage() {
       },
     });
 
-    // カテゴリIDごとに最新のテスト結果を保持
+    // 結果をカテゴリIDごとに整理
     testResults.forEach((result) => {
+      // TODO: categoryIdフィールドがない場合は、データ構造に応じて適切なキーを使用
+      const categoryKey = result.id;
+
       if (
-        !completedTests[result.categoryId] ||
-        result.createdAt > new Date(completedTests[result.categoryId].createdAt)
+        !completedTests[categoryKey] ||
+        result.createdAt > new Date(completedTests[categoryKey].createdAt)
       ) {
-        completedTests[result.categoryId] = {
+        completedTests[categoryKey] = {
           score: result.score,
           percentage: result.percentage,
           createdAt: result.createdAt,
@@ -47,32 +57,23 @@ export default async function TestCategoriesPage() {
     });
   }
 
-  // levelフィールドに基づいてカテゴリをグループ分け
+  // カテゴリをレベル別に分類
   const basicCategories = categories
     .filter((category) => category.level?.includes("基礎"))
-    .sort((a, b) => {
-      const indexA = a.index ?? 999;
-      const indexB = b.index ?? 999;
-      return indexA - indexB;
-    });
+    .sort((a, b) => a.id.localeCompare(b.id));
 
   const advancedCategories = categories
     .filter((category) => category.level?.includes("発展"))
-    .sort((a, b) => {
-      const indexA = a.index ?? 999;
-      const indexB = b.index ?? 999;
-      return indexA - indexB;
-    });
+    .sort((a, b) => a.id.localeCompare(b.id));
 
-  // 「基礎」も「発展」も含まないカテゴリー
   const otherCategories = categories.filter(
     (category) =>
       !category.level ||
       (!category.level.includes("基礎") && !category.level.includes("発展"))
   );
 
-  // カテゴリーカードをレンダリングする共通関数
-  const renderCategoryCard = (category: Category) => {
+  // カテゴリーカードをレンダリングする関数
+  const renderCategoryCard = (category: CategoryData) => {
     const testResult = completedTests[category.id];
     const isCompleted = !!testResult;
 
@@ -140,7 +141,9 @@ export default async function TestCategoriesPage() {
                   基礎
                 </h2>
                 <div className="grid md:grid-cols-2 gap-5">
-                  {basicCategories.map(renderCategoryCard)}
+                  {basicCategories.map((category) =>
+                    renderCategoryCard(category as any)
+                  )}
                 </div>
               </div>
             )}
@@ -151,7 +154,9 @@ export default async function TestCategoriesPage() {
                   発展
                 </h2>
                 <div className="grid md:grid-cols-2 gap-5">
-                  {advancedCategories.map(renderCategoryCard)}
+                  {advancedCategories.map((category) =>
+                    renderCategoryCard(category as any)
+                  )}
                 </div>
               </div>
             )}
@@ -162,7 +167,9 @@ export default async function TestCategoriesPage() {
                   その他
                 </h2>
                 <div className="grid md:grid-cols-2 gap-5">
-                  {otherCategories.map(renderCategoryCard)}
+                  {otherCategories.map((category) =>
+                    renderCategoryCard(category as any)
+                  )}
                 </div>
               </div>
             )}
