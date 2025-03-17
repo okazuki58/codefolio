@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 export interface TestData {
   id: string;
   question: string;
-  answerOptions: any;
+  answerOptions: string[];
   category: string;
   correctAnswer: number;
   createdAt: Date;

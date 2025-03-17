@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 interface CategoryData {
   id: string;
   name: string;
-  level?: string;
+  level?: string | string[];
 }
 
 export default async function TestCategoriesPage() {
@@ -145,7 +145,11 @@ export default async function TestCategoriesPage() {
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {basicCategories.map((category) =>
-                    renderCategoryCard(category as any)
+                    renderCategoryCard({
+                      id: category.id,
+                      name: category.name,
+                      level: category.level,
+                    })
                   )}
                 </div>
               </div>
@@ -158,7 +162,11 @@ export default async function TestCategoriesPage() {
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {advancedCategories.map((category) =>
-                    renderCategoryCard(category as any)
+                    renderCategoryCard({
+                      id: category.id,
+                      name: category.name,
+                      level: category.level,
+                    })
                   )}
                 </div>
               </div>
@@ -171,7 +179,11 @@ export default async function TestCategoriesPage() {
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
                   {otherCategories.map((category) =>
-                    renderCategoryCard(category as any)
+                    renderCategoryCard({
+                      id: category.id,
+                      name: category.name,
+                      level: category.level,
+                    })
                   )}
                 </div>
               </div>
