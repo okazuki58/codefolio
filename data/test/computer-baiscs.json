@@ -1,0 +1,102 @@
+[
+  {
+    "question": "コンピューターの基本的な構成要素に含まれないものはどれですか？",
+    "answerOptions": [
+      "オペレーティングシステム",
+      "入力装置",
+      "出力装置",
+      "中央処理装置"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "CPUの主要な構成要素として正しいものはどれですか？",
+    "answerOptions": [
+      "制御装置",
+      "ハードディスク",
+      "フラッシュメモリ",
+      "グラフィックカード"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "以下のうち、CPUの性能指標として適切でないものはどれですか？",
+    "answerOptions": [
+      "画面解像度",
+      "クロック周波数",
+      "コア数",
+      "キャッシュサイズ"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "メモリ（RAM）の特徴として正しいものはどれですか？",
+    "answerOptions": [
+      "揮発性：電源が切れると内容が消える",
+      "不揮発性：電源が切れても内容が保持される",
+      "アクセス速度がストレージより遅い",
+      "主に長期的なデータ保存に使用される"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "以下のストレージの中で、最も高速なものはどれですか？",
+    "answerOptions": ["SSD", "HDD", "USBメモリ", "クラウドストレージ"],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "OSの主な機能に含まれないものはどれですか？",
+    "answerOptions": [
+      "ウイルス作成",
+      "ハードウェア管理",
+      "ファイルシステム",
+      "ユーザーインターフェース"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "フォン・ノイマン型コンピューターの基本的な動作サイクルとして正しい順序はどれですか？",
+    "answerOptions": [
+      "フェッチ→デコード→実行→ストア",
+      "ストア→フェッチ→デコード→実行",
+      "デコード→フェッチ→実行→ストア",
+      "実行→フェッチ→デコード→ストア"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "以下のプログラミング言語のうち、一般的にコンパイル型言語に分類されるのはどれですか？",
+    "answerOptions": ["C++", "Python", "JavaScript", "Ruby"],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "コンピューターでのメモリ階層において、最も高速なものはどれですか？",
+    "answerOptions": [
+      "レジスタ",
+      "キャッシュメモリ",
+      "メインメモリ（RAM）",
+      "SSD"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  },
+  {
+    "question": "オペレーティングシステムのアーキテクチャにおいて、最も下層に位置するのはどれですか？",
+    "answerOptions": [
+      "ハードウェア層",
+      "アプリケーション層",
+      "オペレーティングシステム層",
+      "ドライバ層"
+    ],
+    "correctAnswer": 0,
+    "category": "mxsrgc0xq"
+  }
+]

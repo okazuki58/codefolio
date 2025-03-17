@@ -1,0 +1,107 @@
+[
+  {
+    "question": "Webの基本的な仕組みとして説明されているモデルは何ですか？",
+    "answerOptions": [
+      "クライアント・サーバーモデル",
+      "ピア・ツー・ピアモデル",
+      "分散型ネットワークモデル",
+      "マスター・スレーブモデル"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "HTMLの主な役割は何ですか？",
+    "answerOptions": [
+      "Webページの「骨組み」や「構造」を定義する",
+      "Webページの「見た目」を整える",
+      "Webページに「動き」や「対話性」を追加する",
+      "サーバーとのデータのやり取りを行う"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "CSSの主な役割は何ですか？",
+    "answerOptions": [
+      "Webページの「見た目」を整える",
+      "Webページの「骨組み」や「構造」を定義する",
+      "Webページに「動き」や「対話性」を追加する",
+      "データベースとの連携を行う"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "フロントエンド開発で使用される主な技術は何ですか？",
+    "answerOptions": [
+      "HTML、CSS、JavaScript",
+      "PHP、Python、Ruby",
+      "MySQL、PostgreSQL、MongoDB",
+      "Apache、Nginx、IIS"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "バックエンド開発の特徴として適切でないものはどれですか？",
+    "answerOptions": [
+      "ユーザーインターフェース（UI）の設計と実装",
+      "サーバーサイドプログラミング",
+      "データベース設計と操作",
+      "認証・認可の実装"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "Webサーバーの主な役割として含まれないものはどれですか？",
+    "answerOptions": [
+      "ユーザー体験（UX）の最適化",
+      "HTTPリクエストの処理",
+      "静的ファイルの配信",
+      "セキュリティの確保"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "以下のWebサーバーソフトウェアの中で、特に「リバースプロキシ、ロードバランサーとしても優れている」と記事で説明されているのはどれですか？",
+    "answerOptions": ["Nginx", "Apache HTTP Server", "Microsoft IIS", "Caddy"],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "URLのスキーム（プロトコル）が「https://」であることは何を意味しますか？",
+    "answerOptions": [
+      "暗号化された安全な接続を使用している",
+      "高速な接続を使用している",
+      "ローカルファイルにアクセスしている",
+      "圧縮されたデータを送受信している"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "URLの構造において、「example.com」の部分は何と呼ばれますか？",
+    "answerOptions": [
+      "ホスト名（ドメイン名）",
+      "パス",
+      "クエリパラメータ",
+      "フラグメント識別子"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  },
+  {
+    "question": "Webはいつごろどのような人物によって考案されましたか？",
+    "answerOptions": [
+      "1989年にティム・バーナーズ＝リーによって",
+      "1995年にビル・ゲイツによって",
+      "2000年にマーク・ザッカーバーグによって",
+      "1975年にスティーブ・ジョブズによって"
+    ],
+    "correctAnswer": 0,
+    "category": "h900th9s8s4"
+  }
+]
