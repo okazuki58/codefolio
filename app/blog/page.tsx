@@ -26,16 +26,25 @@ export default async function BlogListPage({
 
   const totalPages = Math.ceil((totalCount || 0) / limit);
 
-  // カテゴリのlevelフィールドに基づいてブログを分類
-  const basicBlogs = blogs.filter((blog: Blog) =>
-    blog.category?.level?.includes("基礎")
-  );
+  // Blogとして型アサーションを使用
+  const basicBlogs = blogs
+    .filter((blog: Blog) => blog.category?.level?.includes("基礎"))
+    .sort((a: Blog, b: Blog) => {
+      // indexがない場合は大きな値を設定
+      const indexA = a.category?.index ?? 999;
+      const indexB = b.category?.index ?? 999;
+      return indexA - indexB;
+    });
 
-  const advancedBlogs = blogs.filter((blog: Blog) =>
-    blog.category?.level?.includes("発展")
-  );
+  const advancedBlogs = blogs
+    .filter((blog: Blog) => blog.category?.level?.includes("発展"))
+    .sort((a: Blog, b: Blog) => {
+      const indexA = a.category?.index ?? 999;
+      const indexB = b.category?.index ?? 999;
+      return indexA - indexB;
+    });
 
-  // 「基礎」も「発展」も含まないブログ
+  // その他のブログ
   const otherBlogs = blogs.filter(
     (blog: Blog) =>
       !blog.category?.level ||
@@ -82,7 +91,7 @@ export default async function BlogListPage({
           </div>
 
           {/* タグ */}
-          {blog.tags && (
+          {/* {blog.tags && (
             <div className="flex flex-wrap gap-1 mb-2">
               {blog.tags.split(",").map((tag) => (
                 <span
@@ -93,7 +102,7 @@ export default async function BlogListPage({
                 </span>
               ))}
             </div>
-          )}
+          )} */}
 
           {/* タイトル */}
           <h2 className="text-lg font-bold mb-2 line-clamp-2">{blog.title}</h2>

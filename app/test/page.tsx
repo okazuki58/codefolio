@@ -48,17 +48,25 @@ export default async function TestCategoriesPage() {
   }
 
   // levelフィールドに基づいてカテゴリをグループ分け
-  const basicCategories = categories.filter((category: Category) =>
-    category.level?.includes("基礎")
-  );
+  const basicCategories = categories
+    .filter((category) => category.level?.includes("基礎"))
+    .sort((a, b) => {
+      const indexA = a.index ?? 999;
+      const indexB = b.index ?? 999;
+      return indexA - indexB;
+    });
 
-  const advancedCategories = categories.filter((category: Category) =>
-    category.level?.includes("発展")
-  );
+  const advancedCategories = categories
+    .filter((category) => category.level?.includes("発展"))
+    .sort((a, b) => {
+      const indexA = a.index ?? 999;
+      const indexB = b.index ?? 999;
+      return indexA - indexB;
+    });
 
   // 「基礎」も「発展」も含まないカテゴリー
   const otherCategories = categories.filter(
-    (category: Category) =>
+    (category) =>
       !category.level ||
       (!category.level.includes("基礎") && !category.level.includes("発展"))
   );

@@ -17,6 +17,7 @@ export interface MicroCMSResponse<T> {
 export interface Category extends MicroCMSContent {
   name: string;
   level: string[]; // 配列に修正
+  index: number;
 }
 
 // メディア

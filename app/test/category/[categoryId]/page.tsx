@@ -47,6 +47,7 @@ export default async function CategoryTestsPage({
     const category = await getCategoryById(categoryId);
 
     const tests = testsResponse.contents || [];
+    console.log("tests", tests);
 
     if (!category) {
       console.log("Category not found, redirecting to 404");
