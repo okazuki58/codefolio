@@ -1,0 +1,112 @@
+[
+  {
+    "question": "レビュー依頼前のセルフレビューが重要な理由として、適切なものはどれですか？",
+    "answerOptions": [
+      "バグを早期に発見できる",
+      "デプロイの速度が向上する",
+      "先輩エンジニアの時間を節約できる",
+      "コードの実行速度が向上する"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "Gitフローの説明として正しいものはどれですか？",
+    "answerOptions": [
+      "チームでGitを使う際の作業手順やルール",
+      "Gitのインストール方法と初期設定の手順",
+      "Gitのバージョンアップグレードの流れ",
+      "Gitコマンドの実行速度を向上させる技術"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "「ブランチを切る」とはどういう意味ですか？",
+    "answerOptions": [
+      "既存のコードベースから新しい作業用の分岐を作成すること",
+      "不要になったブランチを削除すること",
+      "ブランチ間の接続を切断すること",
+      "古いブランチの履歴を短縮すること"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "新機能の開発を始める前に、developブランチを最新にする理由として最も適切なものはどれですか？",
+    "answerOptions": [
+      "コンフリクト（コードの衝突）の発生を減らすため",
+      "Gitのバージョン管理システムを効率化するため",
+      "プルリクエストの承認を早めるため",
+      "コードのコンパイル時間を短縮するため"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "新規ブランチを作成する正しい手順として、適切な順序はどれですか？",
+    "answerOptions": [
+      "git checkout develop → git pull → git checkout -b feature/新機能",
+      "git pull → git checkout develop → git checkout -b feature/新機能",
+      "git checkout -b feature/新機能 → git checkout develop → git pull",
+      "git checkout develop → git checkout -b feature/新機能 → git pull"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "セルフレビューのチェックポイントとして含まれるものはどれですか？",
+    "answerOptions": [
+      "変数名や関数名の分かりやすさ",
+      "コードのコンパイル時間",
+      "プログラミング言語のバージョン",
+      "チームメンバーの人数"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "AIを活用したセルフレビューの方法として説明されているのはどれですか？",
+    "answerOptions": [
+      "developブランチとの差分を出力し、AIにレビューを依頼する",
+      "コードの実行速度をAIで自動的に最適化する",
+      "AIがバグを自動的に修正する",
+      "AIが自動的にプルリクエストを作成する"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "GitHubなどのリモートリポジトリの役割として正しいものはどれですか？",
+    "answerOptions": [
+      "チーム間のコード共有",
+      "コードの自動的なバグ修正",
+      "プログラミング言語の自動変換",
+      "コンパイラの提供"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "Gitでブランチを切るメリットとして適切なものはどれですか？",
+    "answerOptions": [
+      "メインの開発を妨げずに新機能を開発できる",
+      "コードのコンパイル時間を短縮できる",
+      "プログラミング言語を自動的に変換できる",
+      "サーバーの容量を節約できる"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  },
+  {
+    "question": "記事で説明されている「できるエンジニア」と「伸びるエンジニア」の差は何ですか？",
+    "answerOptions": [
+      "小さな習慣の積み重ね",
+      "プログラミング言語の知識量",
+      "大学での専攻分野",
+      "英語力の差"
+    ],
+    "correctAnswer": 0,
+    "category": "38wroy_iy"
+  }
+]

@@ -33,7 +33,7 @@ export default async function ExamsPage(
           {exams.map((exam: Exam) => (
             <div
               key={exam.id}
-              className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col transition-all duration-200 hover:shadow-lg shadow-sm"
+              className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-300"
             >
               {exam.imageUrl ? (
                 <div className="relative h-48 w-full">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BiChevronDown } from "react-icons/bi";
 
 interface BlogTableOfContentsProps {
   items: {
@@ -28,13 +29,13 @@ export default function BlogTableOfContents({
       .map((item) => document.getElementById(item.id))
       .filter(Boolean) as HTMLElement[];
 
+    if (headingElements.length === 0) return;
+
     // IntersectionObserverのコールバック関数
     const callback: IntersectionObserverCallback = (entries) => {
       // 画面内に入った要素を抽出
       const visibleHeadings = entries
-        .filter(
-          (entry) => entry.isIntersecting && entry.intersectionRatio >= 0.5
-        )
+        .filter((entry) => entry.isIntersecting)
         .map((entry) => entry.target)
         .sort(
           (a, b) =>
@@ -50,27 +51,33 @@ export default function BlogTableOfContents({
 
     // IntersectionObserverの設定
     const observer = new IntersectionObserver(callback, {
-      rootMargin: "-100px 0px -50% 0px",
-      threshold: [0.5, 1.0],
+      rootMargin: "-80px 0px -40% 0px",
+      threshold: 0.1,
     });
 
     // 見出し要素の監視を開始
     headingElements.forEach((element) => observer.observe(element));
+
+    // 初期状態でアクティブな項目を設定（最初の要素）
+    if (headingElements.length > 0 && !activeId) {
+      setActiveId(headingElements[0].id);
+    }
 
     // クリーンアップ関数
     return () => {
       headingElements.forEach((element) => observer.unobserve(element));
       observer.disconnect();
     };
-  }, [items]);
+  }, [items, activeId]);
 
   return (
     <>
       {/* Mobile Table of Contents Toggle */}
       <div className="lg:hidden">
         <details className="bg-gray-50 rounded p-4 w-full">
-          <summary className="font-bold text-gray-800 cursor-pointer">
-            目次を表示
+          <summary className="font-bold text-gray-800 cursor-pointer flex items-center justify-between">
+            <span>目次を表示</span>
+            <BiChevronDown className="text-xl" />
           </summary>
           <nav className="flex flex-col space-y-4 mt-4">
             {items.map((item) => (
@@ -78,7 +85,7 @@ export default function BlogTableOfContents({
                 key={item.id}
                 href={`#${item.id}`}
                 onClick={() => handleLinkClick(item.id)}
-                className={`text-sm ${
+                className={`text-sm transition-colors ${
                   activeId === item.id
                     ? "text-blue-600 font-medium"
                     : "text-gray-500"
@@ -101,10 +108,10 @@ export default function BlogTableOfContents({
               key={item.id}
               href={`#${item.id}`}
               onClick={() => handleLinkClick(item.id)}
-              className={`text-sm transition-colors duration-200 ${
+              className={`text-sm transition-colors ${
                 activeId === item.id
                   ? "text-blue-600 font-medium"
-                  : "text-gray-500"
+                  : "text-gray-500 hover:text-gray-700"
               }`}
             >
               {item.title}
