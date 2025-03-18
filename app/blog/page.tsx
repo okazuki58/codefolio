@@ -57,7 +57,7 @@ export default async function BlogListPage({
       <Link
         href={`/blog/${blog.id}`}
         key={blog.id}
-        className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-300"
+        className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-all duration-300 transform hover:-translate-y-3 hover:shadow-lg"
       >
         <div className="relative w-full aspect-[3/2]">
           {blog.eyecatch ? (

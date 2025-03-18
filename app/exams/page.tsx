@@ -5,11 +5,9 @@ import { BiTime, BiChevronRight } from "react-icons/bi";
 import { Exam } from "@/types";
 
 // メインページコンポーネント（デフォルトでサーバーコンポーネント）
-export default async function ExamsPage(
-  props: {
-    searchParams: Promise<{ page?: string }>;
-  }
-) {
+export default async function ExamsPage(props: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const searchParams = await props.searchParams;
   const page = Number(searchParams.page) || 1;
   const limit = 9; // 1ページあたりの表示数
@@ -33,7 +31,7 @@ export default async function ExamsPage(
           {exams.map((exam: Exam) => (
             <div
               key={exam.id}
-              className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-300"
+              className="bg-white border border-gray-200 rounded-lg overflow-hidden flex flex-col hover:shadow-lg transition-all duration-300 transform hover:-translate-y-3"
             >
               {exam.imageUrl ? (
                 <div className="relative h-48 w-full">

@@ -86,50 +86,64 @@ export default async function TestCategoriesPage() {
   const renderCategoryCard = (category: CategoryData) => {
     const testResult = completedTests[category.id];
     const isCompleted = !!testResult;
+    const percentage = testResult?.percentage || 0;
 
     return (
       <Link
         key={category.id}
         href={`/test/category/${category.id}`}
-        className={`bg-white rounded-xl border ${
+        className={`bg-white rounded-xl border shadow-sm ${
           isCompleted
-            ? "border-green-200 hover:border-green-300 hover:bg-green-50/30"
-            : "border-gray-100 hover:border-blue-200 hover:bg-blue-50/30"
-        } p-4 transition-all duration-300 flex items-center group w-full overflow-hidden`}
+            ? "border-green-300 hover:border-green-400 hover:bg-green-50/50"
+            : "border-blue-200 hover:border-blue-300 hover:bg-blue-50/50"
+        } p-5 transition-all duration-300 flex flex-col items-start group w-full overflow-hidden hover:shadow-lg transform hover:-translate-y-3`}
       >
-        <div
-          className={`p-2.5 rounded-full mr-3 flex-shrink-0 ${
-            isCompleted
-              ? "bg-green-50 group-hover:bg-green-100"
-              : "bg-blue-50 group-hover:bg-blue-100"
-          } transition-colors`}
-        >
-          {isCompleted ? (
-            <BiTrophy className="text-green-600 text-lg" />
-          ) : (
-            <BiCheckCircle className="text-blue-600 text-lg" />
-          )}
-        </div>
-        <div className="flex-1 min-w-0 overflow-hidden">
-          <div className="flex justify-between items-start gap-2">
-            <h2 className="text-lg font-semibold text-gray-800 truncate">
-              {category.name}
-            </h2>
-            {isCompleted && (
-              <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap flex-shrink-0">
-                <span className="md:hidden">完了</span>
-                <span className="hidden md:inline">
-                  完了済み ({testResult.percentage}%)
-                </span>
-              </span>
+        <div className="w-full flex items-center mb-3">
+          <div
+            className={`p-3 rounded-full mr-3 flex-shrink-0 ${
+              isCompleted
+                ? "bg-green-100 group-hover:bg-green-200"
+                : "bg-blue-100 group-hover:bg-blue-200"
+            } transition-colors`}
+          >
+            {isCompleted ? (
+              <BiTrophy className="text-green-600 text-xl" />
+            ) : (
+              <BiCheckCircle className="text-blue-600 text-xl" />
             )}
           </div>
-          <p className="text-sm text-gray-600 mt-1 truncate">
-            {isCompleted
-              ? `スコア: ${testResult.score} • 再挑戦する`
-              : `${category.name}のテストを受ける`}
-          </p>
+          <div className="flex-1 min-w-0 overflow-hidden">
+            <div className="flex justify-between items-start gap-2">
+              <h2 className="text-lg font-semibold text-gray-800 truncate">
+                {category.name}
+              </h2>
+              {isCompleted && (
+                <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium whitespace-nowrap flex-shrink-0 border border-green-200">
+                  <span className="md:hidden">完了</span>
+                  <span className="hidden md:inline">
+                    完了済み ({testResult.percentage}%)
+                  </span>
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-gray-600 mt-1 truncate font-medium">
+              {isCompleted
+                ? `スコア: ${testResult.score} • 再挑戦する`
+                : `${category.name}のテストを受ける`}
+            </p>
+          </div>
         </div>
+
+        {isCompleted && (
+          <div className="w-full mt-2">
+            <div className="w-full bg-gray-100 rounded-full h-2.5">
+              <div
+                className="bg-green-500 h-2.5 rounded-full transition-all duration-500"
+                style={{ width: `${percentage}%` }}
+              ></div>
+            </div>
+          </div>
+        )}
       </Link>
     );
   };
