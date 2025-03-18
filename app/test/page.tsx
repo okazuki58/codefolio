@@ -86,7 +86,6 @@ export default async function TestCategoriesPage() {
   const renderCategoryCard = (category: CategoryData) => {
     const testResult = completedTests[category.id];
     const isCompleted = !!testResult;
-    const percentage = testResult?.percentage || 0;
 
     return (
       <Link
