@@ -8,17 +8,17 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 interface PageProps {
-  params: {
+  params: Promise<{
     contentId: string;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     draftKey?: string;
-  };
+  }>;
 }
 
 export default async function Page({ params, searchParams }: PageProps) {
-  const { contentId } = params;
-  const { draftKey } = searchParams;
+  const { contentId } = await params;
+  const { draftKey } = await searchParams;
 
   if (!draftKey) {
     return notFound();

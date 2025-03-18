@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TestSession } from "@/app/test/components/TestSession";
+import Link from "next/link";
 
 interface CategoryTestsPageProps {
   params: Promise<{
@@ -74,12 +75,12 @@ export default async function CategoryTestsPage({
                 このカテゴリにはまだテストが登録されていません。
                 別のカテゴリを選択してください。
               </p>
-              <a
+              <Link
                 href="/test"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-full text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
               >
                 カテゴリ一覧に戻る
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -105,12 +106,12 @@ export default async function CategoryTestsPage({
               テストデータの取得中にエラーが発生しました。
               しばらく経ってから再度お試しください。
             </p>
-            <a
+            <Link
               href="/test"
               className="inline-flex items-center justify-center px-6 py-3 rounded-full text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
             >
               カテゴリ一覧に戻る
-            </a>
+            </Link>
           </div>
         </div>
       </div>
