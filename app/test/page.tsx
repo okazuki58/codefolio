@@ -60,11 +60,21 @@ export default async function TestCategoriesPage() {
   // カテゴリをレベル別に分類
   const basicCategories = categories
     .filter((category) => category.level?.includes("基礎"))
-    .sort((a, b) => a.id.localeCompare(b.id));
+    .sort((a, b) => {
+      // indexがない場合は大きな値を設定
+      const indexA = a.index ?? 999;
+      const indexB = b.index ?? 999;
+      return indexA - indexB;
+    });
 
   const advancedCategories = categories
     .filter((category) => category.level?.includes("発展"))
-    .sort((a, b) => a.id.localeCompare(b.id));
+    .sort((a, b) => {
+      // indexがない場合は大きな値を設定
+      const indexA = a.index ?? 999;
+      const indexB = b.index ?? 999;
+      return indexA - indexB;
+    });
 
   const otherCategories = categories.filter(
     (category) =>

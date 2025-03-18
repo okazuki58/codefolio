@@ -104,7 +104,7 @@ export default function BlogContent({ content, categoryId }: BlogContentProps) {
         className="prose prose-lg max-w-none leading-relaxed mb-10"
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
-      <QuizButton categoryId={categoryId} />
+      {categoryId && <QuizButton categoryId={categoryId} />}
       <Feedback />
     </div>
   );
