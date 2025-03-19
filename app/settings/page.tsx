@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BiLogOut, BiTrash, BiArrowBack } from "react-icons/bi";
+import SubscriptionSettings from "./components/SubscriptionSettings";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -16,6 +17,10 @@ export default async function SettingsPage() {
       <div className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold mb-8">アカウント設定</h1>
+
+          <div className="mb-8">
+            <SubscriptionSettings />
+          </div>
 
           <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
             <div className="p-6">
