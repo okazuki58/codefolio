@@ -41,6 +41,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  isPaidMember  Boolean   @default(false)
+  membershipExpiresAt DateTime?
   accounts      Account[]
   sessions      Session[]
   testResults   TestResult[]

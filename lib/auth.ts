@@ -21,18 +21,32 @@ export const authOptions: NextAuthOptions = {
       // ユーザーオブジェクトが存在するとき（通常はログイン時のみ）
       if (user) {
         token.id = user.id; // userのIDをトークンに保存
+        token.isPaidMember = user.isPaidMember || false; // isPaidMemberをトークンに保存
+        token.membershipExpiresAt = user.membershipExpiresAt; // 有効期限をトークンに保存
       }
       return token;
     },
     async session({ session, token, user }) {
       // より堅牢なチェック
-      if (session?.user && token?.id) {
+      if (session?.user && token) {
         session.user.id = token.id as string;
+        session.user.isPaidMember = (token.isPaidMember as boolean) || false;
+        session.user.membershipExpiresAt = token.membershipExpiresAt as
+          | string
+          | null;
       } else {
         // DBアダプターを使用している場合はuserからIDを取得できる可能性がある
         if (user?.id) {
-          if (!session.user) session.user = { id: user.id };
-          else session.user.id = user.id;
+          if (!session.user)
+            session.user = {
+              id: user.id,
+              isPaidMember: user.isPaidMember || false,
+            };
+          else {
+            session.user.id = user.id;
+            session.user.isPaidMember = user.isPaidMember || false;
+            session.user.membershipExpiresAt = user.membershipExpiresAt;
+          }
         }
       }
       return session;

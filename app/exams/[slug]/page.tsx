@@ -117,19 +117,37 @@ export default async function ExamPage(props: ExamPageProps) {
                   リポジトリ情報（模範回答）
                 </h2>
                 <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
-                  <p className="flex items-center mb-2 md:mb-3">
-                    <BiGitRepoForked className="mr-2 text-gray-600" />
-                    <span className="font-medium text-gray-800">模範回答</span>
-                  </p>
-                  <a
-                    href={exam.repositoryUrlAnswer}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-700 flex items-center font-medium"
-                  >
-                    模範回答を開く
-                    <BiLinkExternal className="ml-1" />
-                  </a>
+                  {user?.user?.isPaidMember ? (
+                    <>
+                      <p className="flex items-center mb-2 md:mb-3">
+                        <BiGitRepoForked className="mr-2 text-gray-600" />
+                        <span className="font-medium text-gray-800">
+                          模範回答
+                        </span>
+                      </p>
+                      <a
+                        href={exam.repositoryUrlAnswer}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-700 flex items-center font-medium"
+                      >
+                        模範回答を開く
+                        <BiLinkExternal className="ml-1" />
+                      </a>
+                    </>
+                  ) : (
+                    <div className="text-center p-3">
+                      <p className="text-gray-700 mb-3">
+                        模範回答は有料会員のみが閲覧できます
+                      </p>
+                      <Link
+                        href="/pricing"
+                        className="bg-blue-600 text-white px-5 py-2 rounded font-medium hover:bg-blue-700 transition-colors inline-flex items-center justify-center"
+                      >
+                        会員プランを見る
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
