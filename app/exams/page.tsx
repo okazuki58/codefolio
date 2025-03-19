@@ -30,10 +30,10 @@ export default async function ExamsPage(props: {
         {/* 事前推奨事項セクション */}
         <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded-md">
           <h2 className="text-lg font-semibold text-blue-700 mb-2">
-            演習に取り組む前にやってほしいこと
+            演習に取り組む前に実施すべき準備
           </h2>
           <p className="text-gray-700 mb-3">
-            効果的な学習のために、以下の事前準備をおすすめします：
+            効果的に学習を進めるために、以下の事前準備をお勧めします：
           </p>
           <ul className="space-y-2 pl-5 list-disc">
             <li>
@@ -44,7 +44,8 @@ export default async function ExamsPage(props: {
                 Gitの基本操作（ブログ記事）
               </a>
               <span className="text-gray-600 ml-2">
-                - 演習の前提となる概念を解説しています
+                -
+                演習を始める前に、Gitの基本的な概念と操作方法を理解しましょう
               </span>
             </li>
             <li>
@@ -55,7 +56,7 @@ export default async function ExamsPage(props: {
                 Gitの理解度チェックテスト
               </a>
               <span className="text-gray-600 ml-2">
-                - 基礎知識の理解を確認できます
+                - 基礎知識がしっかり身についているか確認できます
               </span>
             </li>
           </ul>
