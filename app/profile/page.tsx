@@ -30,13 +30,6 @@ export default async function ProfilePage() {
           </div>
 
           <AccountInfoCard session={session} />
-
-          {/* GitHub組織招待コンポーネント - アカウント情報の下に配置 */}
-          {session.user.isPaidMember && (
-            <div className="mt-6">
-              <GitHubOrgInvite />
-            </div>
-          )}
         </div>
       </div>
     </div>

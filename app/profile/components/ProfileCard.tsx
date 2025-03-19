@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BiCog, BiGitBranch, BiUser } from "react-icons/bi";
+import { BiCog, BiGitBranch, BiUser, BiCrown } from "react-icons/bi";
 import { Session } from "next-auth";
 
 interface ProfileCardProps {
@@ -8,6 +8,8 @@ interface ProfileCardProps {
 }
 
 export function ProfileCard({ session }: ProfileCardProps) {
+  const isPaidMember = session.user?.isPaidMember || false;
+
   return (
     <div className="bg-white rounded-xl border border-gray-100 overflow-hidden mb-6">
       <div className="p-6 flex flex-col sm:flex-row items-center gap-6">
@@ -32,11 +34,18 @@ export function ProfileCard({ session }: ProfileCardProps) {
             {session.user?.name || "ユーザー"}
           </h2>
           <p className="text-gray-500">{session.user?.email || ""}</p>
-          <div className="mt-2 flex items-center justify-center sm:justify-start gap-2">
+          <div className="mt-2 flex items-center justify-center sm:justify-start gap-2 flex-wrap">
             <span className="text-xs bg-blue-50 text-blue-600 px-3 py-1 rounded-full flex items-center">
               <BiGitBranch className="mr-1" />
               GitHub連携済み
             </span>
+
+            {isPaidMember && (
+              <span className="text-xs bg-amber-50 text-amber-600 px-3 py-1 rounded-full flex items-center">
+                <BiCrown className="mr-1" />
+                Pro会員
+              </span>
+            )}
           </div>
         </div>
 

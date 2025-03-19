@@ -45,6 +45,7 @@ model User {
   membershipExpiresAt DateTime?
   stripeCustomerId   String?      // StripeのカスタマーID
   stripeSubscriptionId String?    // StripeのサブスクリプションID
+  isGitHubOrgMember  Boolean        @default(false)  // GitHub組織のメンバーかどうか
   accounts           Account[]
   sessions           Session[]
   testResults        TestResult[]
