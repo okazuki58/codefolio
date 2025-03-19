@@ -4,7 +4,11 @@ import Link from "next/link";
 import { BiLogOut, BiTrash, BiArrowBack } from "react-icons/bi";
 import SubscriptionSettings from "./components/SubscriptionSettings";
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const session = await auth();
 
   // 未ログインの場合はログインページにリダイレクト
@@ -12,10 +16,34 @@ export default async function SettingsPage() {
     redirect("/auth/signin");
   }
 
+  // チェックアウト成功またはメッセージパラメータがある場合の処理
+  const checkoutStatus = searchParams.checkout;
+  const message = searchParams.message;
+
   return (
     <div className="min-h-[calc(100vh-70px)] bg-gray-50 flex flex-col">
       <div className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          {/* チェックアウト成功メッセージ */}
+          {checkoutStatus === "success" && (
+            <div className="mb-6 p-4 border-l-4 border-green-400 bg-green-50 text-green-800">
+              <p className="font-medium">サブスクリプションが開始されました</p>
+              <p className="text-sm mt-1">
+                プレミアム機能がご利用いただけるようになりました。
+              </p>
+            </div>
+          )}
+
+          {/* サブスクリプション解約メッセージ */}
+          {message === "subscription-cancelled" && (
+            <div className="mb-6 p-4 border-l-4 border-amber-400 bg-amber-50 text-amber-800">
+              <p className="font-medium">サブスクリプションが解約されました</p>
+              <p className="text-sm mt-1">
+                有料会員特典は現在期間の終了をもって無効となります。
+              </p>
+            </div>
+          )}
+
           <h1 className="text-2xl font-bold mb-8">アカウント設定</h1>
 
           <div className="mb-8">

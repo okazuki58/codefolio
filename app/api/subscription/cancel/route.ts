@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { stripe } from "@/lib/stripe";
 import {
   getGitHubUserByProviderId,
   removeUserFromOrganization,
@@ -23,16 +24,38 @@ export async function POST() {
       );
     }
 
+    const userId = session.user.id;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    // Stripeでのサブスクリプションをキャンセルするためのロジック
+    if (user?.stripeSubscriptionId) {
+      try {
+        // Stripeサブスクリプションを解約
+        await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+        console.log(
+          `Stripeサブスクリプション ${user.stripeSubscriptionId} を解約しました`
+        );
+      } catch (stripeError) {
+        console.error("Stripe subscription cancellation error:", stripeError);
+        // Stripe関連のエラーはログに残すが処理は続行
+      }
+    }
+
     // ユーザーのisPaidMemberをfalseに更新
     await prisma.user.update({
-      where: { id: session.user.id },
-      data: { isPaidMember: false },
+      where: { id: userId },
+      data: {
+        isPaidMember: false,
+        // サブスクリプションIDは一旦保持（履歴のために）
+      },
     });
 
     // GitHubアカウント情報を取得
     const githubAccount = await prisma.account.findFirst({
       where: {
-        userId: session.user.id,
+        userId: userId,
         provider: "github",
       },
     });

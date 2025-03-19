@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { BiRightArrowAlt, BiInfoCircle } from "react-icons/bi";
+import { useSession } from "next-auth/react";
 
 interface PricingFeature {
   text: string;
@@ -16,6 +20,7 @@ interface PricingPlanProps {
   ctaText: string;
   ctaLink: string;
   popular?: boolean;
+  priceId?: string;
 }
 
 function PricingPlan({
@@ -27,7 +32,38 @@ function PricingPlan({
   ctaText,
   ctaLink,
   popular = false,
+  priceId,
 }: PricingPlanProps) {
+  const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 現在のプランかどうかチェック (プロプランの場合のみ)
+  const isCurrentPlan =
+    priceId && session?.user?.isPaidMember && title === "プロフェッショナル";
+
+  const handleClick = async (e: React.MouseEvent) => {
+    // Stripe決済が必要なプランの場合
+    if (priceId && !isCurrentPlan) {
+      e.preventDefault();
+      setIsLoading(true);
+
+      try {
+        const response = await fetch("/api/subscription/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ priceId }),
+        });
+
+        const { url } = await response.json();
+        if (url) window.location.href = url;
+      } catch (error) {
+        console.error("チェックアウトエラー:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <div className={`relative`}>
       {popular && (
@@ -88,19 +124,25 @@ function PricingPlan({
         <div className="mt-auto">
           <Link
             href={ctaLink}
+            onClick={handleClick}
             className={`
               w-full py-3 px-4 rounded-lg font-medium
               flex items-center justify-center
               transition-colors
               ${
-                popular
+                isCurrentPlan
+                  ? "bg-green-100 text-green-700" // 現在のプラン
+                  : popular
                   ? "bg-blue-600 hover:bg-blue-700 text-white"
                   : "bg-gray-100 hover:bg-gray-200 text-gray-800"
               }
+              ${isLoading ? "opacity-70 cursor-wait" : ""}
             `}
           >
-            {ctaText}
-            <BiRightArrowAlt className="ml-1" />
+            {isLoading ? "処理中..." : isCurrentPlan ? "現在のプラン" : ctaText}
+            {!isLoading && !isCurrentPlan && (
+              <BiRightArrowAlt className="ml-1" />
+            )}
           </Link>
         </div>
       </div>
@@ -109,6 +151,8 @@ function PricingPlan({
 }
 
 export function PricingSection() {
+  const { data: session } = useSession();
+
   const pricingPlans = [
     {
       title: "ベーシック",
@@ -125,7 +169,7 @@ export function PricingSection() {
         { text: "パーソナルコーチング", included: false },
       ],
       ctaText: "無料で始める",
-      ctaLink: "/register",
+      ctaLink: session ? "/dashboard" : "/register",
     },
     {
       title: "プロフェッショナル",
@@ -146,8 +190,9 @@ export function PricingSection() {
         },
       ],
       ctaText: "プロプランを選択",
-      ctaLink: "/register?plan=pro",
+      ctaLink: session ? "#upgrade" : "/register?plan=pro",
       popular: true,
+      priceId: "price_1R4SnjLXAsdrWMMSu7v9yj4c", // Stripeの価格ID
     },
     {
       title: "エンタープライズ",
