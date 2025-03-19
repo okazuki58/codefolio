@@ -114,7 +114,7 @@ export default async function ExamPage(props: ExamPageProps) {
             {exam.repositoryUrlAnswer && (
               <div className="mb-6 md:mb-8">
                 <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
-                  リポジトリ情報（模範回答）
+                  模範回答
                 </h2>
                 <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
                   {user?.user?.isPaidMember ? (
