@@ -1,14 +1,21 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { BiLogOut, BiTrash, BiArrowBack } from "react-icons/bi";
+import { BiLogOut, BiArrowBack } from "react-icons/bi";
 import SubscriptionSettings from "./components/SubscriptionSettings";
+import { DeleteAccountButton } from "./components/DeleteAccountButton";
+
+interface PageProps {
+  params: Promise<Record<string, string>>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
 export default async function SettingsPage({
+  params,
   searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+}: PageProps) {
+  await params;
+  const resolvedSearchParams = await searchParams;
   const session = await auth();
 
   // 未ログインの場合はログインページにリダイレクト
@@ -17,8 +24,8 @@ export default async function SettingsPage({
   }
 
   // チェックアウト成功またはメッセージパラメータがある場合の処理
-  const checkoutStatus = searchParams.checkout;
-  const message = searchParams.message;
+  const checkoutStatus = resolvedSearchParams.checkout;
+  const message = resolvedSearchParams.message;
 
   return (
     <div className="min-h-[calc(100vh-70px)] bg-gray-50 flex flex-col">
@@ -124,10 +131,7 @@ export default async function SettingsPage({
                           すべてのデータが削除されます
                         </p>
                       </div>
-                      <button className="px-4 py-2 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors flex items-center gap-2">
-                        <BiTrash className="text-lg" />
-                        <span>削除</span>
-                      </button>
+                      <DeleteAccountButton />
                     </div>
                   </div>
                 </div>

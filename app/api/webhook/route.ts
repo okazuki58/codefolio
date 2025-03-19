@@ -6,6 +6,7 @@ import {
   getGitHubUserByProviderId,
   inviteUserToOrganization,
 } from "@/lib/github";
+import Stripe from "stripe";
 
 // このエンドポイントはStripe Webhookからのリクエストを処理するため、CSRF保護を無効化
 export const dynamic = "force-dynamic";
@@ -63,19 +64,22 @@ export async function POST(req: NextRequest) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-  } catch (err: any) {
-    console.error(`Webhook signature verification failed: ${err.message}`);
-    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+    console.error(`Webhook signature verification failed: ${errorMessage}`);
+    return new NextResponse(`Webhook Error: ${errorMessage}`, { status: 400 });
   }
-
-  const session = event.data.object as any;
 
   // イベントの種類に応じて処理
   switch (event.type) {
     // チェックアウト完了時
     case "checkout.session.completed":
-      if (session.mode === "subscription" && session.subscription) {
-        const userId = session.client_reference_id;
+      const checkoutSession = event.data.object as Stripe.Checkout.Session;
+      if (
+        checkoutSession.mode === "subscription" &&
+        checkoutSession.subscription
+      ) {
+        const userId = checkoutSession.client_reference_id;
 
         if (userId) {
           // ユーザーを有料会員に更新
@@ -84,7 +88,12 @@ export async function POST(req: NextRequest) {
           // StripeのサブスクリプションIDをユーザーに紐付け
           await prisma.user.update({
             where: { id: userId },
-            data: { stripeSubscriptionId: session.subscription },
+            data: {
+              stripeSubscriptionId:
+                typeof checkoutSession.subscription === "string"
+                  ? checkoutSession.subscription
+                  : checkoutSession.subscription.id,
+            },
           });
 
           // GitHub組織への自動招待処理
@@ -130,8 +139,9 @@ export async function POST(req: NextRequest) {
 
     // サブスクリプション更新時
     case "customer.subscription.updated":
-      const subscriptionId = session.id;
-      const status = session.status;
+      const updatedSubscription = event.data.object as Stripe.Subscription;
+      const subscriptionId = updatedSubscription.id;
+      const status = updatedSubscription.status;
 
       // サブスクリプションステータスが「アクティブ」でない場合
       const isActiveSubscription = status === "active" || status === "trialing";
@@ -152,7 +162,8 @@ export async function POST(req: NextRequest) {
 
     // サブスクリプションキャンセル時
     case "customer.subscription.deleted":
-      const deletedSubscriptionId = session.id;
+      const deletedSubscription = event.data.object as Stripe.Subscription;
+      const deletedSubscriptionId = deletedSubscription.id;
 
       // このサブスクリプションに関連するユーザーを検索
       const subscribedUser = await prisma.user.findFirst({

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { BiGitBranch, BiLockAlt } from "react-icons/bi";
+import Link from "next/link";
 
 export default function GitHubOrgInvite() {
   const { data: session } = useSession();
@@ -27,12 +28,12 @@ export default function GitHubOrgInvite() {
           <p className="text-sm text-gray-600 mb-4">
             有料プランにアップグレードすると、開発リソースが含まれるGitHubリポジトリにアクセスできます。
           </p>
-          <a
+          <Link
             href="/pricing"
             className="inline-block bg-blue-600 text-white px-4 py-2 rounded font-medium hover:bg-blue-700 transition-colors"
           >
             プランを見る
-          </a>
+          </Link>
         </div>
       </div>
     );

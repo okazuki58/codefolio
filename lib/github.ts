@@ -5,10 +5,18 @@
 // GitHub API の基本URL
 const GITHUB_API_BASE = "https://api.github.com";
 
+// GitHub API リクエストオプションの型定義
+interface GitHubApiOptions extends RequestInit {
+  headers?: Record<string, string>;
+}
+
 /**
  * GitHub APIを呼び出す汎用関数
  */
-export async function callGitHubAPI(endpoint: string, options: any = {}) {
+export async function callGitHubAPI(
+  endpoint: string,
+  options: GitHubApiOptions = {}
+) {
   const token = process.env.GITHUB_API_TOKEN;
 
   if (!token) {
