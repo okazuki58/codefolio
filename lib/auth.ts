@@ -23,6 +23,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id; // userのIDをトークンに保存
         token.isPaidMember = user.isPaidMember || false; // isPaidMemberをトークンに保存
         token.membershipExpiresAt = user.membershipExpiresAt; // 有効期限をトークンに保存
+        token.isGitHubOrgMember = user.isGitHubOrgMember || false; // GitHub組織メンバーステータスをトークンに保存
       }
       return token;
     },
@@ -34,6 +35,8 @@ export const authOptions: NextAuthOptions = {
         session.user.membershipExpiresAt = token.membershipExpiresAt as
           | string
           | null;
+        session.user.isGitHubOrgMember =
+          (token.isGitHubOrgMember as boolean) || false;
       } else {
         // DBアダプターを使用している場合はuserからIDを取得できる可能性がある
         if (user?.id) {
@@ -41,11 +44,13 @@ export const authOptions: NextAuthOptions = {
             session.user = {
               id: user.id,
               isPaidMember: user.isPaidMember || false,
+              isGitHubOrgMember: user.isGitHubOrgMember || false,
             };
           else {
             session.user.id = user.id;
             session.user.isPaidMember = user.isPaidMember || false;
             session.user.membershipExpiresAt = user.membershipExpiresAt;
+            session.user.isGitHubOrgMember = user.isGitHubOrgMember || false;
           }
         }
       }

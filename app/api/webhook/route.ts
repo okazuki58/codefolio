@@ -87,6 +87,42 @@ export async function POST(req: NextRequest) {
             data: { stripeSubscriptionId: session.subscription },
           });
 
+          // GitHub組織への自動招待処理
+          try {
+            // GitHubアカウント情報を取得
+            const githubAccount = await prisma.account.findFirst({
+              where: {
+                userId: userId,
+                provider: "github",
+              },
+            });
+
+            if (githubAccount) {
+              // GitHubユーザー情報を取得
+              const githubUser = await getGitHubUserByProviderId(
+                githubAccount.providerAccountId
+              );
+
+              if (githubUser) {
+                // 組織に招待
+                await inviteUserToOrganization(githubUser.login);
+
+                // ユーザーのGitHub組織メンバーステータスを更新
+                await prisma.user.update({
+                  where: { id: userId },
+                  data: { isGitHubOrgMember: true },
+                });
+
+                console.log(
+                  `ユーザー ${userId} をGitHub組織に自動招待しました`
+                );
+              }
+            }
+          } catch (githubError) {
+            console.error("GitHub organization invitation error:", githubError);
+            // GitHub関連のエラーはログに残すが処理は続行
+          }
+
           console.log(`ユーザー ${userId} のサブスクリプションを開始しました`);
         }
       }

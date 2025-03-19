@@ -46,6 +46,13 @@ export function ProfileCard({ session }: ProfileCardProps) {
                 Pro会員
               </span>
             )}
+
+            {session.user?.isGitHubOrgMember && (
+              <span className="text-xs bg-purple-50 text-purple-600 px-3 py-1 rounded-full flex items-center">
+                <BiGitBranch className="mr-1" />
+                組織メンバー
+              </span>
+            )}
           </div>
         </div>
 

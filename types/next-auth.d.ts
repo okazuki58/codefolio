@@ -5,12 +5,14 @@ declare module "next-auth" {
     user: {
       id: string;
       isPaidMember: boolean;
+      isGitHubOrgMember?: boolean;
       membershipExpiresAt?: string | null;
     } & DefaultSession["user"];
   }
 
   interface User {
     isPaidMember?: boolean;
+    isGitHubOrgMember?: boolean;
     membershipExpiresAt?: string | null;
   }
 }

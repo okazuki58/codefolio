@@ -34,6 +34,17 @@ export function Navigation({ session }: NavigationProps) {
       </Link>
 
       <Link
+        href="/pricing"
+        className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
+          isActive("/pricing")
+            ? "text-blue-600 bg-blue-50"
+            : "text-gray-700 hover:text-blue-600 hover:bg-blue-50"
+        }`}
+      >
+        料金プラン
+      </Link>
+
+      <Link
         href="/blog"
         className={`px-3 py-2 text-sm font-medium rounded-md transition-colors hidden sm:block ${
           isActive("/blog")

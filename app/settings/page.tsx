@@ -31,6 +31,13 @@ export default async function SettingsPage({
               <p className="text-sm mt-1">
                 プレミアム機能がご利用いただけるようになりました。
               </p>
+              <p className="text-sm mt-2">
+                GitHub組織への招待メールが送信されました。メールの招待リンクから承認すると、
+                プライベートリポジトリへのアクセスが可能になります。
+              </p>
+              <p className="text-sm mt-1 italic">
+                ※招待メールが見つからない場合は、迷惑メールフォルダもご確認ください。
+              </p>
             </div>
           )}
 

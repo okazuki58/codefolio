@@ -4,7 +4,6 @@ import { ProfileCard } from "./components/ProfileCard";
 import { LearningStatusSection } from "./components/LearningStatusSection";
 import { SkillsCard } from "./components/SkillsCard";
 import { AccountInfoCard } from "./components/AccountInfoCard";
-import GitHubOrgInvite from "@/app/components/github-org-invite";
 
 export default async function ProfilePage() {
   const session = await auth();

@@ -43,15 +43,6 @@ export async function POST() {
       }
     }
 
-    // ユーザーのisPaidMemberをfalseに更新
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        isPaidMember: false,
-        // サブスクリプションIDは一旦保持（履歴のために）
-      },
-    });
-
     // GitHubアカウント情報を取得
     const githubAccount = await prisma.account.findFirst({
       where: {
@@ -60,24 +51,39 @@ export async function POST() {
       },
     });
 
+    // GitHubアカウントがある場合は組織から削除
     if (githubAccount) {
       try {
-        // GitHubユーザー情報を取得
-        const userData = await getGitHubUserByProviderId(
+        const githubUser = await getGitHubUserByProviderId(
           githubAccount.providerAccountId
         );
-        const githubUsername = userData.login;
 
-        if (githubUsername) {
-          // GitHub組織から削除
-          await removeUserFromOrganization(githubUsername);
-          console.log(`ユーザー ${githubUsername} を組織から削除しました`);
+        if (githubUser) {
+          // GitHubユーザーが存在する場合、組織から削除
+          await removeUserFromOrganization(githubUser.login);
+
+          // GitHub組織メンバーステータスを更新
+          await prisma.user.update({
+            where: { id: userId },
+            data: { isGitHubOrgMember: false },
+          });
+
+          console.log(`ユーザー ${userId} をGitHub組織から削除しました`);
         }
       } catch (githubError) {
         console.error("GitHub organization removal error:", githubError);
         // GitHub関連のエラーはログに残すが処理は続行
       }
     }
+
+    // ユーザーのisPaidMemberをfalseに更新
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        isPaidMember: false,
+        // サブスクリプションIDは一旦保持（履歴のために）
+      },
+    });
 
     return NextResponse.json({
       success: true,
