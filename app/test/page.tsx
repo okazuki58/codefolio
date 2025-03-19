@@ -18,7 +18,6 @@ interface CategoryData {
 
 export default async function TestCategoriesPage() {
   const session = await auth();
-  console.log("session", session);
 
   // CMSからカテゴリデータのみ取得
   const { contents: categories } = await getCategories();

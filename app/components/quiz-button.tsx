@@ -6,7 +6,6 @@ interface QuizButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function QuizButton({ categoryId }: QuizButtonProps) {
-  console.log(categoryId);
   const quizUrl = categoryId ? `/test/category/${categoryId}` : "/test";
 
   return (

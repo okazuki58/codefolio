@@ -42,8 +42,6 @@ export default async function CategoryTestsPage({
 }: CategoryTestsPageProps) {
   const { categoryId } = await params;
 
-  console.log("Category page - received categoryId:", categoryId);
-
   try {
     // CMSからカテゴリ情報を取得
     const category = await getCategoryById(categoryId);
