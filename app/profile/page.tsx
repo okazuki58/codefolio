@@ -4,6 +4,7 @@ import { ProfileCard } from "./components/ProfileCard";
 import { LearningStatusSection } from "./components/LearningStatusSection";
 import { SkillsCard } from "./components/SkillsCard";
 import { AccountInfoCard } from "./components/AccountInfoCard";
+import GitHubOrgInvite from "@/app/components/github-org-invite";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -29,6 +30,13 @@ export default async function ProfilePage() {
           </div>
 
           <AccountInfoCard session={session} />
+
+          {/* GitHub組織招待コンポーネント - アカウント情報の下に配置 */}
+          {session.user.isPaidMember && (
+            <div className="mt-6">
+              <GitHubOrgInvite />
+            </div>
+          )}
         </div>
       </div>
     </div>
