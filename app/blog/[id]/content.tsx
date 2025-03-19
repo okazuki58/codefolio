@@ -10,9 +10,14 @@ import { createRoot } from "react-dom/client";
 interface BlogContentProps {
   content: string;
   categoryId?: string;
+  contentId: string;
 }
 
-export default function BlogContent({ content, categoryId }: BlogContentProps) {
+export default function BlogContent({
+  content,
+  categoryId,
+  contentId,
+}: BlogContentProps) {
   const [processedContent, setProcessedContent] = useState(content);
 
   // コンテンツに構文ハイライトを追加する処理
@@ -105,7 +110,7 @@ export default function BlogContent({ content, categoryId }: BlogContentProps) {
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
       {categoryId && <QuizButton categoryId={categoryId} />}
-      <Feedback />
+      <Feedback contentId={contentId} />
     </div>
   );
 }

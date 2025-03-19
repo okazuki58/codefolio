@@ -64,6 +64,7 @@ export default async function BlogPage({
           <BlogContent
             content={modifiedHtml || blog.content}
             categoryId={blog.category?.id}
+            contentId={id}
           />
         </main>
       </div>
