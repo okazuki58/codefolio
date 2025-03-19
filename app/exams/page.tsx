@@ -27,6 +27,40 @@ export default async function ExamsPage(props: {
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">演習課題一覧</h1>
 
+        {/* 事前推奨事項セクション */}
+        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded-md">
+          <h2 className="text-lg font-semibold text-blue-700 mb-2">
+            演習に取り組む前にやってほしいこと
+          </h2>
+          <p className="text-gray-700 mb-3">
+            効果的な学習のために、以下の事前準備をおすすめします：
+          </p>
+          <ul className="space-y-2 pl-5 list-disc">
+            <li>
+              <a
+                href="http://localhost:3000/blog/5mayxcjqgdv"
+                className="text-blue-600 hover:underline font-medium"
+              >
+                Gitの基本操作（ブログ記事）
+              </a>
+              <span className="text-gray-600 ml-2">
+                - 演習の前提となる概念を解説しています
+              </span>
+            </li>
+            <li>
+              <a
+                href="http://localhost:3000/test/category/9fp3agyb3ahv"
+                className="text-blue-600 hover:underline font-medium"
+              >
+                Gitの理解度チェックテスト
+              </a>
+              <span className="text-gray-600 ml-2">
+                - 基礎知識の理解を確認できます
+              </span>
+            </li>
+          </ul>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {exams.map((exam: Exam) => (
             <div

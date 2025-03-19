@@ -1,0 +1,87 @@
+[
+  {
+    "question": "Gitの主な用途として最も適切なものはどれですか？",
+    "answerOptions": [
+      "バージョン管理ツール",
+      "テキストエディタ",
+      "プログラミング言語",
+      "ウェブホスティングサービス"
+    ],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "Gitの初期設定で必須の設定項目はどれですか？",
+    "answerOptions": [
+      "ユーザー名とメールアドレス",
+      "GitHubのアカウント情報",
+      "使用するプログラミング言語",
+      "プロジェクトの名前"
+    ],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "Gitリポジトリの種類として正しい組み合わせはどれですか？",
+    "answerOptions": [
+      "ローカルリポジトリとリモートリポジトリ",
+      "オンラインリポジトリとオフラインリポジトリ",
+      "プライベートリポジトリとパブリックリポジトリ",
+      "マスターリポジトリとスレーブリポジトリ"
+    ],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "GitHubからリポジトリをローカルにコピーする操作を何と呼びますか？",
+    "answerOptions": [
+      "クローン (clone)",
+      "フォーク (fork)",
+      "プル (pull)",
+      "フェッチ (fetch)"
+    ],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "新しい機能や修正を加える際、最初に行うべきGitコマンドはどれですか？",
+    "answerOptions": [
+      "git checkout -b <branch-name>",
+      "git add .",
+      "git commit -m \"message\"",
+      "git push"
+    ],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "変更したファイルをステージングエリアに追加するコマンドはどれですか？",
+    "answerOptions": ["git add", "git commit", "git push", "git stage"],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "ローカルでの変更をリモートリポジトリに反映させるコマンドはどれですか？",
+    "answerOptions": ["git push", "git pull", "git fetch", "git merge"],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "リモートリポジトリから最新の変更を取得してマージするコマンドはどれですか？",
+    "answerOptions": ["git pull", "git push", "git fetch", "git clone"],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "現在のリポジトリの状態を確認するコマンドはどれですか？",
+    "answerOptions": ["git status", "git log", "git diff", "git info"],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  },
+  {
+    "question": "別のブランチを現在のブランチに統合するコマンドはどれですか？",
+    "answerOptions": ["git merge", "git branch", "git checkout", "git rebase"],
+    "correctAnswer": 0,
+    "category": "9fp3agyb3ahv"
+  }
+]
