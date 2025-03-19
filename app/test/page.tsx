@@ -96,7 +96,7 @@ export default async function TestCategoriesPage() {
             : "border-blue-200 hover:border-blue-300 hover:bg-blue-50/50"
         } p-5 transition-all duration-300 flex flex-col items-start group w-full overflow-hidden hover:shadow-lg transform hover:-translate-y-3`}
       >
-        <div className="w-full flex items-center mb-3">
+        <div className="w-full flex items-center">
           <div
             className={`p-3 rounded-full mr-3 flex-shrink-0 ${
               isCompleted

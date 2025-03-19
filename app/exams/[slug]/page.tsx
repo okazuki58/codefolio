@@ -9,6 +9,7 @@ import {
   BiChevronLeft,
 } from "react-icons/bi";
 import { notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
 
 interface ExamPageProps {
   params: Promise<{
@@ -22,6 +23,7 @@ export default async function ExamPage(props: ExamPageProps) {
 
   try {
     const exam = await getExamBySlug(slug);
+    const user = await auth();
 
     return (
       <div className="container mx-auto px-0 md:px-4 py-6 md:py-12">
@@ -109,40 +111,79 @@ export default async function ExamPage(props: ExamPageProps) {
               </div>
             </div>
 
-            <div className="mb-8 md:mb-10">
-              <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
-                課題
-              </h2>
-              <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
-                <ul className="space-y-2 md:space-y-3">
-                  {exam.issueNumbers.split(",").map((issueNumber: string) => (
-                    <li key={issueNumber} className="flex items-start">
-                      <span className="text-gray-400 mr-2">•</span>
-                      <a
-                        href={`${
-                          exam.repositoryUrl
-                        }/issues/${issueNumber.trim()}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-700"
-                      >
-                        Issue #{issueNumber.trim()} を確認する
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+            {exam.repositoryUrlAnswer && (
+              <div className="mb-6 md:mb-8">
+                <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
+                  リポジトリ情報（模範回答）
+                </h2>
+                <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
+                  <p className="flex items-center mb-2 md:mb-3">
+                    <BiGitRepoForked className="mr-2 text-gray-600" />
+                    <span className="font-medium text-gray-800">模範回答</span>
+                  </p>
+                  <a
+                    href={exam.repositoryUrlAnswer}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-700 flex items-center font-medium"
+                  >
+                    模範回答を開く
+                    <BiLinkExternal className="ml-1" />
+                  </a>
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="flex justify-center">
-              <Link
-                href={exam.repositoryUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-3.5 rounded font-medium text-base md:text-lg hover:bg-blue-700 transition-colors inline-flex items-center w-full md:w-auto justify-center"
-              >
-                演習に挑戦する <BiLinkExternal className="ml-1" />
-              </Link>
+            {exam.issueNumbers && exam.issueNumbers.trim() !== "" && (
+              <div className="mb-8 md:mb-10">
+                <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
+                  課題
+                </h2>
+                <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
+                  <ul className="space-y-2 md:space-y-3">
+                    {exam.issueNumbers.split(",").map((issueNumber: string) => (
+                      <li key={issueNumber} className="flex items-start">
+                        <span className="text-gray-400 mr-2">•</span>
+                        <a
+                          href={`${
+                            exam.repositoryUrl
+                          }/issues/${issueNumber.trim()}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700"
+                        >
+                          Issue #{issueNumber.trim()} を確認する
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col items-center">
+              {user ? (
+                <Link
+                  href={exam.repositoryUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-3.5 rounded font-medium text-base md:text-lg hover:bg-blue-700 transition-colors inline-flex items-center w-full md:w-auto justify-center"
+                >
+                  演習に挑戦する <BiLinkExternal className="ml-1" />
+                </Link>
+              ) : (
+                <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg w-full max-w-md">
+                  <p className="text-gray-700 mb-3">
+                    演習に挑戦するにはログインが必要です
+                  </p>
+                  <Link
+                    href="/auth/signin"
+                    className="bg-blue-600 text-white px-6 py-2 rounded font-medium hover:bg-blue-700 transition-colors inline-flex items-center justify-center"
+                  >
+                    ログインする
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

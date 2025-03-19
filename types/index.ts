@@ -56,6 +56,7 @@ export interface Exam extends MicroCMSContent {
   tags: string;
   repositoryUrl: string;
   repositoryName: string;
+  repositoryUrlAnswer: string;
   issueNumbers: string;
   imageUrl?: string;
   isPublished: boolean;
