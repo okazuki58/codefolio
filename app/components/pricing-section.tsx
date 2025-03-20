@@ -202,10 +202,10 @@ export function PricingSection() {
       ctaLink: !session
         ? "/auth/signin?callbackUrl=/settings&plan=pro"
         : session.user.isPaidMember
-        ? null // すでにプロプランならリンクなし
+        ? null
         : "/settings?plan=pro",
       popular: true,
-      priceId: "price_1R4SnjLXAsdrWMMSu7v9yj4c", // Stripeの価格ID
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID, // 環境変数から取得
     },
     {
       title: "エンタープライズ",
