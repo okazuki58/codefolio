@@ -50,6 +50,7 @@ export type TestResponse = MicroCMSResponse<Test>;
 // 演習 (APIでは"exams"という名前)
 export interface Exam extends MicroCMSContent {
   title: string;
+  index: number;
   slug: string;
   description: string;
   estimatedTime: string;
@@ -57,7 +58,6 @@ export interface Exam extends MicroCMSContent {
   repositoryUrl: string;
   repositoryName: string;
   repositoryUrlAnswer: string;
-  issueNumbers: string;
   imageUrl?: string;
   isPublished: boolean;
   category?: Category;

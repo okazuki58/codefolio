@@ -17,7 +17,7 @@ export default async function ExamsPage(props: {
   const { contents: exams, totalCount } = await getExams({
     limit,
     offset,
-    orders: "-publishedAt",
+    orders: "index",
   });
 
   const totalPages = Math.ceil(totalCount / limit);
@@ -44,8 +44,7 @@ export default async function ExamsPage(props: {
                 Gitの基本操作（ブログ記事）
               </a>
               <span className="text-gray-600 ml-2">
-                -
-                演習を始める前に、Gitの基本的な概念と操作方法を理解しましょう
+                - 演習を始める前に、Gitの基本的な概念と操作方法を理解しましょう
               </span>
             </li>
             <li>

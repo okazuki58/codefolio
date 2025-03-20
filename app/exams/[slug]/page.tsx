@@ -152,33 +152,6 @@ export default async function ExamPage(props: ExamPageProps) {
               </div>
             )}
 
-            {exam.issueNumbers && exam.issueNumbers.trim() !== "" && (
-              <div className="mb-8 md:mb-10">
-                <h2 className="text-xl font-semibold mb-2 md:mb-3 text-gray-800">
-                  課題
-                </h2>
-                <div className="bg-gray-50 p-3 md:p-5 rounded md:border md:border-gray-200">
-                  <ul className="space-y-2 md:space-y-3">
-                    {exam.issueNumbers.split(",").map((issueNumber: string) => (
-                      <li key={issueNumber} className="flex items-start">
-                        <span className="text-gray-400 mr-2">•</span>
-                        <a
-                          href={`${
-                            exam.repositoryUrl
-                          }/issues/${issueNumber.trim()}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-700"
-                        >
-                          Issue #{issueNumber.trim()} を確認する
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
-
             <div className="flex flex-col items-center">
               {user ? (
                 <Link
