@@ -18,7 +18,7 @@ interface PricingPlanProps {
   period: string;
   features: PricingFeature[];
   ctaText: string;
-  ctaLink: string;
+  ctaLink: string | null;
   popular?: boolean;
   priceId?: string;
 }
@@ -43,7 +43,7 @@ function PricingPlan({
 
   const handleClick = async (e: React.MouseEvent) => {
     // Stripe決済が必要なプランの場合
-    if (priceId && !isCurrentPlan) {
+    if (priceId && !isCurrentPlan && session) {
       e.preventDefault();
       setIsLoading(true);
 
@@ -61,6 +61,11 @@ function PricingPlan({
       } finally {
         setIsLoading(false);
       }
+    }
+    // 未ログインユーザーの場合は直接ログインページへ遷移させる
+    else if (!session && ctaLink && ctaLink.includes("/auth/signin")) {
+      e.preventDefault();
+      window.location.href = ctaLink;
     }
   };
 
@@ -123,7 +128,7 @@ function PricingPlan({
 
         <div className="mt-auto">
           <Link
-            href={ctaLink}
+            href={ctaLink || ""}
             onClick={handleClick}
             className={`
               w-full py-3 px-4 rounded-lg font-medium
@@ -169,7 +174,7 @@ export function PricingSection() {
         { text: "パーソナルコーチング", included: false },
       ],
       ctaText: "無料で始める",
-      ctaLink: session ? "/dashboard" : "/register",
+      ctaLink: session ? "/profile" : "/auth/register",
     },
     {
       title: "プロフェッショナル",
@@ -189,8 +194,16 @@ export function PricingSection() {
           info: "別途料金が必要です",
         },
       ],
-      ctaText: "プロプランを選択",
-      ctaLink: session ? "#upgrade" : "/register?plan=pro",
+      ctaText: !session
+        ? "ログインが必要です"
+        : session.user.isPaidMember
+        ? "現在のプラン"
+        : "プロプランを選択",
+      ctaLink: !session
+        ? "/auth/signin?callbackUrl=/settings&plan=pro"
+        : session.user.isPaidMember
+        ? null // すでにプロプランならリンクなし
+        : "/settings?plan=pro",
       popular: true,
       priceId: "price_1R4SnjLXAsdrWMMSu7v9yj4c", // Stripeの価格ID
     },

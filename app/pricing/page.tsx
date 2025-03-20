@@ -80,18 +80,12 @@ export default function PricingPage() {
           <p className="text-xl text-gray-600 mb-8">
             14日間の返金保証付き。リスクなしでサービスをお試しいただけます。
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <div className="flex justify-center">
             <Link
-              href="/register"
+              href="/auth/register"
               className="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
               無料で始める
-            </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-3 bg-white text-gray-800 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
-            >
-              詳細を問い合わせる
             </Link>
           </div>
         </div>
