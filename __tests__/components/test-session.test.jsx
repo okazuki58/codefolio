@@ -22,7 +22,8 @@ describe("TestSession", () => {
     {
       id: "test1",
       question: "これはテスト問題ですか？",
-      answerOptions: "はい,いいえ,わからない,回答拒否",
+      answerOptions: ["はい", "いいえ", "わからない", "回答拒否"],
+      correctAnswer: 0,
     },
   ];
 

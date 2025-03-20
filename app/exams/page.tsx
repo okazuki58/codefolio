@@ -100,7 +100,10 @@ export default async function ExamsPage(props: {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="flex items-center text-gray-600 text-xs">
                     <BiTime className="mr-1" />
-                    <span>{exam.estimatedTime || exam.estimatedTime}分</span>
+                    <span>{exam.estimatedTime || "未設定"}分</span>
+                  </div>
+                  <div className="flex items-center text-gray-600 text-xs bg-gray-100 px-2 py-0.5 rounded">
+                    <span>演習No.{exam.index}</span>
                   </div>
                 </div>
 
