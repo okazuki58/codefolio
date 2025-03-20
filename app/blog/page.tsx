@@ -69,8 +69,14 @@ export default async function BlogListPage({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
-            <div className="bg-gray-100 w-full h-full flex items-center justify-center">
-              <span className="text-gray-400">No Image</span>
+            <div className="bg-gradient-to-br from-blue-50 to-gray-100 w-full h-full flex items-center justify-center p-6">
+              <Image
+                src="/codefolio-logo-only.svg"
+                alt="CodeFolio Logo"
+                width={80}
+                height={80}
+                className="opacity-70"
+              />
             </div>
           )}
         </div>

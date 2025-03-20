@@ -37,23 +37,34 @@ export default async function ExamsPage(props: {
           </p>
           <ul className="space-y-2 pl-5 list-disc">
             <li>
-              <a
-                href="http://localhost:3000/blog/5mayxcjqgdv"
+              <Link
+                href="/blog/5mayxcjqgdv"
                 className="text-blue-600 hover:underline font-medium"
               >
                 Gitの基本操作（ブログ記事）
-              </a>
+              </Link>
               <span className="text-gray-600 ml-2">
                 - 演習を始める前に、Gitの基本的な概念と操作方法を理解しましょう
               </span>
             </li>
             <li>
-              <a
-                href="http://localhost:3000/test/category/9fp3agyb3ahv"
+              <Link
+                href="/blog/w7qysf6b-6yy"
+                className="text-blue-600 hover:underline font-medium"
+              >
+                演習のはじめ方
+              </Link>
+              <span className="text-gray-600 ml-2">
+                - 演習のはじめ方を確認できます
+              </span>
+            </li>
+            <li>
+              <Link
+                href="/test/category/9fp3agyb3ahv"
                 className="text-blue-600 hover:underline font-medium"
               >
                 Gitの理解度チェックテスト
-              </a>
+              </Link>
               <span className="text-gray-600 ml-2">
                 - 基礎知識がしっかり身についているか確認できます
               </span>
