@@ -49,6 +49,7 @@ model User {
   accounts           Account[]
   sessions           Session[]
   testResults        TestResult[]
+  examResults        ExamResult[]
   likes              Like[]
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
@@ -102,4 +103,24 @@ model Like {
   @@unique([userId, contentId]) // contentTypeなしでユニーク制約
   @@index([contentId])
   @@index([userId])
+}
+
+model ExamResult {
+  id              String    @id @default(cuid())
+  userId          String
+  examId          String
+  repositoryUrl   String
+  testsPassed     Int       @default(0)
+  testsTotal      Int       @default(0)
+  passPercentage  Float     @default(0)
+  executionLog    String?   @db.Text
+  status          String    // "pending", "processing", "completed", "failed"
+  statusMessage   String?   
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([examId])
 }

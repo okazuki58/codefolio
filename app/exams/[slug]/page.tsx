@@ -10,6 +10,7 @@ import {
 } from "react-icons/bi";
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { SubmitForm } from "./submit-form";
 
 interface ExamPageProps {
   params: Promise<{
@@ -158,30 +159,7 @@ export default async function ExamPage(props: ExamPageProps) {
                   <h2 className="text-xl font-semibold mb-4 text-gray-800">
                     演習の提出
                   </h2>
-                  <form className="space-y-4">
-                    <div>
-                      <label
-                        htmlFor="repositoryUrl"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                      >
-                        GitHubリポジトリURL *
-                      </label>
-                      <input
-                        type="url"
-                        id="repositoryUrl"
-                        name="repositoryUrl"
-                        placeholder="https://github.com/username/repository"
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        required
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full bg-blue-600 text-white px-6 py-3 rounded font-medium text-base hover:bg-blue-700 transition-colors flex items-center justify-center"
-                    >
-                      演習を提出する
-                    </button>
-                  </form>
+                  <SubmitForm slug={params.slug} />
                 </div>
               ) : (
                 <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg w-full max-w-md">

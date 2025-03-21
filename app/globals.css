@@ -127,3 +127,22 @@ body {
   text-decoration: none !important;
   border-bottom: none !important;
 }
+
+/* アニメーションを追加 */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out forwards;
+}
