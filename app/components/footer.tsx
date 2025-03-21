@@ -188,6 +188,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/disclosure"
+                  className="text-gray-600 hover:text-blue-600 transition-colors"
+                >
+                  特定商取引法に基づく表記
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/faq"
                   className="text-gray-600 hover:text-blue-600 transition-colors"
                 >

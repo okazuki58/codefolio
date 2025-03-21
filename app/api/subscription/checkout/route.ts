@@ -81,6 +81,11 @@ export async function POST(req: NextRequest) {
       },
       success_url: `${baseUrl}/settings?checkout=success`,
       cancel_url: `${baseUrl}/pricing?checkout=cancel`,
+      payment_intent_data: {
+        metadata: {
+          commerce_disclosure_url: `${baseUrl}/disclosure`,
+        },
+      },
     });
 
     // チェックアウトURLを返す
