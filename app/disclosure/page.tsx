@@ -12,7 +12,7 @@ export default function DisclosurePage() {
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">特定商取引法に基づく表記</h1>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mb-8">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
           <table className="w-full border-collapse">
             <tbody>
               <tr className="border-b border-gray-200">

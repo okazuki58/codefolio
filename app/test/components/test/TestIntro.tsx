@@ -42,10 +42,10 @@ export function TestIntro({ category, testCount, onStart }: TestIntroProps) {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex flex-col sm:flex-row justify-between gap-4">
         <Link
           href="/test"
-          className="inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors"
+          className="inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors w-full sm:w-auto"
         >
           <BiArrowBack className="mr-2" />
           カテゴリ一覧に戻る
@@ -53,7 +53,7 @@ export function TestIntro({ category, testCount, onStart }: TestIntroProps) {
 
         <button
           onClick={onStart}
-          className="inline-flex items-center justify-center px-6 py-3 rounded-full text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center justify-center px-6 py-3 rounded-full text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors w-full sm:w-auto"
         >
           テストを開始する
           <BiPlayCircle className="ml-2 text-xl" />
