@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 const authRequiredPaths = ["/settings", "/profile", "/subscription/cancel"];
 
 // ログイン済みユーザーがアクセスできないパス
-const noAuthPaths = ["/auth/signin"];
+const noAuthPaths = ["/auth/signin", "/auth/register"];
 
 export function middleware(request: NextRequest) {
   // 現在のパス
@@ -49,5 +49,6 @@ export const config = {
     "/profile/:path*",
     "/subscription/:path*",
     "/auth/signin",
+    "/auth/register",
   ],
 };

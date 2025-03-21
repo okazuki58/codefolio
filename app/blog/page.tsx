@@ -13,44 +13,56 @@ interface BlogListPageProps {
 export default async function BlogListPage({
   searchParams,
 }: BlogListPageProps) {
-  // 非同期で searchParams を取得
-  const { page: pageParam } = await searchParams;
-  const page = parseInt(pageParam || "1", 10);
-  const limit = 9;
-  const offset = (page - 1) * limit;
+  // searchParamsは使用しない（ページネーションを削除するため）
+  const limit = 6; // 各カテゴリごとに最大6記事を表示
 
-  const { contents: blogs, totalCount } = await getBlogs({
-    limit,
-    offset,
+  const { contents: blogs } = await getBlogs({
+    limit: 100, // 一度に十分な数のブログを取得
   });
 
-  const totalPages = Math.ceil((totalCount || 0) / limit);
-
-  // Blogとして型アサーションを使用
+  // 基礎レベルのブログ（最大6件）
   const basicBlogs = blogs
     .filter((blog: Blog) => blog.category?.level?.includes("基礎"))
     .sort((a: Blog, b: Blog) => {
-      // indexがない場合は大きな値を設定
       const indexA = a.category?.index ?? 999;
       const indexB = b.category?.index ?? 999;
       return indexA - indexB;
-    });
+    })
+    .slice(0, limit);
 
+  // 発展レベルのブログ（最大6件）
   const advancedBlogs = blogs
     .filter((blog: Blog) => blog.category?.level?.includes("発展"))
     .sort((a: Blog, b: Blog) => {
       const indexA = a.category?.index ?? 999;
       const indexB = b.category?.index ?? 999;
       return indexA - indexB;
-    });
+    })
+    .slice(0, limit);
 
-  // その他のブログ
-  const otherBlogs = blogs.filter(
+  // その他のブログ（最大6件）
+  const otherBlogs = blogs
+    .filter(
+      (blog: Blog) =>
+        !blog.category?.level ||
+        (!blog.category.level.includes("基礎") &&
+          !blog.category.level.includes("発展"))
+    )
+    .slice(0, limit);
+
+  // 各カテゴリの総数を取得（「もっと見る」リンクの表示判断用）
+  const basicTotal = blogs.filter((blog: Blog) =>
+    blog.category?.level?.includes("基礎")
+  ).length;
+  const advancedTotal = blogs.filter((blog: Blog) =>
+    blog.category?.level?.includes("発展")
+  ).length;
+  const otherTotal = blogs.filter(
     (blog: Blog) =>
       !blog.category?.level ||
       (!blog.category.level.includes("基礎") &&
         !blog.category.level.includes("発展"))
-  );
+  ).length;
 
   const renderBlogCards = (blogList: Blog[]) => {
     return blogList.map((blog: Blog) => (
@@ -96,20 +108,6 @@ export default async function BlogListPage({
             )}
           </div>
 
-          {/* タグ */}
-          {/* {blog.tags && (
-            <div className="flex flex-wrap gap-1 mb-2">
-              {blog.tags.split(",").map((tag) => (
-                <span
-                  key={tag.trim()}
-                  className="bg-gray-100 text-gray-800 px-2 py-0.5 rounded text-xs"
-                >
-                  {tag.trim()}
-                </span>
-              ))}
-            </div>
-          )} */}
-
           {/* タイトル */}
           <h2 className="text-lg font-bold mb-2 line-clamp-2">{blog.title}</h2>
 
@@ -136,9 +134,17 @@ export default async function BlogListPage({
           <div className="space-y-10">
             {basicBlogs.length > 0 && (
               <div>
-                <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-blue-500 pl-3">
-                  基礎
-                </h2>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-gray-800 border-l-4 border-blue-500 pl-3">
+                    基礎
+                  </h2>
+                  <Link
+                    href="/blog/category/basic"
+                    className="text-blue-600 hover:text-blue-800 flex items-center text-sm font-medium"
+                  >
+                    すべて見る <BiRightArrowAlt className="ml-1" />
+                  </Link>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                   {renderBlogCards(basicBlogs)}
                 </div>
@@ -147,9 +153,17 @@ export default async function BlogListPage({
 
             {advancedBlogs.length > 0 && (
               <div>
-                <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-purple-500 pl-3">
-                  発展
-                </h2>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-gray-800 border-l-4 border-purple-500 pl-3">
+                    発展
+                  </h2>
+                  <Link
+                    href="/blog/category/advanced"
+                    className="text-blue-600 hover:text-blue-800 flex items-center text-sm font-medium"
+                  >
+                    すべて見る <BiRightArrowAlt className="ml-1" />
+                  </Link>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                   {renderBlogCards(advancedBlogs)}
                 </div>
@@ -158,33 +172,21 @@ export default async function BlogListPage({
 
             {otherBlogs.length > 0 && (
               <div>
-                <h2 className="text-xl font-bold mb-4 text-gray-800 border-l-4 border-gray-400 pl-3">
-                  その他
-                </h2>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold text-gray-800 border-l-4 border-gray-400 pl-3">
+                    その他
+                  </h2>
+                  <Link
+                    href="/blog/category/other"
+                    className="text-blue-600 hover:text-blue-800 flex items-center text-sm font-medium"
+                  >
+                    すべて見る <BiRightArrowAlt className="ml-1" />
+                  </Link>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
                   {renderBlogCards(otherBlogs)}
                 </div>
               </div>
-            )}
-          </div>
-        )}
-
-        {totalPages > 1 && (
-          <div className="flex justify-center gap-2 my-8">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-              (pageNum) => (
-                <Link
-                  key={pageNum}
-                  href={`/blog?page=${pageNum}`}
-                  className={`w-10 h-10 flex items-center justify-center rounded ${
-                    pageNum === page
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 hover:bg-gray-200"
-                  }`}
-                >
-                  {pageNum}
-                </Link>
-              )
             )}
           </div>
         )}
