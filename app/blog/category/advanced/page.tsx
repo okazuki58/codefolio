@@ -19,7 +19,7 @@ export default async function AdvancedBlogListPage({
   const offset = (page - 1) * limit;
 
   // すべてのブログを取得
-  const { contents: allBlogs, totalCount: allTotal } = await getBlogs({
+  const { contents: allBlogs } = await getBlogs({
     limit: 100, // 一度に十分な数のブログを取得
   });
 

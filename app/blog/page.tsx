@@ -11,9 +11,7 @@ interface BlogListPageProps {
 }
 
 export default async function BlogListPage({
-  searchParams,
 }: BlogListPageProps) {
-  // searchParamsは使用しない（ページネーションを削除するため）
   const limit = 6; // 各カテゴリごとに最大6記事を表示
 
   const { contents: blogs } = await getBlogs({
@@ -49,20 +47,6 @@ export default async function BlogListPage({
           !blog.category.level.includes("発展"))
     )
     .slice(0, limit);
-
-  // 各カテゴリの総数を取得（「もっと見る」リンクの表示判断用）
-  const basicTotal = blogs.filter((blog: Blog) =>
-    blog.category?.level?.includes("基礎")
-  ).length;
-  const advancedTotal = blogs.filter((blog: Blog) =>
-    blog.category?.level?.includes("発展")
-  ).length;
-  const otherTotal = blogs.filter(
-    (blog: Blog) =>
-      !blog.category?.level ||
-      (!blog.category.level.includes("基礎") &&
-        !blog.category.level.includes("発展"))
-  ).length;
 
   const renderBlogCards = (blogList: Blog[]) => {
     return blogList.map((blog: Blog) => (
