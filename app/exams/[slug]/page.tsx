@@ -154,18 +154,39 @@ export default async function ExamPage(props: ExamPageProps) {
 
             <div className="flex flex-col items-center">
               {user ? (
-                <Link
-                  href={exam.repositoryUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-3.5 rounded font-medium text-base md:text-lg hover:bg-blue-700 transition-colors inline-flex items-center w-full md:w-auto justify-center"
-                >
-                  演習に挑戦する <BiLinkExternal className="ml-1" />
-                </Link>
+                <div className="w-full max-w-2xl">
+                  <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                    演習の提出
+                  </h2>
+                  <form className="space-y-4">
+                    <div>
+                      <label
+                        htmlFor="repositoryUrl"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        GitHubリポジトリURL *
+                      </label>
+                      <input
+                        type="url"
+                        id="repositoryUrl"
+                        name="repositoryUrl"
+                        placeholder="https://github.com/username/repository"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        required
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full bg-blue-600 text-white px-6 py-3 rounded font-medium text-base hover:bg-blue-700 transition-colors flex items-center justify-center"
+                    >
+                      演習を提出する
+                    </button>
+                  </form>
+                </div>
               ) : (
                 <div className="text-center p-4 bg-gray-50 border border-gray-200 rounded-lg w-full max-w-md">
                   <p className="text-gray-700 mb-3">
-                    演習に挑戦するにはログインが必要です
+                    演習を提出するにはログインが必要です
                   </p>
                   <Link
                     href="/auth/signin"
