@@ -37,11 +37,23 @@ function PricingPlan({
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
-  // 現在のプランかどうかチェック (プロプランの場合のみ)
+  // 現在のプランかどうかチェック (プロプランの場合とベーシックプランの場合)
   const isCurrentPlan =
-    priceId && session?.user?.isPaidMember && title === "プロフェッショナル";
+    (priceId &&
+      session?.user?.isPaidMember &&
+      title === "プロフェッショナル") ||
+    (!priceId &&
+      session &&
+      !session.user.isPaidMember &&
+      title === "ベーシック");
 
   const handleClick = async (e: React.MouseEvent) => {
+    // 現在のプランの場合はクリックを無効化
+    if (isCurrentPlan) {
+      e.preventDefault();
+      return;
+    }
+
     // Stripe決済が必要なプランの場合
     if (priceId && !isCurrentPlan && session) {
       e.preventDefault();

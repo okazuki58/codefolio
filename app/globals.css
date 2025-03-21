@@ -109,3 +109,21 @@ body {
     }
   }
 }
+
+/* コードブロック内のスタイリングリセット */
+.blog-content pre code,
+.syntax-highlighter-wrapper code,
+.prism-code {
+  text-decoration: none !important;
+}
+
+/* cdに特化したスタイルリセット */
+.blog-content code span[class*="token"],
+.syntax-highlighter-wrapper span[class*="token"] {
+  text-decoration: none !important;
+}
+
+.token.builtin {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}

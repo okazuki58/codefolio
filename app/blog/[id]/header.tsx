@@ -26,9 +26,11 @@ export function BlogHeader({ blog }: BlogHeaderProps) {
             </span>
           </div>
         </div>
-        <div className="md:w-64">
-          <QuizButton categoryId={blog.category?.id} />
-        </div>
+        {blog.category?.id && (
+          <div className="md:w-64">
+            <QuizButton categoryId={blog.category.id} />
+          </div>
+        )}
       </div>
     </div>
   );

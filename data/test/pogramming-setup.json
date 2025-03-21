@@ -1,0 +1,92 @@
+[
+  {
+    "question": "VSCodeの主な利点として不適切なものはどれですか？",
+    "answerOptions": [
+      "コードのコンパイルを自動的に行う",
+      "多くのプログラミング言語に対応している",
+      "拡張機能で機能を拡張できる",
+      "コードの色分け表示や自動補完機能がある"
+    ],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "ターミナルの主な用途として正しいものはどれですか？",
+    "answerOptions": [
+      "テキストコマンドでコンピュータを操作する",
+      "ウェブサイトのデザインを確認する",
+      "プログラミング言語の学習を行う",
+      "グラフィック処理を高速に行う"
+    ],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "以下のうち、ディレクトリ(フォルダ)を移動するためのコマンドはどれですか？",
+    "answerOptions": ["cd", "mkdir", "ls", "touch"],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "Macユーザー向けのパッケージマネージャーの名前は何ですか？",
+    "answerOptions": ["Homebrew", "Chocolatey", "apt-get", "npm"],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "VSCodeでよく使われるプラグインとして不適切なものはどれですか？",
+    "answerOptions": ["Database Explorer", "Live Server", "Prettier", "ESLint"],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "Gitの主な目的は何ですか？",
+    "answerOptions": [
+      "バージョン管理",
+      "コードのコンパイル",
+      "ウェブサイトのホスティング",
+      "データベース管理"
+    ],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "Node.jsとは何ですか？",
+    "answerOptions": [
+      "サーバーサイドでJavaScriptを実行する環境",
+      "JavaScriptのフレームワーク",
+      "コード編集ツール",
+      "データベース管理システム"
+    ],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "npmの主な役割は何ですか？",
+    "answerOptions": [
+      "JavaScriptパッケージの管理",
+      "ブラウザの開発者ツール",
+      "サーバーの監視",
+      "データベースのクエリ実行"
+    ],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "ブラウザの開発者ツールで主にデバッグに使用されるパネルはどれですか？",
+    "answerOptions": ["Console", "Network", "Application", "Performance"],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  },
+  {
+    "question": "以下のうち、Gitの設定として最初に行うべきことはどれですか？",
+    "answerOptions": [
+      "ユーザー名とメールアドレスの設定",
+      "リポジトリの作成",
+      "ブランチの作成",
+      "最初のコミット"
+    ],
+    "correctAnswer": 0,
+    "category": "sclvhygeggp"
+  }
+]
