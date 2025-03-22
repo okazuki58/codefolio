@@ -64,8 +64,8 @@ export async function submitExam(formData: FormData) {
     try {
       console.log("Cloud Runへリクエスト送信開始");
       const controller = new AbortController();
-      // タイムアウト時間を60秒に延長（テスト実行に十分な時間を確保）
-      const timeoutId = setTimeout(() => controller.abort(), 60000);
+      // タイムアウト時間を300秒に延長（テスト実行に十分な時間を確保）
+      const timeoutId = setTimeout(() => controller.abort(), 300000);
 
       const response = await fetch(`${cloudRunUrl}/process-exam`, {
         method: "POST",

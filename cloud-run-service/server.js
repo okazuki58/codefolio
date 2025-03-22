@@ -98,9 +98,9 @@ app.post("/process-exam", async (req, res) => {
     console.log("テスト実行開始");
     let testOutput;
     try {
-      // タイムアウトを延長（2分）
+      // タイムアウトを延長（4分）
       testOutput = await execAsync(`cd ${repoDir} && npm test`, {
-        timeout: 120000, // 2分
+        timeout: 240000, // 4分
         maxBuffer: 5 * 1024 * 1024, // 5MB（大きなログ対応）
       });
       console.log("テスト実行完了");
