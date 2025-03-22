@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import GithubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
+import { cache } from "react";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -61,6 +62,7 @@ export const authOptions: NextAuthOptions = {
 };
 
 // サーバーサイドでセッションを取得するためのヘルパー関数
-export function auth() {
+// リクエストごとに1回だけ実行されるようにキャッシュ
+export const auth = cache(() => {
   return getServerSession(authOptions);
-}
+});

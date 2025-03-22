@@ -21,6 +21,8 @@ export function ProfileCard({ session }: ProfileCardProps) {
               fill
               className="object-cover"
               priority
+              sizes="(max-width: 768px) 96px, 96px"
+              loading="eager"
             />
           ) : (
             <div className="w-full h-full bg-blue-50 flex items-center justify-center">
@@ -59,6 +61,7 @@ export function ProfileCard({ session }: ProfileCardProps) {
         <Link
           href="/settings"
           className="flex items-center gap-1.5 text-gray-500 hover:text-gray-700 transition-colors px-3 py-1.5 rounded-lg border border-gray-100 hover:border-gray-200 text-sm"
+          prefetch={true}
         >
           <BiCog />
           <span>設定</span>

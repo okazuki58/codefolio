@@ -10,6 +10,11 @@ import {
   SkillsSkeleton,
   AccountInfoSkeleton,
 } from "./components/skeletons";
+import { preloadProfileData } from "./actions";
+
+// 最適化のためのプリフェッチ設定
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -18,6 +23,9 @@ export default async function ProfilePage() {
   if (!session) {
     redirect("/auth/signin");
   }
+
+  // プリロード - バックグラウンドで必要なデータ取得を開始
+  void preloadProfileData();
 
   return (
     <div className="min-h-[calc(100vh-70px)] bg-gray-50 flex flex-col">

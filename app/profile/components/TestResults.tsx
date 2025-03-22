@@ -1,14 +1,9 @@
 import { BiTimeFive } from "react-icons/bi";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { cache } from "react";
+import { getCategories, getUserTestResults } from "../actions";
 
-interface Category {
-  id: string;
-  name: string;
-}
-
+// 結果表示用の型定義
 interface TestResultWithCategory {
   id: string;
   score: number;
@@ -19,75 +14,33 @@ interface TestResultWithCategory {
   categoryName: string;
 }
 
-// getTestResults関数をキャッシュして同じコンポーネントツリー内でのデータ取得を最適化
-const getTestResults = cache(async () => {
+export async function TestResults() {
   const session = await auth();
-  if (!session?.user?.id) {
-    return [] as TestResultWithCategory[];
-  }
+  if (!session?.user?.id) return null;
 
-  // カテゴリ情報をAPIから取得
-  // API経由でカテゴリ情報を取得するようにします
-  let categoryMap: Record<string, string> = {};
-  try {
-    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/categories`, {
-      next: { revalidate: 3600 }, // 1時間キャッシュ
-    });
+  // Promise.all for concurrent data fetching
+  const [categoryMap, testResults] = await Promise.all([
+    getCategories(),
+    getUserTestResults(session.user.id),
+  ]);
 
-    if (response.ok) {
-      const categories = await response.json();
-      categoryMap = categories.reduce(
-        (acc: Record<string, string>, category: Category) => {
-          acc[category.id] = category.name;
-          return acc;
-        },
-        {}
-      );
-    }
-  } catch (error) {
-    console.error("カテゴリ情報の取得に失敗:", error);
-  }
-
-  // Prismaからテスト結果を取得
-  const testResults = await prisma.testResult.findMany({
-    where: {
-      userId: session.user.id,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    // 必要なフィールドのみを選択して取得を最適化
-    select: {
-      id: true,
-      score: true,
-      total: true,
-      percentage: true,
-      categoryId: true,
-      createdAt: true,
-    },
-  });
-
-  // テスト結果とカテゴリ名を結合
-  return testResults.map((result) => ({
+  // Map test results with category names
+  const processedResults = testResults.map((result) => ({
     ...result,
-    createdAt: result.createdAt.toISOString(), // Dateオブジェクトを文字列に変換
+    // 既に文字列化されているはずなので、余計な変換は行わない
     categoryName: categoryMap[result.categoryId] || "カテゴリ不明",
   })) as TestResultWithCategory[];
-});
-
-export async function TestResults() {
-  const testResults = await getTestResults();
 
   // テスト結果の統計
-  const totalTests = testResults.length;
-  const totalAnswers = testResults.reduce(
+  const totalTests = processedResults.length;
+  const totalAnswers = processedResults.reduce(
     (sum, result) => sum + result.total,
     0
   );
   const avgPercentage =
     totalTests > 0
       ? Math.round(
-          testResults.reduce((sum, result) => sum + result.percentage, 0) /
+          processedResults.reduce((sum, result) => sum + result.percentage, 0) /
             totalTests
         )
       : 0;
@@ -112,13 +65,13 @@ export async function TestResults() {
       </div>
 
       <div className="mt-6 pt-6 border-t border-gray-50">
-        {testResults.length > 0 ? (
+        {processedResults.length > 0 ? (
           <div>
             <h4 className="text-sm font-medium text-gray-700 mb-3">
               最近のテスト結果
             </h4>
             <div className="space-y-3">
-              {testResults.slice(0, 5).map((result) => (
+              {processedResults.slice(0, 5).map((result) => (
                 <div
                   key={result.id}
                   className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
@@ -157,6 +110,7 @@ export async function TestResults() {
               <Link
                 href="/test"
                 className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700"
+                prefetch={true}
               >
                 もっとテストに挑戦する
                 <svg
@@ -184,6 +138,7 @@ export async function TestResults() {
             <Link
               href="/test"
               className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700"
+              prefetch={true}
             >
               テストに挑戦する
               <svg
