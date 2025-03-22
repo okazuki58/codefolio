@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { PricingSection } from "../components/pricing-section";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "料金プラン | コードマスタリー",
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
     "初心者から上級者まで、あらゆるレベルの学習者に対応した柔軟な料金プランをご用意しています。",
 };
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const session = await auth();
+
   return (
     <main className="min-h-screen">
       {/* ヒーローセクション */}
@@ -25,7 +28,7 @@ export default function PricingPage() {
       </div>
 
       {/* 料金表セクション */}
-      <PricingSection />
+      <PricingSection session={session} />
 
       {/* よくある質問セクション */}
       <section className="py-16 px-4 bg-white">

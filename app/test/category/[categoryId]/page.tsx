@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TestSession } from "@/app/test/components/TestSession";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 
 interface CategoryTestsPageProps {
   params: Promise<{
@@ -41,6 +42,7 @@ export default async function CategoryTestsPage({
   params,
 }: CategoryTestsPageProps) {
   const { categoryId } = await params;
+  const session = await auth();
 
   try {
     // CMSからカテゴリ情報を取得
@@ -89,7 +91,7 @@ export default async function CategoryTestsPage({
       <div className="min-h-[calc(100vh-70px)] bg-gray-50 py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           {/* テストセッションコンポーネント */}
-          <TestSession tests={tests} category={category} />
+          <TestSession tests={tests} category={category} session={session} />
         </div>
       </div>
     );

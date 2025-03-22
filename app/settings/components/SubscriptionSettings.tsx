@@ -1,11 +1,16 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { BiCrown, BiX } from "react-icons/bi";
+import { Session } from "next-auth";
 
-export default function SubscriptionSettings() {
-  const { data: session } = useSession();
+interface SubscriptionSettingsProps {
+  session: Session | null;
+}
+
+export default function SubscriptionSettings({
+  session,
+}: SubscriptionSettingsProps) {
   const router = useRouter();
 
   if (!session?.user) return null;

@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { BiLike, BiSolidLike } from "react-icons/bi";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 interface FeedbackProps {
   contentId: string; // 記事ID
+  session: Session | null;
 }
 
-export default function Feedback({ contentId }: FeedbackProps) {
-  const { data: session } = useSession();
+export default function Feedback({ contentId, session }: FeedbackProps) {
   const userId = session?.user?.id || null;
 
   const [liked, setLiked] = useState(false);

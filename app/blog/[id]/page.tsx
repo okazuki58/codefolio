@@ -6,6 +6,7 @@ import BlogTableOfContents from "./table-of-contents";
 import { extractHeadings } from "../utils";
 import { BlogHeader } from "./header";
 import { Breadcrumb } from "./breadcrumb";
+import { auth } from "@/lib/auth";
 
 interface BlogPageProps {
   params: Promise<{
@@ -23,6 +24,7 @@ export default async function BlogPage({
   // 動的APIを非同期で取得
   const { id } = await params;
   const { draftKey } = await searchParams;
+  const session = await auth();
 
   const blog = await getBlogWithDraftKey(id, draftKey);
 
@@ -65,6 +67,7 @@ export default async function BlogPage({
             content={modifiedHtml || blog.content}
             categoryId={blog.category?.id}
             contentId={id}
+            session={session}
           />
         </main>
       </div>

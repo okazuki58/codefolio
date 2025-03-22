@@ -6,17 +6,20 @@ import QuizButton from "@/app/components/quiz-button";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { createRoot } from "react-dom/client";
+import { Session } from "next-auth";
 
 interface BlogContentProps {
   content: string;
   categoryId?: string;
   contentId: string;
+  session: Session | null;
 }
 
 export default function BlogContent({
   content,
   categoryId,
   contentId,
+  session,
 }: BlogContentProps) {
   const [processedContent, setProcessedContent] = useState(content);
 
@@ -110,7 +113,7 @@ export default function BlogContent({
         dangerouslySetInnerHTML={{ __html: processedContent }}
       />
       {categoryId && <QuizButton categoryId={categoryId} />}
-      <Feedback contentId={contentId} />
+      <Feedback contentId={contentId} session={session} />
     </div>
   );
 }

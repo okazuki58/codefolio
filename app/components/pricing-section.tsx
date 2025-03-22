@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { BiRightArrowAlt, BiInfoCircle } from "react-icons/bi";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 interface PricingFeature {
   text: string;
@@ -21,6 +21,7 @@ interface PricingPlanProps {
   ctaLink: string | null;
   popular?: boolean;
   priceId?: string;
+  session: Session | null;
 }
 
 function PricingPlan({
@@ -33,8 +34,8 @@ function PricingPlan({
   ctaLink,
   popular = false,
   priceId,
+  session,
 }: PricingPlanProps) {
-  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
   // 現在のプランかどうかチェック (プロプランの場合とベーシックプランの場合)
@@ -167,9 +168,11 @@ function PricingPlan({
   );
 }
 
-export function PricingSection() {
-  const { data: session } = useSession();
+interface PricingSectionProps {
+  session: Session | null;
+}
 
+export function PricingSection({ session }: PricingSectionProps) {
   const pricingPlans = [
     {
       title: "ベーシック",
@@ -255,7 +258,7 @@ export function PricingSection() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {pricingPlans.map((plan, index) => (
-            <PricingPlan key={index} {...plan} />
+            <PricingPlan key={index} {...plan} session={session} />
           ))}
         </div>
 

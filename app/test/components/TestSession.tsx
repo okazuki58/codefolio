@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 import { Category } from "@/types";
 import { TestIntro } from "./test/TestIntro";
 import { TestQuestions } from "./test/TestQuestions";
@@ -9,14 +9,13 @@ import { TestResults } from "./test/TestResults";
 import { TestLoadingState } from "./test/TestLoadingState";
 import { TestData, TestResult } from "@/app/test/types";
 
-export function TestSession({
-  tests,
-  category,
-}: {
+interface TestSessionProps {
   tests: TestData[];
   category: Category;
-}) {
-  const { data: session } = useSession();
+  session: Session | null;
+}
+
+export function TestSession({ tests, category, session }: TestSessionProps) {
   const [isStarted, setIsStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(

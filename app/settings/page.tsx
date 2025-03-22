@@ -61,7 +61,7 @@ export default async function SettingsPage({
           <h1 className="text-2xl font-bold mb-8">アカウント設定</h1>
 
           <div className="mb-8">
-            <SubscriptionSettings />
+            <SubscriptionSettings session={session} />
           </div>
 
           <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">

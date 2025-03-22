@@ -4,7 +4,6 @@ import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
 import Header from "./components/header";
-import { Providers } from "./providers";
 import { Footer } from "./components/footer";
 
 export const metadata: Metadata = {
@@ -20,12 +19,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <Providers>
-          <Header />
-          {children}
-          <SpeedInsights />
-          <Analytics />
-        </Providers>
+        <Header />
+        {children}
+        <SpeedInsights />
+        <Analytics />
         <Footer />
       </body>
     </html>

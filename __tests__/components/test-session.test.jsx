@@ -1,11 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { TestSession } from "@/app/test/components/TestSession";
-import { useSession } from "next-auth/react";
 
-// next-authのモック
-jest.mock("next-auth/react", () => ({
-  useSession: jest.fn(),
-}));
 
 // Next.jsのLinkコンポーネントをモック
 jest.mock("next/link", () => {
@@ -32,13 +27,13 @@ describe("TestSession", () => {
     name: "テストカテゴリ",
   };
 
-  beforeEach(() => {
-    // セッションのモックをリセット
-    useSession.mockReturnValue({
-      data: null,
-      status: "unauthenticated",
-    });
+  // セッションのモックを直接作成
+  const unauthenticatedSession = null;
+  const authenticatedSession = {
+    user: { id: "user-123" },
+  };
 
+  beforeEach(() => {
     // fetchのモックをリセット
     fetch.mockReset();
   });
@@ -49,7 +44,13 @@ describe("TestSession", () => {
   });
 
   it("テスト開始前の画面が正しく表示される", () => {
-    render(<TestSession tests={mockTests} category={mockCategory} />);
+    render(
+      <TestSession
+        tests={mockTests}
+        category={mockCategory}
+        session={unauthenticatedSession}
+      />
+    );
 
     expect(
       screen.getByText("テストカテゴリ - 理解度テスト")
@@ -59,7 +60,13 @@ describe("TestSession", () => {
   });
 
   it("テスト開始ボタンをクリックするとテストが開始される", async () => {
-    render(<TestSession tests={mockTests} category={mockCategory} />);
+    render(
+      <TestSession
+        tests={mockTests}
+        category={mockCategory}
+        session={unauthenticatedSession}
+      />
+    );
 
     fireEvent.click(screen.getByText("テストを開始する"));
 
@@ -71,19 +78,19 @@ describe("TestSession", () => {
   });
 
   it("認証済みユーザーがテスト結果を送信できる", async () => {
-    // 認証済みユーザーをモック
-    useSession.mockReturnValue({
-      data: { user: { id: "user-123" } },
-      status: "authenticated",
-    });
-
     // fetchのレスポンスをモック
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => ({ id: "result-123" }),
     });
 
-    render(<TestSession tests={mockTests} category={mockCategory} />);
+    render(
+      <TestSession
+        tests={mockTests}
+        category={mockCategory}
+        session={authenticatedSession}
+      />
+    );
 
     // テスト開始
     fireEvent.click(screen.getByText("テストを開始する"));
