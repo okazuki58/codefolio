@@ -2,11 +2,50 @@ import { BiTimeFive } from "react-icons/bi";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { cache } from "react";
 
-async function getTestResults() {
+interface Category {
+  id: string;
+  name: string;
+}
+
+interface TestResultWithCategory {
+  id: string;
+  score: number;
+  total: number;
+  percentage: number;
+  categoryId: string;
+  createdAt: string;
+  categoryName: string;
+}
+
+// getTestResults関数をキャッシュして同じコンポーネントツリー内でのデータ取得を最適化
+const getTestResults = cache(async () => {
   const session = await auth();
   if (!session?.user?.id) {
-    return [];
+    return [] as TestResultWithCategory[];
+  }
+
+  // カテゴリ情報をAPIから取得
+  // API経由でカテゴリ情報を取得するようにします
+  let categoryMap: Record<string, string> = {};
+  try {
+    const response = await fetch(`${process.env.NEXTAUTH_URL}/api/categories`, {
+      next: { revalidate: 3600 }, // 1時間キャッシュ
+    });
+
+    if (response.ok) {
+      const categories = await response.json();
+      categoryMap = categories.reduce(
+        (acc: Record<string, string>, category: Category) => {
+          acc[category.id] = category.name;
+          return acc;
+        },
+        {}
+      );
+    }
+  } catch (error) {
+    console.error("カテゴリ情報の取得に失敗:", error);
   }
 
   // Prismaからテスト結果を取得
@@ -17,46 +56,24 @@ async function getTestResults() {
     orderBy: {
       createdAt: "desc",
     },
+    // 必要なフィールドのみを選択して取得を最適化
+    select: {
+      id: true,
+      score: true,
+      total: true,
+      percentage: true,
+      categoryId: true,
+      createdAt: true,
+    },
   });
-
-  // 一意のカテゴリIDリストを作成
-  const uniqueCategoryIds = [
-    ...new Set(testResults.map((result) => result.categoryId)),
-  ];
-
-  // カテゴリごとの情報を取得
-  const categoryMap: Record<string, string> = {};
-
-  await Promise.all(
-    uniqueCategoryIds.map(async (categoryId) => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXTAUTH_URL}/api/categories/${categoryId}`,
-          {
-            next: { revalidate: 3600 }, // 1時間キャッシュ
-          }
-        );
-
-        if (response.ok) {
-          const category = await response.json();
-          categoryMap[categoryId] = category.name;
-        } else {
-          categoryMap[categoryId] = "カテゴリ不明";
-        }
-      } catch (error) {
-        console.error(`カテゴリ情報の取得に失敗 (ID: ${categoryId}):`, error);
-        categoryMap[categoryId] = "カテゴリ不明";
-      }
-    })
-  );
 
   // テスト結果とカテゴリ名を結合
   return testResults.map((result) => ({
     ...result,
     createdAt: result.createdAt.toISOString(), // Dateオブジェクトを文字列に変換
     categoryName: categoryMap[result.categoryId] || "カテゴリ不明",
-  }));
-}
+  })) as TestResultWithCategory[];
+});
 
 export async function TestResults() {
   const testResults = await getTestResults();
