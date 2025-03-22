@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { getCategories as getMicroCMSCategories } from "@/lib/microcms";
 
 // 型定義
 interface Category {
@@ -34,13 +35,11 @@ export const preloadProfileData = async () => {
 export const getCategories = unstable_cache(
   async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXTAUTH_URL}/api/categories`
-      );
-      if (!response.ok) return {};
+      // MicroCMSから直接カテゴリを取得
+      const categoriesData = await getMicroCMSCategories();
 
-      const categories = await response.json();
-      return categories.reduce(
+      // カテゴリIDとカテゴリ名のマッピングを作成
+      return categoriesData.contents.reduce(
         (acc: Record<string, string>, category: Category) => {
           acc[category.id] = category.name;
           return acc;
