@@ -1,17 +1,14 @@
-import { auth } from "@/lib/auth";
 import { HeroSection } from "@/app/components/hero-section";
 import { FeaturesSection } from "@/app/components/features-section";
 import { LearningFlowSection } from "@/app/components/learning-flow-section";
-import { PricingSection } from "@/app/components/pricing-section";
+import { HomePricingSection } from "@/app/components/home-pricing-section";
 import { CTASection } from "@/app/components/cta-section";
 
 export default async function Home() {
-  const session = await auth();
-
   return (
     <div className="min-h-screen">
       {/* ヒーローセクション */}
-      <HeroSection session={session} />
+      <HeroSection />
 
       {/* 特徴セクション */}
       <FeaturesSection />
@@ -20,10 +17,10 @@ export default async function Home() {
       <LearningFlowSection />
 
       {/* 料金プランセクション */}
-      <PricingSection />
+      <HomePricingSection />
 
       {/* CTAセクション */}
-      <CTASection session={session} />
+      <CTASection />
     </div>
   );
 }

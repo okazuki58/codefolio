@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Session } from "next-auth";
 import {
   BiCodeBlock,
   BiGitBranch,
@@ -8,11 +7,7 @@ import {
   BiRightArrowAlt,
 } from "react-icons/bi";
 
-interface HeroSectionProps {
-  session: Session | null;
-}
-
-export function HeroSection({ session }: HeroSectionProps) {
+export function HeroSection() {
   return (
     <section className="min-h-[calc(100vh-70px)] flex items-center px-4 py-10 sm:py-0 bg-white">
       <div className="max-w-6xl mx-auto w-full">
@@ -68,31 +63,13 @@ export function HeroSection({ session }: HeroSectionProps) {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
-              {session ? (
-                <Link
-                  href="/blog"
-                  className="px-6 py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
-                >
-                  学習を始める
-                  <BiRightArrowAlt className="ml-1.5" />
-                </Link>
-              ) : (
-                <>
-                  <Link
-                    href="/auth/register"
-                    className="px-6 py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
-                  >
-                    無料で登録する
-                    <BiRightArrowAlt className="ml-1.5" />
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="px-6 py-3 border border-gray-200 hover:border-gray-300 bg-white text-gray-700 rounded-lg font-medium transition-colors text-center"
-                  >
-                    詳細を見る
-                  </Link>
-                </>
-              )}
+              <Link
+                href="/blog"
+                className="px-6 py-3 bg-[#2563EB] hover:bg-blue-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center"
+              >
+                学習を始める
+                <BiRightArrowAlt className="ml-1.5" />
+              </Link>
             </div>
 
             {/* ソーシャルプルーフ - モバイルでは非表示 */}

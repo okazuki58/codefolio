@@ -107,10 +107,10 @@ export function LearningFlowSection() {
               効率的な学習プロセスであなたのエンジニアスキルを加速させませんか？
             </p>
             <Link
-              href="/auth/register"
+              href="/test"
               className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
-              無料で始める
+              テストを受ける
               <BiRightArrowAlt className="ml-2" />
             </Link>
           </div>
