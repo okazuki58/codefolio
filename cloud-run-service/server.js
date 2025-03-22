@@ -10,6 +10,20 @@ const app = express();
 
 console.log("サーバー初期化を開始します");
 
+// CORSミドルウェアを追加
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // プリフライトリクエストへの対応
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  next();
+});
+
 app.use(bodyParser.json());
 
 // メイン処理エンドポイント
@@ -153,12 +167,22 @@ app.post("/process-exam", async (req, res) => {
 
     // 正常終了
     console.log("処理完了。結果を返します");
+
+    // ログを短縮して送信（最大100KBに制限）
+    const MAX_LOG_SIZE = 100 * 1024; // 100KB
+    const combinedLog = stdout + "\n" + stderr;
+    const trimmedLog =
+      combinedLog.length > MAX_LOG_SIZE
+        ? combinedLog.substring(0, MAX_LOG_SIZE) +
+          "\n... (ログは長すぎるため切り詰められました)"
+        : combinedLog;
+
     return res.status(200).json({
       success: true,
       examResultId,
       repositoryUrl,
       testResults,
-      log: stdout + "\n" + stderr,
+      log: trimmedLog,
     });
   } catch (error) {
     console.error("演習処理中にエラーが発生しました:", error);

@@ -95,8 +95,27 @@ export async function submitExam(formData: FormData) {
         });
       } else {
         console.log("Cloud Run呼び出し成功");
-        const responseData = await response.json();
-        console.log("Cloud Run応答データ:", responseData);
+        let responseData;
+        try {
+          responseData = await response.json();
+          console.log("Cloud Run応答データ:", responseData);
+        } catch (jsonError) {
+          console.error("Cloud Run応答のJSONパースエラー:", jsonError);
+          const rawText = await response.text();
+          console.log("応答の生テキスト:", rawText.substring(0, 200) + "...");
+
+          // JSONパースエラー時も失敗として記録
+          await prisma.examResult.update({
+            where: { id: examResult.id },
+            data: {
+              status: "failed",
+              statusMessage:
+                "テスト結果の解析に失敗しました。システム管理者に連絡してください。",
+              executionLog: rawText || "",
+            },
+          });
+          throw new Error("テスト結果の解析に失敗しました");
+        }
 
         // テスト結果をDBに保存（リダイレクト前に必ず保存する）
         if (responseData.success && responseData.testResults) {
