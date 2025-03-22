@@ -1,5 +1,30 @@
 import { BiBookOpen, BiCode, BiUser } from "react-icons/bi";
 
+export function ProfileCardSkeleton() {
+  return (
+    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden mb-6">
+      <div className="p-6 flex flex-col sm:flex-row items-center gap-6">
+        <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-100 bg-gray-100">
+          <div className="w-full h-full flex items-center justify-center">
+            <BiUser className="text-3xl text-gray-300" />
+          </div>
+        </div>
+
+        <div className="text-center sm:text-left flex-1">
+          <div className="h-6 bg-gray-200 rounded-md w-32 mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded-md w-48 mb-3"></div>
+          <div className="mt-2 flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+            <div className="h-6 bg-gray-200 rounded-full w-24"></div>
+            <div className="h-6 bg-gray-200 rounded-full w-20"></div>
+          </div>
+        </div>
+
+        <div className="h-8 bg-gray-200 rounded-lg w-16"></div>
+      </div>
+    </div>
+  );
+}
+
 export function LearningStatusSkeleton() {
   return (
     <div className="col-span-1 lg:col-span-2">

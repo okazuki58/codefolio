@@ -1,7 +1,8 @@
 import { BiTimeFive } from "react-icons/bi";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { getCategories, getUserTestResults } from "../actions";
+import { prisma } from "@/lib/prisma";
+import { getCategories as getMicroCMSCategories } from "@/lib/microcms";
 
 // 結果表示用の型定義
 interface TestResultWithCategory {
@@ -14,20 +15,52 @@ interface TestResultWithCategory {
   categoryName: string;
 }
 
+interface Category {
+  id: string;
+  name: string;
+}
+
 export async function TestResults() {
   const session = await auth();
   if (!session?.user?.id) return null;
 
-  // Promise.all for concurrent data fetching
-  const [categoryMap, testResults] = await Promise.all([
-    getCategories(),
-    getUserTestResults(session.user.id),
+  // 直接データを取得
+  const categoriesPromise = getMicroCMSCategories();
+  const testResultsPromise = prisma.testResult.findMany({
+    where: { userId: session.user.id },
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      score: true,
+      total: true,
+      percentage: true,
+      categoryId: true,
+      createdAt: true,
+    },
+  });
+
+  // 並列でデータ取得
+  const [categoriesData, testResults] = await Promise.all([
+    categoriesPromise,
+    testResultsPromise,
   ]);
+
+  // カテゴリIDとカテゴリ名のマッピングを作成
+  const categoryMap = categoriesData.contents.reduce(
+    (acc: Record<string, string>, category: Category) => {
+      acc[category.id] = category.name;
+      return acc;
+    },
+    {}
+  );
 
   // Map test results with category names
   const processedResults = testResults.map((result) => ({
     ...result,
-    // 既に文字列化されているはずなので、余計な変換は行わない
+    createdAt:
+      result.createdAt instanceof Date
+        ? result.createdAt.toISOString()
+        : String(result.createdAt),
     categoryName: categoryMap[result.categoryId] || "カテゴリ不明",
   })) as TestResultWithCategory[];
 
