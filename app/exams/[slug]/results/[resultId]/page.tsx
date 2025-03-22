@@ -6,17 +6,15 @@ import { ResultDisplay } from "./result-display";
 import { getExamById } from "@/lib/microcms";
 
 interface ResultPageProps {
-  params: {
+  params: Promise<{
     slug: string;
     resultId: string;
-  };
+  }>;
 }
 
 export default async function ExamResultPage({ params }: ResultPageProps) {
-  // パラメータを適切に処理 - 非同期パラメータの警告を解消
-  const resolvedParams = await Promise.resolve(params);
-  const slug = resolvedParams.slug;
-  const resultId = resolvedParams.resultId;
+  // パラメータを適切に処理 - 非同期パラメータを解決
+  const { slug, resultId } = await params;
 
   const session = await auth();
 

@@ -8,12 +8,12 @@ export const revalidate = 0;
 
 export async function GET(
   req: Request,
-  { params }: { params: { resultId: string } }
+  context: { params: Promise<{ resultId: string }> }
 ) {
   try {
     // パラメータを適切に処理 - 非同期パラメータの警告を解消
-    const resolvedParams = await Promise.resolve(params);
-    const resultId = resolvedParams.resultId;
+    const params = await context.params;
+    const resultId = params.resultId;
 
     // セッション取得 - 認証チェック
     const session = await auth();
