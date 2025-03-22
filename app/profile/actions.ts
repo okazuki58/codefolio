@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { getCategories as getMicroCMSCategories } from "@/lib/microcms";
+import { cache } from "react";
 
 // 型定義
 interface Category {
@@ -20,18 +21,7 @@ interface TestResult {
   createdAt: Date;
 }
 
-// Profile data preloader - this allows us to prefetch required data in parallel
-export const preloadProfileData = async () => {
-  const session = await auth();
-  if (!session?.user?.id) return null;
-
-  // Prefetch categories and user data in parallel
-  await Promise.all([getCategories(), getUserTestResults(session.user.id)]);
-
-  return true;
-};
-
-// Reusable function to get categories with caching
+// Reusable function to get categories with caching - TTL 1時間
 export const getCategories = unstable_cache(
   async () => {
     try {
@@ -52,10 +42,10 @@ export const getCategories = unstable_cache(
     }
   },
   ["categories-cache"],
-  { revalidate: 3600 } // 1時間キャッシュ
+  { revalidate: 3600, tags: ["categories"] } // 1時間キャッシュ、カテゴリタグ付け
 );
 
-// Get user test results with caching
+// Get user test results with caching - TTL 1分
 export const getUserTestResults = unstable_cache(
   async (
     userId: string
@@ -85,6 +75,8 @@ export const getUserTestResults = unstable_cache(
         categoryId: true,
         createdAt: true,
       },
+      // 最適化: 結果数の制限
+      take: 10, // 最新10件のみ取得
     });
 
     // PrismaからのJSONシリアライズの問題を回避するために日付を事前に処理
@@ -97,6 +89,25 @@ export const getUserTestResults = unstable_cache(
           : result.createdAt,
     }));
   },
+  // ユーザーIDごとにキャッシュキーを分離
   ["user-test-results"],
-  { revalidate: 60 } // 1分キャッシュ
+  { revalidate: 60, tags: ["test-results"] } // 1分キャッシュ、テスト結果タグ付け
 );
+
+// Reactキャッシュを使った最適化 - 同一リクエスト内で重複呼び出しを防止
+export const getCachedCategories = cache(getCategories);
+export const getCachedUserTestResults = cache(getUserTestResults);
+
+// Profile data preloader - this allows us to prefetch required data in parallel
+export const preloadProfileData = async () => {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+
+  // Prefetch categories and user data in parallel using cached variants
+  await Promise.all([
+    getCachedCategories(),
+    getCachedUserTestResults(session.user.id),
+  ]);
+
+  return true;
+};

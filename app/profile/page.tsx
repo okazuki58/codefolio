@@ -12,9 +12,11 @@ import {
 } from "./components/skeletons";
 import { preloadProfileData } from "./actions";
 
-// 最適化のためのプリフェッチ設定
+// プロファイルページは認証情報を使うため動的にする必要があるが、
+// データフェッチやレンダリングを最適化することで高速化
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+export const fetchCache = "force-cache"; // データフェッチのキャッシュを強制
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -24,8 +26,11 @@ export default async function ProfilePage() {
     redirect("/auth/signin");
   }
 
-  // プリロード - バックグラウンドで必要なデータ取得を開始
-  void preloadProfileData();
+  // Promise.allを使わずに単一のpreloadProfileDataを呼び出す
+  // これによりactionsで定義された並列データ取得を使う
+  await preloadProfileData();
+
+  // データの先読み完了 - この時点でデータはキャッシュ済み
 
   return (
     <div className="min-h-[calc(100vh-70px)] bg-gray-50 flex flex-col">
@@ -35,9 +40,11 @@ export default async function ProfilePage() {
             マイプロフィール
           </h1>
 
+          {/* セッション情報は即時表示 */}
           <ProfileCard session={session} />
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            {/* Suspenseでラップすることで部分的なストリーミングを実現 */}
             <Suspense fallback={<LearningStatusSkeleton />}>
               <LearningStatusSection />
             </Suspense>
