@@ -10,8 +10,17 @@ import {
 } from "react-icons/bi";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
+import { Spinner } from "@/app/components/ui/spinner";
 
 export default function SignIn() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGitHubSignIn = async () => {
+    setIsLoading(true);
+    await signIn("github", { callbackUrl: "/" });
+  };
+
   return (
     <div className="min-h-[calc(100vh-70px)] flex flex-col md:flex-row bg-white">
       {/* 左側のブランドエリア - モバイルでは非表示 */}
@@ -91,11 +100,18 @@ export default function SignIn() {
           </div>
 
           <button
-            onClick={() => signIn("github", { callbackUrl: "/" })}
-            className="flex w-full justify-center items-center gap-2 rounded-md bg-gray-800 py-3 px-4 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-150"
+            onClick={handleGitHubSignIn}
+            disabled={isLoading}
+            className={`flex w-full justify-center items-center gap-2 rounded-md bg-gray-800 py-3 px-4 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-150 ${
+              isLoading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
-            <BiLogoGithub className="h-5 w-5" />
-            <span>GitHubでログイン</span>
+            {isLoading ? (
+              <Spinner color="white" size="md" />
+            ) : (
+              <BiLogoGithub className="h-5 w-5" />
+            )}
+            <span>{isLoading ? "ログイン中..." : "GitHubでログイン"}</span>
           </button>
 
           <div className="bg-blue-50 rounded p-4 border-l-3 border-blue-500">

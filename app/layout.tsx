@@ -6,7 +6,6 @@ import "./globals.css";
 import Header from "./components/header";
 import { Providers } from "./providers";
 import { Footer } from "./components/footer";
-import { TopProgressBar } from "./components/progress-bar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +21,6 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <Providers>
-          <TopProgressBar />
           <Header />
           {children}
           <SpeedInsights />
